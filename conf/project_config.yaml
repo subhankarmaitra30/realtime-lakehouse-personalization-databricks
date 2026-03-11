@@ -1,0 +1,18 @@
+project:
+  name: realtime_lakehouse_personalization
+
+database:
+  name: ecommerce_lakehouse
+
+storage_paths:
+  bronze: /FileStore/lakehouse/bronze
+  silver: /FileStore/lakehouse/silver
+  gold: /FileStore/lakehouse/gold
+
+streaming:
+  input: /FileStore/stream/input
+  checkpoint: /FileStore/checkpoints
+
+mlflow:
+  experiment: ecommerce_personalization_experiment
+  model_name: ecommerce_recommendation_model
