@@ -10,7 +10,7 @@ This project demonstrates a **complete modern data + ML platform** combining str
 
 # 📊 Architecture
 
-![Lakehouse Architecture](architecture/lakehouse_architecture.drawio.png)
+![Lakehouse architecture](architecture/lakehouse_architecture.drawio.png)
 
 The platform follows the **Databricks Lakehouse architecture**:
 Streaming Event Generator
