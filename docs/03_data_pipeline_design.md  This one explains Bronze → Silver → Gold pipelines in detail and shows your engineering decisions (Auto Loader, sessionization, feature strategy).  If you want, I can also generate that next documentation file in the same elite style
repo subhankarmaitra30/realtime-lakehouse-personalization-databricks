@@ -1,0 +1,462 @@
+# Data Pipeline Design
+
+## Medallion Data Architecture for Real-Time Ecommerce Analytics
+
+---
+
+# 1. Overview
+
+The data platform in this project follows the **Medallion Architecture**, a design pattern widely used in modern data platforms built on Delta Lake and Databricks.
+
+The Medallion pattern organizes data into progressively refined layers:
+
+| Layer | Purpose |
+|------|--------|
+| Bronze | Raw ingested data |
+| Silver | Cleaned and enriched data |
+| Gold | Business-ready datasets |
+
+This layered approach ensures **data reliability, reproducibility, and scalability**.
+
+---
+
+# 2. Pipeline Architecture
+
+The end-to-end data pipeline transforms streaming clickstream events into machine-learning-ready datasets.
+Streaming Event Generator
+↓
+Streaming Simulator
+↓
+Bronze Layer (Raw Events)
+↓
+Silver Layer (Clean + Feature Engineering)
+↓
+Gold Layer (ML Training Dataset)
+Streaming Event Generator
+↓
+Streaming Simulator
+↓
+Bronze Layer (Raw Events)
+↓
+Silver Layer (Clean + Feature Engineering)
+↓
+Gold Layer (ML Training Dataset)
+
+Each stage of the pipeline serves a specific purpose and progressively improves the quality and usability of the data.
+
+---
+
+# 3. Streaming Data Generation
+
+To simulate real-world ecommerce traffic, the platform generates synthetic clickstream events representing user interactions.
+
+Example event types include:
+
+- product view
+- add to cart
+- purchase
+- session start
+
+Each event contains metadata such as:
+
+| Field | Description |
+|------|-------------|
+| user_id | unique customer identifier |
+| session_id | browsing session identifier |
+| product_id | product interacted with |
+| event_type | user action |
+| price | product price |
+| timestamp | event time |
+
+Events are written as small batch files and streamed into the pipeline to emulate real-time traffic.
+
+---
+
+# 4. Bronze Layer
+
+The Bronze layer stores **raw streaming events exactly as ingested**.
+
+### Purpose
+
+- Preserve original event data
+- Provide an immutable record of all events
+- Enable reproducible downstream transformations
+
+### Characteristics
+
+- No business logic applied
+- Schema captured from ingestion
+- Raw events stored using Delta Lake
+
+### Example Bronze Table
+
+Each stage of the pipeline serves a specific purpose and progressively improves the quality and usability of the data.
+
+---
+
+# 3. Streaming Data Generation
+
+To simulate real-world ecommerce traffic, the platform generates synthetic clickstream events representing user interactions.
+
+Example event types include:
+
+- product view
+- add to cart
+- purchase
+- session start
+
+Each event contains metadata such as:
+
+| Field | Description |
+|------|-------------|
+| user_id | unique customer identifier |
+| session_id | browsing session identifier |
+| product_id | product interacted with |
+| event_type | user action |
+| price | product price |
+| timestamp | event time |
+
+Events are written as small batch files and streamed into the pipeline to emulate real-time traffic.
+
+---
+
+# 4. Bronze Layer
+
+The Bronze layer stores **raw streaming events exactly as ingested**.
+
+### Purpose
+
+- Preserve original event data
+- Provide an immutable record of all events
+- Enable reproducible downstream transformations
+
+### Characteristics
+
+- No business logic applied
+- Schema captured from ingestion
+- Raw events stored using Delta Lake
+
+### Example Bronze Table
+bronze_clickstream_events
+
+Example schema:
+
+| Column | Description |
+|------|-------------|
+| user_id | customer identifier |
+| session_id | session identifier |
+| product_id | product interacted with |
+| event_type | interaction type |
+| price | product price |
+| timestamp | event timestamp |
+
+The Bronze layer acts as the **system of record for all incoming events**.
+
+---
+
+# 5. Silver Layer
+
+The Silver layer performs **data cleaning and feature engineering**.
+
+This stage transforms raw event data into structured datasets suitable for analytics and machine learning.
+
+---
+
+## 5.1 Data Cleaning
+
+Cleaning transformations include:
+
+- timestamp normalization
+- event type standardization
+- duplicate removal
+- schema validation
+
+These steps ensure that downstream pipelines operate on **consistent and reliable data**.
+
+---
+
+## 5.2 Sessionization
+
+User activity is grouped into sessions using a **30-minute inactivity threshold**.
+
+If the time between two events exceeds 30 minutes, a new session is created.
+
+Example schema:
+
+| Column | Description |
+|------|-------------|
+| user_id | customer identifier |
+| session_id | session identifier |
+| product_id | product interacted with |
+| event_type | interaction type |
+| price | product price |
+| timestamp | event timestamp |
+
+The Bronze layer acts as the **system of record for all incoming events**.
+
+---
+
+# 5. Silver Layer
+
+The Silver layer performs **data cleaning and feature engineering**.
+
+This stage transforms raw event data into structured datasets suitable for analytics and machine learning.
+
+---
+
+## 5.1 Data Cleaning
+
+Cleaning transformations include:
+
+- timestamp normalization
+- event type standardization
+- duplicate removal
+- schema validation
+
+These steps ensure that downstream pipelines operate on **consistent and reliable data**.
+
+---
+
+## 5.2 Sessionization
+
+User activity is grouped into sessions using a **30-minute inactivity threshold**.
+
+If the time between two events exceeds 30 minutes, a new session is created.
+User Events
+↓
+Time Gap Detection
+↓
+Session Boundary Creation
+
+Sessionization enables the computation of behavioral metrics such as:
+
+- session activity
+- session purchase behavior
+- browsing intensity
+
+---
+
+## 5.3 Behavioral Feature Engineering
+
+Behavioral features summarize user interaction patterns within sessions.
+
+Examples include:
+
+| Feature | Description |
+|-------|-------------|
+| total_events | number of actions in session |
+| views | number of product views |
+| add_to_cart | number of cart additions |
+| purchases | number of purchases |
+| avg_price | average price of viewed products |
+
+These features represent **user engagement signals**.
+
+---
+
+## 5.4 Product Popularity Features
+
+Product demand is measured using time-window aggregations.
+
+Example feature:
+
+| Feature | Description |
+|-------|-------------|
+| events_last_hour | number of interactions per product in last hour |
+
+These signals capture **trending products**, which are commonly used in recommendation systems.
+
+---
+
+## 5.5 Customer Value Features (RFM)
+
+Customer value is modeled using the **Recency-Frequency-Monetary framework**.
+
+| Feature | Description |
+|-------|-------------|
+| recency_days | days since last interaction |
+| frequency | number of user events |
+| monetary_value | total purchase value |
+
+RFM features are widely used in:
+
+- customer segmentation
+- marketing targeting
+- purchase prediction models
+
+---
+
+# 6. Gold Layer
+
+The Gold layer produces **machine-learning-ready datasets**.
+
+This stage combines multiple Silver feature tables into a unified dataset.
+Silver Behavioral Features
++
+Product Popularity Features
++
+RFM Features
+↓
+Gold ML Training Dataset
+
+
+Example dataset:
+gold_ml_training_dataset
+
+
+Example schema:
+
+| Column | Description |
+|------|-------------|
+| user_id | customer identifier |
+| session_number | session identifier |
+| views | product views |
+| add_to_cart | cart additions |
+| purchases | purchase count |
+| avg_price | average price |
+| frequency | interaction frequency |
+| recency_days | recency metric |
+| monetary_value | purchase value |
+
+This dataset serves as the **input for machine learning models**.
+
+---
+
+# 7. Label Generation
+
+Supervised learning models require labeled datasets.
+
+Labels are derived from behavioral signals.
+
+Example labels:
+
+| Label | Description |
+|------|-------------|
+| label_purchase | whether a purchase occurred |
+| label_fraud | potential suspicious activity |
+
+These labels allow the training of:
+
+- purchase prediction models
+- fraud detection models
+
+---
+
+# 8. Data Storage Format
+
+All tables are stored using **Delta Lake**.
+
+Delta Lake provides several advantages:
+
+- ACID transactions
+- schema enforcement
+- time travel
+- efficient storage
+
+These features improve data reliability and operational stability.
+
+---
+
+# 9. Pipeline Reliability
+
+Several practices ensure pipeline reliability:
+
+- immutable Bronze data
+- deterministic feature transformations
+- Delta Lake transactional storage
+- modular notebook pipelines
+
+These practices enable reproducible and maintainable data pipelines.
+
+---
+
+# 10. Summary
+
+The data pipeline transforms raw event streams into analytical datasets through a layered architecture.
+
+Example schema:
+
+| Column | Description |
+|------|-------------|
+| user_id | customer identifier |
+| session_number | session identifier |
+| views | product views |
+| add_to_cart | cart additions |
+| purchases | purchase count |
+| avg_price | average price |
+| frequency | interaction frequency |
+| recency_days | recency metric |
+| monetary_value | purchase value |
+
+This dataset serves as the **input for machine learning models**.
+
+---
+
+# 7. Label Generation
+
+Supervised learning models require labeled datasets.
+
+Labels are derived from behavioral signals.
+
+Example labels:
+
+| Label | Description |
+|------|-------------|
+| label_purchase | whether a purchase occurred |
+| label_fraud | potential suspicious activity |
+
+These labels allow the training of:
+
+- purchase prediction models
+- fraud detection models
+
+---
+
+# 8. Data Storage Format
+
+All tables are stored using **Delta Lake**.
+
+Delta Lake provides several advantages:
+
+- ACID transactions
+- schema enforcement
+- time travel
+- efficient storage
+
+These features improve data reliability and operational stability.
+
+---
+
+# 9. Pipeline Reliability
+
+Several practices ensure pipeline reliability:
+
+- immutable Bronze data
+- deterministic feature transformations
+- Delta Lake transactional storage
+- modular notebook pipelines
+
+These practices enable reproducible and maintainable data pipelines.
+
+---
+
+# 10. Summary
+
+The data pipeline transforms raw event streams into analytical datasets through a layered architecture.
+Streaming Events
+↓
+Bronze Raw Events
+↓
+Silver Feature Engineering
+↓
+Gold ML Dataset
+
+This design ensures that the system supports:
+
+- reliable data ingestion
+- scalable feature engineering
+- machine learning model training
+- analytics-ready outputs
+
+The Medallion architecture enables the platform to maintain **clear separation between raw data, 
+curated features, and analytical outputs**, making it well suited for modern data and AI systems.
