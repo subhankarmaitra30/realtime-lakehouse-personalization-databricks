@@ -272,7 +272,7 @@ ALL MODULE 6 AGENTIC C2 & ROBOTICS BENCHMARKS PASSED.
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                   DEFENSE, MEDICAL & STATUTORY COMPLIANCE TRACEABILITY                           │
 ├──────────────────────────────┬──────────────────────────────────┬────────────────────────────────┤
-│ Regulatory / Military Standard│ Mandated Parameter / Threshold   │ NEXUS-TACTICAL Compliance     │
+│Regulatory / Military Standard│ Mandated Parameter / Threshold   │ NEXUS-TACTICAL Compliance      │
 ├──────────────────────────────┼──────────────────────────────────┼────────────────────────────────┤
 │ MIL-STD-810H                 │ Altitude: 15,000+ ft; Temp:      │ Low-pressure air breakdown     │
 │ (Methods 500, 501, 502, 514) │ -40°C to +55°C; Transit Vibration│ margin >15.2 kV; SE(3) harmonic│
