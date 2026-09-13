@@ -115,10 +115,10 @@ TRL:             TRL 3 -> 4                      TRL 4 -> 5               TRL 5 
 ├──────────────────────────────┼───────────────────────────────────────────────────────────────────┤
 │ Intellectual Property Rights │ All background, foreground, and derivative intellectual property  │
 │ & Patent Ownership           │anchored in Indian Patent Application No. 202631094668 remains 100%│
-│                              │ the exclusive, unencumbered property of the venture[cite: 8, 12]. │
+│                              │ the exclusive, unencumbered property of the venture.              │
 ├──────────────────────────────┼───────────────────────────────────────────────────────────────────┤
 │ Academic Publication Rights  │ Faculty PIs and research fellows retain academic publication      │
-│ & Defensive Disclosure       │ rights over general scientific methods, subject to mandatory 60-day│
+│ & Defensive Disclosure       │rights over general scientific methods, subject to mandatory 60-day│
 │                              │ commercial IP review and redaction of patentable claims.          │
 ├──────────────────────────────┼───────────────────────────────────────────────────────────────────┤
 │ Facility Access & Testing    │ Unrestricted priority access to HTIC, high-speed digital labs, and│
