@@ -70,16 +70,14 @@ TRL:             TRL 3 -> 4                      TRL 4 -> 5               TRL 5 
 ====================================================================================================
 ```
 ```
-         GRANT CAPITAL ALLOCATION ARCHITECTURE (₹1.5 Cr - ₹2.5 Cr)                                             BUDGET ALLOCATION PIE GRAPH
-                                                                                             ┌────────────────────────────────────────────────────────┐
-┌──────────────────────────────────────────────────────────────────────────┬──────────┐      │ [■■■■■■■■■■■■■■■] CapEx: Silicon & Test Rigs (35%)     │            │ Expenditure Classification & Operational Budget Head                     │ Ratio    │      │ [■■■■■■■■■■■■]    Human Capital & SRA Fellows (30%)    │
-├──────────────────────────────────────────────────────────────────────────┼──────────┤      │ [■■■■■■]          Environmental & EMI Chambers (15%)   │
-│ Capital Expenditure (CapEx - High-Speed Hardware & Silicon Rigs)         │ 35.0%    │      │ [■■■■]            Clinical Operations & Logistics (10%)│
-│ Human Capital & SRA Research Fellow Stipends (6 Specialized Engineers)   │ 30.0%    │      │ [■■■■]            IP Prosecution & Regulatory (10%)    │
-│ Environmental Test Chambers & NABL Defense Certification (MIL-STD / IEC) │ 15.0%    │      └────────────────────────────────────────────────────────┘
-│ Clinical Trial Pilot Operations & Data Logistics (PGIMER / AIIMS Site)   │ 10.0%    │
-│ Statutory IP Prosecution (Complete Specification, PCT) & Regulatory DHFs │ 10.0%    │
-└──────────────────────────────────────────────────────────────────────────┴──────────┘                                                                                                                                                                   
+                                   BUDGET ALLOCATION PIE GRAPH
+                  ┌────────────────────────────────────────────────────────┐
+                  │ [■■■■■■■■■■■■■■■] CapEx: Silicon & Test Rigs (35%)     │
+                  │ [■■■■■■■■■■■■]    Human Capital & SRA Fellows (30%)    │
+                  │ [■■■■■■]          Environmental & EMI Chambers (15%)   │
+                  │ [■■■■]            Clinical Operations & Logistics (10%)│
+                  │ [■■■■]            IP Prosecution & Regulatory (10%)    │
+                  └────────────────────────────────────────────────────────┘
 
 ```
 ```
