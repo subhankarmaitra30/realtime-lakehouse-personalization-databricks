@@ -44,7 +44,7 @@ RAW INGRESS STREAM (Module 1 Pinned Buffers)
 │ └── Latency Constraint:                   t_Tier1 <= 2.14 ms on AMD Versal AI Engine / NVIDIA Orin                   │
 └─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
                                                           │
-                                         ▼ Latent Spatial Features: S(t) in R^512
+                                          Latent Spatial Features: S(t) in R^512
                                                           │
                                                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -54,7 +54,7 @@ RAW INGRESS STREAM (Module 1 Pinned Buffers)
 │ • Memory wiped before next V-Sync interval; zero persistence to non-volatile storage                                 │
 └─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
                                                           │
-                                              ▼ Cleaned Volatile Boundary
+                                               Cleaned Volatile Boundary
                                                           │
                                                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -66,7 +66,7 @@ RAW INGRESS STREAM (Module 1 Pinned Buffers)
 │ • Complexity Invariant:        Strict O(L) Linear-Time Evaluation (Zero Quadratic Attention Overhead)                │
 └─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
                                                           │
-                                     ▼ Accumulated Temporal State: h_T in R^{512 x 16}
+                                      Accumulated Temporal State: h_T in R^{512 x 16}
                                                           │
                                                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -78,7 +78,7 @@ RAW INGRESS STREAM (Module 1 Pinned Buffers)
 │ • Combinatorial InfoNCE Matrix:     Aligns 15 cross-modal pairs (tau = 0.07)                                         │
 └─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
                                                           │
-                                   ▼ Emits Invariant Biological Token: v_bio in S^{1023}
+                                   Emits Invariant Biological Token: v_bio in S^{1023}
                                                           │
                                                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
