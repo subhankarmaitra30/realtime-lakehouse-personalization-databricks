@@ -22,66 +22,73 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ========================================================================================================================
-                              MODULE 6: THREE-TIER CLOSED-LOOP KINETIC C2 ARCHITECTURE
+                                  MODULE 2: THREE-TIER VECTORIZATION-AT-BIRTH TOPOLOGY
 ========================================================================================================================
 
-                                  INVARIANT BIOLOGICAL STATE STREAM (Module 2 Ingress)
-                                     v_m(t) ∈ S¹⁰²³ ⊂ ℝ¹⁰²⁴,    ‖v_m‖₂ = 1.0
-                                                          │
-                                                          ▼
+RAW INGRESS STREAM (Module 1 Pinned Buffers)
+├── Buffer A: 1080p Optical/Ultrasound Video (16.67 ms / 12.44 MB)
+├── Buffer B: Microvolt Bedside ICU Telemetry (1.0 ms / 256 KB)
+└── Buffer C: Decimated 2.5 GSPS Acoustic RF Wavefield (80.0 GB/s baseband)
+                                  │
+                                  ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ TIER 1: ASYNCHRONOUS CAUSAL AUTOREGRESSIVE POLICY MATRIX (Rust in Hardware TEE)                                      │
+│ VOLATILE PINNED RING BUFFER ARENA (cudaHostAllocMapped / Static UltraRAM)                                            │
 ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Sub-Visual Fissure Detection: Tracks micro-vascular pressure gradients & impending wall rupture                    │
-│ • Pearl's Micro-Do-Calculus:   Evaluates interventional utility π*(a | v_m) under graph surgery                      │
-│ • Back-Door Adjustment:        Decouples baseline trauma shock confounders C in 𝒞                                    │
-│ • Multi-Objective Utility:     U(Y): MAP ∈ [65, 85] mmHg, Active Bleeding ≤ 0.05 mL/min                              │
+│ • Physical Lifetime:        t_frame <= 16.67 ms (Single 60 fps V-Sync Cycle)                                         │
+│ • Volatile Dimension Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions per Frame                                         │
+│                                                                                                                      │
+│ [TIER 1: SPATIAL SE(3)-EQUIVARIANT STEERABLE ENCODER]                                                                │
+│ ├── Steerable Spherical Harmonic Filters: Factorized Radial RBF + Angular Basis Y_l^m                                │
+│ ├── Fiber Representation:                 Direct Sum of Irreps rho(R) = D^0(R) + D^1(R) + D^2(R)                     │
+│ ├── Spatial Annihilation:                 Collapses 6,220,800 Dims -> 512 Latent Features S(t)                       │
+│ └── Latency Constraint:                   t_Tier1 <= 2.14 ms on AMD Versal AI Engine / NVIDIA Orin                   │
 └─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
                                                           │
-                                            [Selected Causal Action: a*]
+                                         ▼ Latent Spatial Features: S(t) in R^512
                                                           │
                                                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ TIER 2: REAL-TIME NON-EUCLIDEAN ACTION-SPACE TRANSFORMER (engine/python/ppo_drift_regularizer.py)                    │
+│ HARDWARE MEMORY ZEROIZATION GATE (firmware/src/hal_rx.rs)                                                            │
 ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Query Projection:               Q = v_m · W_Q  (256-D Embedded Query Vector)                                       │
-│ • Safe Basis Dictionary:          Cross-Attention over K_safe ∈ ℝ^(M × 24)                                           │
-│ • Continuous SE(3) Spline:        τ(t) = ∑_{i=1}^M α_i · V_i(t)                                                      │
-│ • Kinematic Smoothness Ceiling:   C² Manifold Continuity with Jerk ‖τ'''(t)‖₂ ≤ 2.0 m/s³                             │
-├─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┤
-│ CHANNEL A: COPILOT HUD DRIVER                           │ CHANNEL B: AUTOPILOT                                       │
-│ • Manual Field Medic Guidance Mode                      │ • Unmanned Surgical Pod                                    │
-│ • Sub-16ms AR Overlays via Module 5                     │ • Multi-Axis Servo PWM                                     │
-│ • Target Coordinates for Vessel Clamping                │ • Micro-Suture Ligation                                    │
-└─────────────────────────────────────────────────────────┴─────────────────────────────┬──────────────────────────────┘
-                                                                                        │
-                                                                   [Commanded Trajectory Input: u_AI(t)]
-                                                                                        │
-                                                                                        ▼
+│ • Hardware DMA controller executes memset(0x00) over raw frame buffer                                                │
+│ • Memory wiped before next V-Sync interval; zero persistence to non-volatile storage                                 │
+└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
+                                                          │
+                                              ▼ Cleaned Volatile Boundary
+                                                          │
+                                                          ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ TIER 3: BARE-METAL 1 kHz CBF SAFETY FILTER & MMIO WATCHDOG (firmware/src/safety_watchdog.rs)                         │
+│ TIER 2: CAUSAL SELECTIVE STATE-SPACE AGGREGATOR (MAMBA SSM)                                                          │
 ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • 1000 Hz Active-Set Convex QP Filter: min ½ ‖u - u_AI‖₂² + p_slack · δ²                                             │
-│ • Nagumo Forward Set Invariance:       Continuous verification of ḣ ≥ -γ · h(x)                                      │
-│ • Kinematic Speed Saturation:          Hard ceiling ‖q̇‖_∞ ≤ 0.05 m/s (50 mm/s)                                       │
-│ • Dual Hardware Watchdog Interlocks:   Heartbeat Δt ≤ 2000 µs  &  Boundary Margin h(x) ≥ 1.0 mm                      │
-└──────────────────────────────────────────┬────────────────────────────────────────────┬──────────────────────────────┘
-                                           │                                            │
-                                           ▼                                            ▼
-                    ┌──────────────────────────────┐             ┌──────────────────────────────┐
-                    │  [Kinematics Verified Safe]  │             │   [CRITICAL SAFETY BREACH]   │
-                    ├──────────────────────────────┤             ├──────────────────────────────┤
-                    │ • PWM Frame Sent to Gates    │             │ • Timeout > 2000 µs          │
-                    │ • Deterministic Cycle: 1.0 ms│             │   OR Boundary h(x) < 1.0 mm  │
-                    │                              │             │ • Volatile MMIO Write:       │
-                    │                              │             │   *mut 0x5000_1004 = 0x0     │
-                    └──────────────┬───────────────┘             └──────────────┬───────────────┘
-                                   │                                            │
-                                   ▼                                            ▼
-                    ┌──────────────────────────────┐             ┌──────────────────────────────┐
-                    │ MOTOR PWM SERVO CONTROLLERS  │             │  HARDWARE ZERO-TORQUE E-STOP │
-                    │ Actuates 6-DoF Manipulator   │             │  Power Cut < 1.0 ms; τ=0.0 Nm│
-                    └──────────────────────────────┘             └──────────────────────────────┘
+│ • Continuous State Recurrence: h_t = exp(Delta * A) * h_{t-1} + (Delta * B) * S(t)                                   │
+│ • Sequence Horizon:            L = 7,200 Frames (120-second clinical examination window)                             │
+│ • Memory Invariant:            Fixed Recurrent Hidden State h_t in R^{512 x 16} (32.768 KB SRAM)                     │
+│ • Complexity Invariant:        Strict O(L) Linear-Time Evaluation (Zero Quadratic Attention Overhead)                │
+└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
+                                                          │
+                                     ▼ Accumulated Temporal State: h_T in R^{512 x 16}
+                                                          │
+                                                          ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & COMBINATORIAL INFONCE HEAD                                        │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ • Gaussian Reparameterization:      z = mu(h_T) + sigma(h_T) * epsilon,  epsilon ~ N(0, I)                           │
+│ • Information Pruning:              KL Divergence penalty (beta >= 1e-3) zeroes non-diagnostic entropy               │
+│ • Unit Hypersphere Normalization:   v_bio = z / ||z||_2 ===> ||v_bio||_2 = 1.0 in S^{1023}                           │
+│ • Combinatorial InfoNCE Matrix:     Aligns 15 cross-modal pairs (tau = 0.07)                                         │
+└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
+                                                          │
+                                   ▼ Emits Invariant Biological Token: v_bio in S^{1023}
+                                                          │
+                                                          ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ DOWNSTREAM CONSUMER INTERFACES                                                                                       │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ • Module 3: Ingested as payload_ptr for CvRDT mesh ledger and RocksDB PGTQ                                           │
+│ • Module 4: Ingested as causal feature vector for in-enclave DML policy training                                     │
+│ • Module 5: Ingested as coordinate anchor for 6-DoF 3D SLAM volumetric reconstruction                                │
+│ • Module 6: Ingested as query vector Q for Non-Euclidean Action Transformer                                          │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 ```
 
