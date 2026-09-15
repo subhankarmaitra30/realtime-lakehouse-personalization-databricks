@@ -21,76 +21,99 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-========================================================================================================================
-                                  MODULE 2: THREE-TIER VECTORIZATION-AT-BIRTH TOPOLOGY
-========================================================================================================================
+====================================================================================================
+               TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
+====================================================================================================
 
-RAW INGRESS STREAM (Module 1 Pinned Buffers)
-├── Buffer A: 1080p Optical/Ultrasound Video (16.67 ms / 12.44 MB)
-├── Buffer B: Microvolt Bedside ICU Telemetry (1.0 ms / 256 KB)
-└── Buffer C: Decimated 2.5 GSPS Acoustic RF Wavefield (80.0 GB/s baseband)
-                                  │
-                                  ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ VOLATILE PINNED RING BUFFER ARENA (cudaHostAllocMapped / Static UltraRAM)                                            │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Physical Lifetime:        t_frame <= 16.67 ms (Single 60 fps V-Sync Cycle)                                         │
-│ • Volatile Dimension Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions per Frame                                         │
-│                                                                                                                      │
-│ [TIER 1: SPATIAL SE(3)-EQUIVARIANT STEERABLE ENCODER]                                                                │
-│ ├── Steerable Spherical Harmonic Filters: Factorized Radial RBF + Angular Basis Y_l^m                                │
-│ ├── Fiber Representation:                 Direct Sum of Irreps rho(R) = D^0(R) + D^1(R) + D^2(R)                     │
-│ ├── Spatial Annihilation:                 Collapses 6,220,800 Dims -> 512 Latent Features S(t)                       │
-│ └── Latency Constraint:                   t_Tier1 <= 2.14 ms on AMD Versal AI Engine / NVIDIA Orin                   │
-└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
-                                                          │
-                                          Latent Spatial Features: S(t) in R^512
-                                                          │
-                                                          ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ HARDWARE MEMORY ZEROIZATION GATE (firmware/src/hal_rx.rs)                                                            │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Hardware DMA controller executes memset(0x00) over raw frame buffer                                                │
-│ • Memory wiped before next V-Sync interval; zero persistence to non-volatile storage                                 │
-└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
-                                                          │
-                                               Cleaned Volatile Boundary
-                                                          │
-                                                          ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ TIER 2: CAUSAL SELECTIVE STATE-SPACE AGGREGATOR (MAMBA SSM)                                                          │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Continuous State Recurrence: h_t = exp(Delta * A) * h_{t-1} + (Delta * B) * S(t)                                   │
-│ • Sequence Horizon:            L = 7,200 Frames (120-second clinical examination window)                             │
-│ • Memory Invariant:            Fixed Recurrent Hidden State h_t in R^{512 x 16} (32.768 KB SRAM)                     │
-│ • Complexity Invariant:        Strict O(L) Linear-Time Evaluation (Zero Quadratic Attention Overhead)                │
-└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
-                                                          │
-                                      Accumulated Temporal State: h_T in R^{512 x 16}
-                                                          │
-                                                          ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & COMBINATORIAL INFONCE HEAD                                        │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Gaussian Reparameterization:      z = mu(h_T) + sigma(h_T) * epsilon,  epsilon ~ N(0, I)                           │
-│ • Information Pruning:              KL Divergence penalty (beta >= 1e-3) zeroes non-diagnostic entropy               │
-│ • Unit Hypersphere Normalization:   v_bio = z / ||z||_2 ===> ||v_bio||_2 = 1.0 in S^{1023}                           │
-│ • Combinatorial InfoNCE Matrix:     Aligns 15 cross-modal pairs (tau = 0.07)                                         │
-└─────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────┘
-                                                          │
-                                   Emits Invariant Biological Token: v_bio in S^{1023}
-                                                          │
-                                                          ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ DOWNSTREAM CONSUMER INTERFACES                                                                                       │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Module 3: Ingested as payload_ptr for CvRDT mesh ledger and RocksDB PGTQ                                           │
-│ • Module 4: Ingested as causal feature vector for in-enclave DML policy training                                     │
-│ • Module 5: Ingested as coordinate anchor for 6-DoF 3D SLAM volumetric reconstruction                                │
-│ • Module 6: Ingested as query vector Q for Non-Euclidean Action Transformer                                          │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+               TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd.)
+                    • Managing Director & Principal Architect: Subhankar Maitra
+                    • Strategic Direction, System Invariants, IP Prosecution (Patent 202631094668)
+                    • Defense Liaison (iDEX, Army Design Bureau, DG AFMS) & Clinical MoUs
+                                                │
+                                                ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Dedicated Company Employees / Equity-Vested)     │
+│                                                                                                  │
+│   [LEAD HARDWARE & EMBEDDED SYSTEMS ENGINEER]       [LEAD SYSTEMS SOFTWARE & DL COMPILER ENG]    │
+│   • Owns synthesizable RTL, bare-metal Rust drivers • Owns CUDA C++ kernels, TensorRT execution  │
+│   • Manages PCB bring-up, PCIe Gen 6 DMA memory      • Manages 6-DoF SLAM & CvRDT mesh stacks    │
+│   • Direct gatekeeper inside IIT Madras labs         • Maintains private production git repos    │
+└───────────────────────────────────────────────┬──────────────────────────────────────────────────┘
+                                                │ Joint SRA Work Package Execution & Co-Dev Sprints
+                                                ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Sponsored via SRA Allocation)    │
+│                                                                                                  │
+│  [ELECTRICAL & HIGH-SPEED HARDWARE]      [CRYPTOGRAPHY & DISTRIBUTED SYSTEMS]                    │
+│  • Dept. of Electrical Engineering /     • Secure Systems Centre / Trusted Computing Lab         │
+│    High-Speed Digital & RF Lab           • Hardware TEE Enclaves (AMD SEV-SNP / TrustZone)       │
+│  • High-Voltage Medical Safety Chamber   • Plonky2 ZK-SNARKs & Bare-Metal CvRDT Verification     │
+│                                                                                                  │
+│  [COMPUTATIONAL BIOPHYSICS & AI]         [CLINICAL ANALYTICS & INTERVENTIONAL SLAM]              │
+│  • Centre for Programmable Photonic &    • Healthcare Technology Innovation Centre (HTIC)        │
+│    Neuromorphic Systems / HPC Centre     • Calibrated Hydrophone Tanks & Optical Motion Analysis │
+│  • TensorRT Compilation & SE(3) Mamba    • Sub-16ms Direct Video Compositor & 3D Voxel Meshing   │
+│                                                                                                  │
+│  [DEFENSE RUGGEDIZATION & MECHATRONICS]  [CLINICAL SITE INTEGRATION (PGIMER / AIIMS)]            │
+│  • Centre for Robotics & Mechatronics    • Clinical Research & Data Liaison Fellows              │
+│  • IITM Telecom & Defense Testing Centre • 20,000+ Patient Trajectory Validation Pipeline        │
+│  • MIL-STD-810H / 461G / 1275E Hardening • Ground-Truth Matching (Radiology to LIS Pathology)    │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+```
+               SPRINT-BY-SPRINT DUAL-TRACK COLLABORATIVE WORKFLOW
+               
+ [ FOUNDER / ARCHITECT ] ────> Defines Non-Negotiable Invariants & Milestone Gates
+                                           │
+                                           ▼
+ [ INTERNAL CORE TEAM ]  ────> Writes Synthesizable RTL, Bare-Metal Firmware, CUDA Drivers
+ (HW & SW Leads)                           │
+                                           ▼ [Hands Off Tested Assemblies for Formal Validation]
+ [ SRA LABS & FELLOWS ]  ────> Executes Chamber Testing, Hydrophone Runs, Clinical Integration
+ (IITM / HTIC PIs)                         │
+                                           ▼
+ [ FORMAL STAMPED AUDIT] ────> Produces Certified Test Dossier for iDEX Milestone Clearance
+```
 
 ```
+                GRANT CAPITAL ALLOCATION ARCHITECTURE (₹1.50 Cr BASELINE)
+┌──────────────────────────────────────────────────────────────────────────┬──────────┬─────────────┐
+│ Expenditure Classification & Operational Budget Head                     │ Ratio    │ Allocation  │
+├──────────────────────────────────────────────────────────────────────────┼──────────┼─────────────┤
+│ 1. Capital Expenditure (CapEx - High-Speed Hardware, Silicon, Kits)      │ 25.0%    │ ₹37.50 L    │
+│ 2. Internal Core Engineering Team Payroll (Company-Vested Engineers)     │ 25.0%    │ ₹37.50 L    │
+│ 3. IIT Madras Institutional SRA Contract (HTIC & Partner Labs)           │ 25.0%    │ ₹37.50 L    │
+│ 4. Defense Test Chambers & Environmental Certification (NABL/MIL-STD)    │ 10.0%    │ ₹15.00 L    │
+│ 5. Clinical Trial Logistics & Hospital Data Tap Operations (PGIMER)      │  7.5%    │ ₹11.25 L    │
+│ 6. Statutory IP Prosecution (Complete Patent Spec, PCT) & Regulatory DHF │  7.5%    │ ₹11.25 L    │
+└──────────────────────────────────────────────────────────────────────────┴──────────┴─────────────┘
+```
+```
+                               BUDGET ALLOCATION PIE GRAPH
+                  ┌────────────────────────────────────────────────────────┐
+                  │ [■■■■■■■■■■■■]    CapEx: Hardware, Silicon & BOM (25%) │
+                  │ [■■■■■■■■■■■■]    Internal Core Team Payroll (25%)     │
+                  │ [■■■■■■■■■■■■]    IIT Madras SRA Contract (25%)        │
+                  │ [■■■■■]           Defense Chambers & NABL Cert (10%)   │
+                  │ [■■■■]            Clinical Operations & PGIMER (7.5%)  │
+                  │ [■■■■]            IP Prosecution & Regulatory (7.5%)   │
+                  └────────────────────────────────────────────────────────┘
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
