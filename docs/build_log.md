@@ -34,8 +34,9 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Dedicated Company Employees / Equity-Vested)     │
 │                                                                                                  │
-│   [LEAD HARDWARE & EMBEDDED SYSTEMS ENGINEER]       [LEAD SYSTEMS SOFTWARE & DL COMPILER ENG]    │
-│   • Owns synthesizable RTL, bare-metal Rust drivers • Owns CUDA C++ kernels, TensorRT execution  │
+│  [LEAD Microelectronics HARDWARE  &                   [LEAD SYSTEMS SOFTWARE &                   |
+│         EMBEDDED SYSTEMS ENGINEER]                          Geometric DL COMPILER ENG]           | 
+│   • Owns synthesizable RTL,bare-metal Rust drivers   • Owns CUDA C++ kernels, TensorRT execution │
 │   • Manages PCB bring-up, PCIe Gen 6 DMA memory      • Manages 6-DoF SLAM & CvRDT mesh stacks    │
 │   • Direct gatekeeper inside IIT Madras labs         • Maintains private production git repos    │
 └───────────────────────────────────────────────┬──────────────────────────────────────────────────┘
