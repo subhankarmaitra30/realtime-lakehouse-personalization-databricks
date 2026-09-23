@@ -21,55 +21,41 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
+┌──────────────────────────────┬──────────────────┬──────────────────┬───────────────────┐
+│ Competitive Dimension        │ Diagnostic OEMs  │ Surgical Robots  │ Sovereign Bio-OS  │
+│                              │ (GE / Siemens)   │ (da Vinci)       │ (DEEP NURO-NEX)   │
+├──────────────────────────────┼──────────────────┼──────────────────┼───────────────────┤
+│ Fleet Interoperability       │ Zero (Proprietary│ Zero (Locked to  │ Universal Passive │
+│                              │ walled gardens)  │ da Vinci arms)   │ Ingress (All OEMs)│
+├──────────────────────────────┼──────────────────┼──────────────────┼───────────────────┤
+│ Latency & Display Execution  │ Non-deterministic│ Proprietary video│ Deterministic     │
+│                              │ (33–50 ms lag)   │ stack (High cost)│ 12.60 ms (Direct) │
+├──────────────────────────────┼──────────────────┼──────────────────┼───────────────────┤
+│ Regulatory Privacy Moat      │ Raw DICOM stored │ N/A (Video       │ 16.67 ms Memory   │
+│                              │ (DPDP Liability) │ recording risks) │ Scrub (I = 0 bits)│
+├──────────────────────────────┼──────────────────┼──────────────────┼───────────────────┤
+│ Bandwidth Requirement        │ Broadband        │ High-bandwidth   │ <2 Kbps Tactical  │
+│                              │ (4G/5G/Cloud)    │ teleoperation    │ CvRDT Mesh Net    │
+├──────────────────────────────┼──────────────────┼──────────────────┼───────────────────┤
+│ Physical Safety Verification │ Heuristic alerts │ Cable-driven open│ 1 kHz Nagumo-CBF  │
+│                              │ (No set limits)  │ loop tele-op     │ (<1 ms HW E-Stop) │
+└──────────────────────────────┴──────────────────┴──────────────────┴───────────────────┘
+```
+```
 ====================================================================================================
-               TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
+                        5-YEAR FINANCIAL PROJECTIONS (INDIA ENTERPRISE)
 ====================================================================================================
 
- TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd. - Pre-Incorporated)
- • Managing Director & Principal Architect: Subhankar Maitra (Solo Founder)
- • Strategic Direction, Mathematical System Invariants & IP Prosecution (Patent 202631094668)
- • Defense Liaison (iDEX, Army Design Bureau, DG AFMS) & Clinical Institutional MoUs
-                                                │
-                                                ▼
- TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (To Be Hired Post-Incubation via Grant Allocation)
- ┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
- │ LEAD MICROELECTRONICS & EMBEDDED HW ENGINEER │ │ LEAD SYSTEMS SOFTWARE & GEOMETRIC DL COMPILER  │
- │ • Owns synthesizable RTL & bare-metal Rust   │ │ • Owns CUDA C++ kernels & TensorRT runtime     │
- │ • Manages PCB bring-up & PCIe Gen 6 DMA      │ │ • Manages 6-DoF SLAM & CvRDT mesh stacks       │
- │ • Direct technical gatekeeper in IITM labs   │ │ • Maintains private production git repositories│
- └──────────────────────────────────────────────┘ └────────────────────────────────────────────────┘
-                                                │
-                     Joint SRA Work Package Execution & Co-Development Sprints
-                                                │
-                                                ▼
- TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Sponsored via Grant SRA Budget)
- ┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
- │ [ELECTRICAL & HIGH-SPEED HARDWARE]           │ │ [CRYPTOGRAPHY & DISTRIBUTED SYSTEMS]           │
- │ • Dept. of EE / High-Speed Digital & RF Lab  │ │ • Secure Systems Centre / Trusted Computing Lab│
- │ • High-Voltage Medical Safety Chamber        │ │ • Hardware TEEs & Plonky2 ZK-SNARK Verification│
- ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────────┤
- │ [COMPUTATIONAL BIOPHYSICS & AI]              │ │ [CLINICAL ANALYTICS & INTERVENTIONAL SLAM]     │
- │ • Photonic & Neuromorphic Systems / HPC Ctr  │ │ • HTIC Imaging Suites & Hydrophone Scan Tanks  │
- │ • TensorRT Compilation & SE(3) Mamba Engine  │ │ • Sub-16ms Direct Video Compositor & 3D Voxel  │
- ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────────┤
- │ [DEFENSE RUGGEDIZATION & MECHATRONICS]       │ │ [CLINICAL SITE INTEGRATION (PGIMER / AIIMS)]   │
- │ • Centre for Robotics & Mechatronics / IITM  │ │ • Clinical Research & Data Liaison Fellows     │
- │ • MIL-STD-810H / 461G / 1275E Hardening      │ │ • 20,000+Patient Trajectory Validation Pipeline│
- └──────────────────────────────────────────────┘ └────────────────────────────────────────────────┘
-```
-```
-               SPRINT-BY-SPRINT DUAL-TRACK COLLABORATIVE WORKFLOW
-               
- [ FOUNDER / ARCHITECT ] ────> Defines Non-Negotiable Invariants & Milestone Gates
-                                           │
-                                           ▼
- [ INTERNAL CORE TEAM ]  ────> Writes Synthesizable RTL, Bare-Metal Firmware, CUDA Drivers
- (HW & SW Leads)                           │
-                                           ▼ [Hands Off Tested Assemblies for Formal Validation]
- [ SRA LABS & FELLOWS ]  ────> Executes Chamber Testing, Hydrophone Runs, Clinical Integration
- (IITM / HTIC PIs)                         │
-                                           ▼
- [ FORMAL STAMPED AUDIT] ────> Produces Certified Test Dossier for iDEX Milestone Clearance
+ Metric                      Year 1 (2027)  Year 2 (2028)  Year 3 (2029)  Year 4 (2030)  Year 5 (2031)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+ Active Deployed Edge Nodes             60            250            850          1,800          3,500
+ Annual Recurring Revenue (ARR)    ₹5.20 Cr      ₹21.40 Cr      ₹68.50 Cr     ₹142.80 Cr     ₹262.20 Cr
+ Gross Profit Margin                 71.2%          75.8%          78.4%          80.1%          81.2%
+ Operating Expenses (OpEx)        ₹4.80 Cr      ₹14.20 Cr      ₹36.50 Cr      ₹72.40 Cr     ₹118.00 Cr
+ EBITDA Margin                     (12.0)%          11.5%          25.1%          31.2%          36.2%
+ Net Profit Margin (PAT)           (12.0)%           8.4%          18.6%          22.5%          26.8%
+ Net Profit / (Loss)             (₹0.62 Cr)      ₹1.80 Cr      ₹12.74 Cr      ₹32.13 Cr      ₹70.27 Cr
+────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 
 ```
