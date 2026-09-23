@@ -21,27 +21,41 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        THE 6-MODULE NEXUS CORE ARCHITECTURE                            │
-├────────────────────────────┬───────────────────────────────────────────────────────────┤
-│ Module 1: NEXUS-INGEST     │ Simplex optical tap; Z_Tx → ∞, I_rev = 0.00 A, C = 0 bps; │
-│                            │ M=32 polyphase DDC decimation (1.12 TB/s → 80.0 GB/s)     │
-├────────────────────────────┼───────────────────────────────────────────────────────────┤
-│ Module 2: NEXUS-VECTOR     │ SE(3) steerable harmonics; linear-time Mamba SSM;         │
-│                            │ VIB collapses 44.789B null-space dims into S^1023         │
-├────────────────────────────┼───────────────────────────────────────────────────────────┤
-│ Module 3: NEXUS-LEDGER     │ Curve25519 TOPRF anonymous tokens; RocksDB PGTQ queue;    │
-│                            │ 512B CvRDT packets over <2 Kbps tactical radios (SEC)     │
-├────────────────────────────┼───────────────────────────────────────────────────────────┤
-│ Module 4: NEXUS-CAUSAL     │ Structural Do-Calculus & Doubly Robust AIPW loss;         │
-│                            │ Local (ε, δ)-DP & Shamir SecAgg inside AMD SEV-SNP TEEs   │
-├────────────────────────────┼───────────────────────────────────────────────────────────┤
-│ Module 5: NEXUS-HUD/SLAM   │ Direct-silicon compositing (12.60 ms, alpha <= 0.65 clamp)│
-│                            │ Sensorless 6-DoF SLAM 512^3 FP16 voxel mesh reconstruction│
-├────────────────────────────┼───────────────────────────────────────────────────────────┤
-│ Module 6: NEXUS-AVATAR     │ Non-Euclidean Action Transformer; bounded jerk <= 2.0 m/s³│
-│                            │ 1 kHz Nagumo-CBF safety filter; <1 ms E-stop (0x5000_1004)│
-└────────────────────────────┴───────────────────────────────────────────────────────────┘
+====================================================================================================
+               TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
+====================================================================================================
+
+ TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd. - Pre-Incorporated)
+ • Managing Director & Principal Architect: Subhankar Maitra (Solo Founder)
+ • Strategic Direction, Mathematical System Invariants & IP Prosecution (Patent 202631094668)
+ • Defense Liaison (iDEX, Army Design Bureau, DG AFMS) & Clinical Institutional MoUs
+                                                │
+                                                ▼
+ TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (To Be Hired Post-Incubation via Grant Allocation)
+ ┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
+ │ LEAD MICROELECTRONICS & EMBEDDED HW ENGINEER │ │ LEAD SYSTEMS SOFTWARE & GEOMETRIC DL COMPILER  │
+ │ • Owns synthesizable RTL & bare-metal Rust   │ │ • Owns CUDA C++ kernels & TensorRT runtime     │
+ │ • Manages PCB bring-up & PCIe Gen 6 DMA      │ │ • Manages 6-DoF SLAM & CvRDT mesh stacks       │
+ │ • Direct technical gatekeeper in IITM labs   │ │ • Maintains private production git repositories│
+ └──────────────────────────────────────────────┘ └────────────────────────────────────────────────┘
+                                                │
+                     Joint SRA Work Package Execution & Co-Development Sprints
+                                                │
+                                                ▼
+ TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Sponsored via Grant SRA Budget)
+ ┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
+ │ [ELECTRICAL & HIGH-SPEED HARDWARE]           │ │ [CRYPTOGRAPHY & DISTRIBUTED SYSTEMS]           │
+ │ • Dept. of EE / High-Speed Digital & RF Lab  │ │ • Secure Systems Centre / Trusted Computing Lab│
+ │ • High-Voltage Medical Safety Chamber        │ │ • Hardware TEEs & Plonky2 ZK-SNARK Verification│
+ ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────────┤
+ │ [COMPUTATIONAL BIOPHYSICS & AI]              │ │ [CLINICAL ANALYTICS & INTERVENTIONAL SLAM]     │
+ │ • Photonic & Neuromorphic Systems / HPC Ctr  │ │ • HTIC Imaging Suites & Hydrophone Scan Tanks  │
+ │ • TensorRT Compilation & SE(3) Mamba Engine  │ │ • Sub-16ms Direct Video Compositor & 3D Voxel  │
+ ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────────┤
+ │ [DEFENSE RUGGEDIZATION & MECHATRONICS]       │ │ [CLINICAL SITE INTEGRATION (PGIMER / AIIMS)]   │
+ │ • Centre for Robotics & Mechatronics / IITM  │ │ • Clinical Research & Data Liaison Fellows     │
+ │ • MIL-STD-810H / 461G / 1275E Hardening      │ │ • 20,000+Patient Trajectory Validation Pipeline│
+ └──────────────────────────────────────────────┘ └────────────────────────────────────────────────┘
 ```
 ```
                SPRINT-BY-SPRINT DUAL-TRACK COLLABORATIVE WORKFLOW
