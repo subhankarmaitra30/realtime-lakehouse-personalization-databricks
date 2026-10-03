@@ -22,35 +22,51 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                        ENGINE 2: SEVEN ULTRA-FRONTIER PARADIGMS
+                        NEXUS-INGEST CONCURRENT INGESTION ARCHITECTURE
 ====================================================================================================
 
-┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
-│ 1. NON-EUCLIDEAN ACTION TRANSFORMERS         │ │ 2. EDGE NEUROMORPHIC SPIKING CHIPS (SNN)       │
-│ Replaces cable-driven robotic arms with      │ │ Event-driven spiking silicon (Intel Loihi /    │
-│ 1 kHz Nagumo-CBF smart-material micro-arrays.│ │ Akida) cutting power from 200W to 50mW.        │
-└──────────────────────┬───────────────────────┘ └────────────────────────┬───────────────────────┘
-                       │                                                  │
-                       ▼                                                  ▼
-┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
-│ 3. QUANTUM TENSOR NETWORKS (QML / MPS)       │ │ 4. SUB-SURFACE QUANTUM RF INVERSION            │
-│ Matrix Product States & Parameterized Quantum│ │ Direct analytic RF wavefields fed into spin-   │
-│ Circuits running in silico molecular binding.│ │ lattice optimization networks for imaging.     │
-└──────────────────────┬───────────────────────┘ └────────────────────────┬───────────────────────┘
-                       │                                                  │
-                       ▼                                                  ▼
-┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────────┐
-│ 5. IN-VIVO SYNTHETIC BIOLOGY FOUNDRIES       │ │ 6. BIO-ELECTRONIC QUANTUM INTERFACES           │
-│ Sub-surface implantable microfluidic biochips│ │ Injectable self-assembling nanostructures      │
-│ executing autonomous closed-loop therapy.    │ │ driving cell-level electro-pharmaceuticals.    │
-└──────────────────────┴───────────────────────┘ └────────────────────────┴───────────────────────┘
-                                               │
-                                               ▼
-                       ┌────────────────────────────────────────────────┐
-                       │ 7. GENERATIVE DIGITAL TWIN MORPHOGENESIS       │
-                       │ Continuous spatial SLAM coupled to diffusion   │
-                       │ transformers for whole-organ modeling.         │
-                       └────────────────────────────────────────────────┘
+ PIPELINE A: UNCOMPRESSED VIDEO   PIPELINE B: WIRE-SPEED TELEMETRY   PIPELINE C: PRE-BEAMFORMED RF PHYSICS
+ ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
+ │ • HDMI 2.1 / DP 2.1 / 24G-SDI│ │ • 10G/25G/100G SFP28/QSFP28  │ │ • 256-Channel Phased-Array   │
+ │ • eDP / MIPI DSI Micro-Probes│ │ • Stateless TCP/IP Core (Rx) │ │ • 14-Bit @ 2.50 GSPS ADCs    │
+ │ • Triple Video ADC Matrix    │ │ • DICOM 3.0 / FHIR / gRPC    │ │ • Aggregate Rate: 8.960 Tbps │
+ └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
+                │                                │                                │
+                ▼                                ▼                                ▼
+ ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
+ │ EDID / HDCP 2.3 Emulation    │ │ Stateless Packet Sieve &     │ │ Polyphase DDC Core (M=32)    │
+ │ Pixel PLL Clock Extraction   │ │ Dedicated Rx-Only MAC/PHY    │ │ Dual-Loop Spatial/Kalman DFE │
+ └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
+                │                                │                                │
+                ▼                                ▼                                ▼
+ ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
+ │ BUFFER A (Video Ring)        │ │ BUFFER B (Packet FIFO)       │ │ BUFFER C (UltraRAM Ring FIFO)│
+ │ >= 60 fps, 10/12-bit RGB     │ │ Stateless Wire-Speed Slices  │ │ 80.0 GB/s Clean Baseband I/Q │
+ └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
+                │                                │                                │
+                └────────────────────────────────┼────────────────────────────────┘
+                                                 │
+                                                 ▼
+                ┌────────────────────────────────────────────────────────────────┐
+                │ 4 kV OPTICAL GALVANIC ISOLATION BARRIER ARRAY (IEC 60601-1)    │
+                │ Samtec FireFly Optical Ribbon (Dielectric Clearance > 8.0 mm)  │
+                │ Physical Omission of Copper Transmit Traces (Z_Tx -> infinity) │
+                └────────────────────────────────┬───────────────────────────────┘
+                                                 │
+                                                 ▼
+                ┌────────────────────────────────────────────────────────────────┐
+                │ REAL-TIME VOLATILE PHI FLASH-SCRUB GATE (DPDP ACT 2023 SEC 8)  │
+                │ DSP Character Coordinate Bounding Box Isolation                │
+                │ In-SRAM Atomic Hardware Zeroization:                           | 
+                |                   memset(0x00) within <= 16.67 ms              │
+                └────────────────────────────────┬───────────────────────────────┘
+                                                 │
+                                                 ▼
+                ┌────────────────────────────────────────────────────────────────┐
+                │ AMD VERSAL PREMIUM CXL 3.0 / PCIE GEN 6 x16 DIRECT DMA ENGINE  │
+                │ Zero-Copy Transfer to Host Pinned Memory (cudaHostAllocMapped) │
+                │ Direct-Silicon Scanout (CXL.mem Shared Fabric Interface)       │
+                └────────────────────────────────────────────────────────────────┘
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
