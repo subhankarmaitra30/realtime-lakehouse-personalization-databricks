@@ -21,30 +21,31 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-================================================================================================
-                        THE MULTI-STAGE POLYPHASE DDC CASCADE (M = 32)
-================================================================================================
+==========================================================================================
+                        DUAL-LOOP PRE-DRAM ADAPTIVE CANCELLATION DFE
+==========================================================================================
 
-                    [ Incoming Raw RF: f_s = 2.50 GHz, 256 Channels ]
-                                            │
-                     ┌──────────────────────┴──────────────────────┐
-                     ▼                                             ▼
-          [ In-Phase (I) Mixer ]                     [ Quadrature (Q) Mixer ]
-          x_I(t) = s(t) * cos(w_0 t)                    x_Q(t) = -s(t) * sin(w_0 t)
-                     │                                             │
-                     ▼                                             ▼
-          [ 5-Stage CIC Filter (R1 = 16) ]           [ 5-Stage CIC Filter (R1 = 16) ]
-          f_s1 = 156.25 MHz                             f_s1 = 156.25 MHz
-                     │                                             │
-                     ▼                                             ▼
-          [ 64-Tap Polyphase FIR (R2 = 2) ]          [ 64-Tap Polyphase FIR (R2 = 2) ]
-          f_base = 78.125 MHz                           f_base = 78.125 MHz
-                     │                                             │
-                     └──────────────────────┬──────────────────────┘
-                                            │
-                                            ▼
-                    [ Packed 32-Bit Complex Baseband (I + Q) ]
-                    256 Ch * 78.125 MSPS * 4 Bytes = 80.000 GB/s
+           RAW BASEBAND STREAM FROM DDC CASCADE (80.0 GB/s)
+                                  │
+                   ┌──────────────┴──────────────┐
+                   ▼                             ▼
+        ┌─────────────────────┐       ┌─────────────────────┐
+        │       LOOP 1        │       │       LOOP 2        │
+        │ CONSTRAINED MVDR    │       │ ADAPTIVE KALMAN     │
+        │ SPATIAL NULL-FILTER │       │ HARMONIC ESTIMATOR  │
+        └──────────┬──────────┘       └──────────┬──────────┘
+                   │                             │
+                   │ Beamspace: x̃_k              │ Clutter Estimate: ŝ_interf(k)
+                   └──────────────┬──────────────┘
+                                  ▼
+                           SUBTRACTION NODE
+                        ŝ_clean(k) = x̃_k - ŝ_interf(k)
+                                  │
+                                  ▼
+                     INNOVATION KURTOSIS GATE (R_k)
+                                  │
+                                  ▼
+                   TO BUFFER C (UltraRAM Ring FIFO)
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
