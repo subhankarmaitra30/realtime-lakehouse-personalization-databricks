@@ -21,31 +21,35 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-==========================================================================================
-                        DUAL-LOOP PRE-DRAM ADAPTIVE CANCELLATION DFE
-==========================================================================================
+=============================================================================
+                    REAL-TIME VOLATILE PHI FLASH-SCRUBBING PIPELINE
+=============================================================================
 
-           RAW BASEBAND STREAM FROM DDC CASCADE (80.0 GB/s)
-                                  │
-                   ┌──────────────┴──────────────┐
-                   ▼                             ▼
-        ┌─────────────────────┐       ┌─────────────────────┐
-        │       LOOP 1        │       │       LOOP 2        │
-        │ CONSTRAINED MVDR    │       │ ADAPTIVE KALMAN     │
-        │ SPATIAL NULL-FILTER │       │ HARMONIC ESTIMATOR  │
-        └──────────┬──────────┘       └──────────┬──────────┘
-                   │                             │
-                   │ Beamspace: x̃_k              │ Clutter Estimate: ŝ_interf(k)
-                   └──────────────┬──────────────┘
-                                  ▼
-                           SUBTRACTION NODE
-                        ŝ_clean(k) = x̃_k - ŝ_interf(k)
-                                  │
-                                  ▼
-                     INNOVATION KURTOSIS GATE (R_k)
-                                  │
-                                  ▼
-                   TO BUFFER C (UltraRAM Ring FIFO)
+ Uncompressed 1080p Video (Buffer A) / Structured Network Frames (Buffer B)
+                                │
+                                ▼
+ ┌──────────────────────────────────────────────────────────────┐
+ │ PINNED VOLATILE DMA RING BUFFER                              │
+ │ • Allocated via cudaHostAllocMapped                          │
+ │ • Single-Frame Lifetime: t_frame <= 16.67 ms                 │
+ │ • Non-Paged Kernel Memory (Zero OS Swap to Disk)             │
+ └──────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+ ┌──────────────────────────────────────────────────────────────┐
+ │ FPGA DSP REAL-TIME OPTICAL CHARACTER RECOGNITION (OCR)       │
+ │ • Scans Video Rasters at >= 60 fps (1920x1080 Native)        │
+ │ • Deep Packet Inspection (DPI) parses HL7/FHIR Text          │
+ │ • Bounding Box Mapping: Isolates Anatomy from Chrome         │
+ └──────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+ ┌──────────────────────────────────────────────────────────────┐
+ │ HARDWARE VOLATILE ZEROIZATION GATE                           │
+ │ • Bounding Box Coordinates Overwritten: memset(0x00)         │
+ │ • Machine Settings, Hospital Logos & Names Scrubbed          │
+ │ • Pure Biomedical Wavefield Dispatched to Module 2           │
+ └──────────────────────────────────────────────────────────────┘
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
