@@ -21,52 +21,30 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-====================================================================================================
-                        NEXUS-INGEST CONCURRENT INGESTION ARCHITECTURE
-====================================================================================================
+================================================================================================
+                        THE MULTI-STAGE POLYPHASE DDC CASCADE (M = 32)
+================================================================================================
 
- PIPELINE A: UNCOMPRESSED VIDEO   PIPELINE B: WIRE-SPEED TELEMETRY   PIPELINE C: PRE-BEAMFORMED RF PHYSICS
- ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
- │ • HDMI 2.1 / DP 2.1 / 24G-SDI│ │ • 10G/25G/100G SFP28/QSFP28  │ │ • 256-Channel Phased-Array   │
- │ • eDP / MIPI DSI Micro-Probes│ │ • Stateless TCP/IP Core (Rx) │ │ • 14-Bit @ 2.50 GSPS ADCs    │
- │ • Triple Video ADC Matrix    │ │ • DICOM 3.0 / FHIR / gRPC    │ │ • Aggregate Rate: 8.960 Tbps │
- └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
-                │                                │                                │
-                ▼                                ▼                                ▼
- ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
- │ EDID / HDCP 2.3 Emulation    │ │ Stateless Packet Sieve &     │ │ Polyphase DDC Core (M=32)    │
- │ Pixel PLL Clock Extraction   │ │ Dedicated Rx-Only MAC/PHY    │ │ Dual-Loop Spatial/Kalman DFE │
- └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
-                │                                │                                │
-                ▼                                ▼                                ▼
- ┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
- │ BUFFER A (Video Ring)        │ │ BUFFER B (Packet FIFO)       │ │ BUFFER C (UltraRAM Ring FIFO)│
- │ >= 60 fps, 10/12-bit RGB     │ │ Stateless Wire-Speed Slices  │ │ 80.0 GB/s Clean Baseband I/Q │
- └──────────────┬───────────────┘ └──────────────┬───────────────┘ └──────────────┬───────────────┘
-                │                                │                                │
-                └────────────────────────────────┼────────────────────────────────┘
-                                                 │
-                                                 ▼
-                ┌────────────────────────────────────────────────────────────────┐
-                │ 4 kV OPTICAL GALVANIC ISOLATION BARRIER ARRAY (IEC 60601-1)    │
-                │ Samtec FireFly Optical Ribbon (Dielectric Clearance > 8.0 mm)  │
-                │ Physical Omission of Copper Transmit Traces (Z_Tx -> infinity) │
-                └────────────────────────────────┬───────────────────────────────┘
-                                                 │
-                                                 ▼
-                ┌────────────────────────────────────────────────────────────────┐
-                │ REAL-TIME VOLATILE PHI FLASH-SCRUB GATE (DPDP ACT 2023 SEC 8)  │
-                │ DSP Character Coordinate Bounding Box Isolation                │
-                │ In-SRAM Atomic Hardware Zeroization:                           | 
-                |                   memset(0x00) within <= 16.67 ms              │
-                └────────────────────────────────┬───────────────────────────────┘
-                                                 │
-                                                 ▼
-                ┌────────────────────────────────────────────────────────────────┐
-                │ AMD VERSAL PREMIUM CXL 3.0 / PCIE GEN 6 x16 DIRECT DMA ENGINE  │
-                │ Zero-Copy Transfer to Host Pinned Memory (cudaHostAllocMapped) │
-                │ Direct-Silicon Scanout (CXL.mem Shared Fabric Interface)       │
-                └────────────────────────────────────────────────────────────────┘
+                    [ Incoming Raw RF: f_s = 2.50 GHz, 256 Channels ]
+                                            │
+                     ┌──────────────────────┴──────────────────────┐
+                     ▼                                             ▼
+          [ In-Phase (I) Mixer ]                     [ Quadrature (Q) Mixer ]
+          x_I(t) = s(t) * cos(w_0 t)                    x_Q(t) = -s(t) * sin(w_0 t)
+                     │                                             │
+                     ▼                                             ▼
+          [ 5-Stage CIC Filter (R1 = 16) ]           [ 5-Stage CIC Filter (R1 = 16) ]
+          f_s1 = 156.25 MHz                             f_s1 = 156.25 MHz
+                     │                                             │
+                     ▼                                             ▼
+          [ 64-Tap Polyphase FIR (R2 = 2) ]          [ 64-Tap Polyphase FIR (R2 = 2) ]
+          f_base = 78.125 MHz                           f_base = 78.125 MHz
+                     │                                             │
+                     └──────────────────────┬──────────────────────┘
+                                            │
+                                            ▼
+                    [ Packed 32-Bit Complex Baseband (I + Q) ]
+                    256 Ch * 78.125 MSPS * 4 Bytes = 80.000 GB/s
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
