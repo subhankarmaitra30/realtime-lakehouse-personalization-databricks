@@ -21,35 +21,34 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-=============================================================================
-                    REAL-TIME VOLATILE PHI FLASH-SCRUBBING PIPELINE
-=============================================================================
+====================================================================================================
+               MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
+====================================================================================================
 
- Uncompressed 1080p Video (Buffer A) / Structured Network Frames (Buffer B)
-                                │
-                                ▼
- ┌──────────────────────────────────────────────────────────────┐
- │ PINNED VOLATILE DMA RING BUFFER                              │
- │ • Allocated via cudaHostAllocMapped                          │
- │ • Single-Frame Lifetime: t_frame <= 16.67 ms                 │
- │ • Non-Paged Kernel Memory (Zero OS Swap to Disk)             │
- └──────────────────────────────┬───────────────────────────────┘
-                                │
-                                ▼
- ┌──────────────────────────────────────────────────────────────┐
- │ FPGA DSP REAL-TIME OPTICAL CHARACTER RECOGNITION (OCR)       │
- │ • Scans Video Rasters at >= 60 fps (1920x1080 Native)        │
- │ • Deep Packet Inspection (DPI) parses HL7/FHIR Text          │
- │ • Bounding Box Mapping: Isolates Anatomy from Chrome         │
- └──────────────────────────────┬───────────────────────────────┘
-                                │
-                                ▼
- ┌──────────────────────────────────────────────────────────────┐
- │ HARDWARE VOLATILE ZEROIZATION GATE                           │
- │ • Bounding Box Coordinates Overwritten: memset(0x00)         │
- │ • Machine Settings, Hospital Logos & Names Scrubbed          │
- │ • Pure Biomedical Wavefield Dispatched to Module 2           │
- └──────────────────────────────────────────────────────────────┘
+      RAW ADC INPUT STREAM (JESD204C)                 INTERNAL SYSTEM ENGINE (AXI4-Stream)
+      Domain A: clk_rx = 350 MHz                      Domain B: clk_sys = 250 MHz
+ ┌──────────────────────────────────────┐        ┌───────────────────────────────────────────────┐
+ │ 14-Bit Serialized ADC Data Ingress   │        │ AMD Versal AI Engine / CXL DMA Ring Buffer    │
+ └──────────────────┬───────────────────┘        └──────────────────────▲────────────────────────┘
+                    │                                                   │
+                    ▼                                                   │
+ ┌──────────────────────────────────────┐                               │
+ │ Polyphase DDC Core (M = 32)          │                               │
+ │ • NCO Mixer: cos(w0 t) & -sin(w0 t)  │                               │
+ │ • 5-Stage CIC Decimation (R1 = 16)   │                               │
+ │ • 64-Tap Polyphase FIR (R2 = 2)      │                               │
+ └──────────────────┬───────────────────┘                               │
+                    │                                                   │
+                    ▼                                                   │
+ ┌──────────────────────────────────────┐         ASYNCHRONOUS CDC      │
+ │ 32-Bit Complex Baseband Samples      │ ─────> ┌──────────────────────┴───────────────────────┐
+ │ (16-bit I + 16-bit Q Analytic Pair)  │        │ Dual-Clock Asynchronous Circular Ring FIFO   │
+ └──────────────────┬───────────────────┘        │ • 2-Stage D-Flip-Flop Synchronizers (2FF)    │
+                    │                            │ • Gray-Coded Read/Write Pointers             │
+                    ▼                            │ • MTBF >= 1.42 x 10^12 Operating Hours       │
+       [wr_ptr_gray (350 MHz)]                   └──────────────────────▲───────────────────────┘
+                                                                        │
+                                                               [rd_ptr_gray (250 MHz)]
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
