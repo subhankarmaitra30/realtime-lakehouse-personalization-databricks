@@ -21,28 +21,14 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-        [ Raw Physical Ingress Stream: X ] (Buffers A, B, C)
-                                |
-             +------------------+------------------+
-
-             |                                     |
-             v                                     v
-   [ Local Edge Sub-Block ]             [ Global Structure Sub-Block ]
-   ConvNeXt / ResNet Fabric             Vision Transformer / Swin Fabric
-   (Extracts Micro-Textures)            (Extracts Distant Alignments)
-
-             |                                     |
-             +------------------+------------------+
-                                |
-                                v
-          [ Steerable 3D Spherical Harmonic Convolution Kernels ]
-              (Factored into Radial Profiles & Spherical Harmonics)
-                                |
-                                v
-            [ Deterministic Wigner-D Activation Rotation ]
-                                |
-                                v
-               [ Purified Spatial Invariant Manifold: S(t) ]
+        Spatio-Temporal Tensor (H) ──► [ Stochastic Encoder q(z|H) ] ──► Bottleneck Space (z) 
+                                           │
+                                           ▼ [Squeezed via Cost Function: L_VIB]
+                                [ Contrastive MLP / LayerNorm ]
+                                           │
+                                           v
+                             Unit Hypersphere Projection Standard
+                     v_bio ∈ S^1023 ⊂ R^1024  (with ||v_bio||_2 = 1.0)
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
