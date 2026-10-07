@@ -21,14 +21,19 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-        Spatio-Temporal Tensor (H) ──► [ Stochastic Encoder q(z|H) ] ──► Bottleneck Space (z) 
-                                           │
-                                           ▼ [Squeezed via Cost Function: L_VIB]
-                                [ Contrastive MLP / LayerNorm ]
-                                           │
-                                           v
-                             Unit Hypersphere Projection Standard
-                     v_bio ∈ S^1023 ⊂ R^1024  (with ||v_bio||_2 = 1.0)
+                 [ RAW INPUT WINDOW (X) ]
+             Dim(X) = 44,789,760,000 Dimensions 
+             (1080p Pixels, PHI, Text, Faces)
+                         |
+                         v
+          ==================================
+          [   T_birth (SURJECTIVE FUNNEL)  ]
+          ==================================
+              /                        \
+             v                          v
+ [ INVARIANT HYPER-SPHERE (V) ]    [ PERMANENTLY DESTROYED NULL SPACE ]
+ Dim(V) = 1,024 Scalars             Dim(Ker(J)) = 44,789,758,976 Dimensions 
+ (Pure, Anonymous Biology)         (99.9999977% of Data Erased at Birth) 
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
