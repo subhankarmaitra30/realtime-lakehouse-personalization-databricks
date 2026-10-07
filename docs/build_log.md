@@ -21,11 +21,28 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-Incoming Spatial Stream (x_t) ──► [ Mamba SSM Logic Core ] ──► Spatio-Temporal Trajectory (y_t)
-                                            │
-                                            ▼
-                    Updates Latent Working Memory Vector: h_t 
-             (Dynamically retains pulsation / Flushes out noise flurries)
+ [ Raw Physical Ingress Stream: X ] (Buffers A, B, C)
+                                |
+             +------------------+------------------+
+
+             |                                     |
+             v                                     v
+   [ Local Edge Sub-Block ]             [ Global Structure Sub-Block ]
+   ConvNeXt / ResNet Fabric             Vision Transformer / Swin Fabric
+   (Extracts Micro-Textures)            (Extracts Distant Alignments)
+
+             |                                     |
+             +------------------+------------------+
+                                |
+                                v
+          [ Steerable 3D Spherical Harmonic Convolution Kernels ]
+              (Factored into Radial Profiles & Spherical Harmonics)
+                                |
+                                v
+            [ Deterministic Wigner-D Activation Rotation ]
+                                |
+                                v
+               [ Purified Spatial Invariant Manifold: S(t) ]
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
