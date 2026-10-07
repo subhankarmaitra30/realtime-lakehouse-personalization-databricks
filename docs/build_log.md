@@ -21,34 +21,11 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-====================================================================================================
-               MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
-====================================================================================================
-
-      RAW ADC INPUT STREAM (JESD204C)                 INTERNAL SYSTEM ENGINE (AXI4-Stream)
-      Domain A: clk_rx = 350 MHz                      Domain B: clk_sys = 250 MHz
- ┌──────────────────────────────────────┐        ┌───────────────────────────────────────────────┐
- │ 14-Bit Serialized ADC Data Ingress   │        │ AMD Versal AI Engine / CXL DMA Ring Buffer    │
- └──────────────────┬───────────────────┘        └──────────────────────▲────────────────────────┘
-                    │                                                   │
-                    ▼                                                   │
- ┌──────────────────────────────────────┐                               │
- │ Polyphase DDC Core (M = 32)          │                               │
- │ • NCO Mixer: cos(w0 t) & -sin(w0 t)  │                               │
- │ • 5-Stage CIC Decimation (R1 = 16)   │                               │
- │ • 64-Tap Polyphase FIR (R2 = 2)      │                               │
- └──────────────────┬───────────────────┘                               │
-                    │                                                   │
-                    ▼                                                   │
- ┌──────────────────────────────────────┐         ASYNCHRONOUS CDC      │
- │ 32-Bit Complex Baseband Samples      │ ─────> ┌──────────────────────┴───────────────────────┐
- │ (16-bit I + 16-bit Q Analytic Pair)  │        │ Dual-Clock Asynchronous Circular Ring FIFO   │
- └──────────────────┬───────────────────┘        │ • 2-Stage D-Flip-Flop Synchronizers (2FF)    │
-                    │                            │ • Gray-Coded Read/Write Pointers             │
-                    ▼                            │ • MTBF >= 1.42 x 10^12 Operating Hours       │
-       [wr_ptr_gray (350 MHz)]                   └──────────────────────▲───────────────────────┘
-                                                                        │
-                                                               [rd_ptr_gray (250 MHz)]
+Incoming Spatial Stream (x_t) ──► [ Mamba SSM Logic Core ] ──► Spatio-Temporal Trajectory (y_t)
+                                            │
+                                            ▼
+                    Updates Latent Working Memory Vector: h_t 
+             (Dynamically retains pulsation / Flushes out noise flurries)
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
