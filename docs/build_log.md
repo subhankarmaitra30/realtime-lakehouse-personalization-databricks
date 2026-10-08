@@ -21,19 +21,37 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                 [ RAW INPUT WINDOW (X) ]
-             Dim(X) = 44,789,760,000 Dimensions 
-             (1080p Pixels, PHI, Text, Faces)
-                         |
-                         v
-          ==================================
-          [   T_birth (SURJECTIVE FUNNEL)  ]
-          ==================================
-              /                        \
-             v                          v
- [ INVARIANT HYPER-SPHERE (V) ]    [ PERMANENTLY DESTROYED NULL SPACE ]
- Dim(V) = 1,024 Scalars             Dim(Ker(J)) = 44,789,758,976 Dimensions 
- (Pure, Anonymous Biology)         (99.9999977% of Data Erased at Birth) 
+           [ Raw Patient ID (x) ] 
+          │
+          ▼
+┌───────────────────────────────┐
+│ CLIENT (Hardware TEE Enclave) │
+│ 1. Hash to Curve Point P      │
+│ 2. Blind via Random Scalar r  │
+└───────────────────────────────┘
+          │
+          ▼ [ Blinded Point Y = r * P ] ──► Sent over network 
+               (Spies see only 100% white noise) 
+          │
+          ▼
+┌────────────────────────────────┐
+│ QUORUM NODES (k-of-n Enclaves) │
+│ 1. Evaluate Shares: S_i = s_i*Y│
+│ 2. Emit Cheat-Proof π_DLEQ     │
+└────────────────────────────────┘
+          │
+          ▼ [ Partial Signatures S_i ] ──► Returned to client 
+          │
+          ▼
+┌────────────────────────────────┐
+│ CLIENT (Hardware TEE Enclave) │
+│ 1. Lagrange Interpolate        │
+│ 2. Strip Blinding: r^(-1)      │
+│ 3. Assemble Token T_ID         │
+└────────────────────────────────┘
+          │
+          ▼
+[ Clean Anonymous Token (T_ID) ] ──► (256-bit Random-Looking String) 
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
