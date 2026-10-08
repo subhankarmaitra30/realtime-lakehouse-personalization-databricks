@@ -21,7 +21,7 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-           [ Raw Patient ID (x) ] 
+ [ Raw Patient ID (x) ] 
           │
           ▼
 ┌───────────────────────────────┐
