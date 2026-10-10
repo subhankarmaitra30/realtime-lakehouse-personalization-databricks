@@ -21,37 +21,27 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
- [ Raw Patient ID (x) ] 
-          │
-          ▼
-┌───────────────────────────────┐
-│ CLIENT (Hardware TEE Enclave) │
-│ 1. Hash to Curve Point P      │
-│ 2. Blind via Random Scalar r  │
-└───────────────────────────────┘
-          │
-          ▼ [ Blinded Point Y = r * P ] ──► Sent over network 
-               (Spies see only 100% white noise) 
-          │
-          ▼
-┌────────────────────────────────┐
-│ QUORUM NODES (k-of-n Enclaves) │
-│ 1. Evaluate Shares: S_i = s_i*Y│
-│ 2. Emit Cheat-Proof π_DLEQ     │
-└────────────────────────────────┘
-          │
-          ▼ [ Partial Signatures S_i ] ──► Returned to client 
-          │
-          ▼
-┌────────────────────────────────┐
-│ CLIENT (Hardware TEE Enclave) │
-│ 1. Lagrange Interpolate        │
-│ 2. Strip Blinding: r^(-1)      │
-│ 3. Assemble Token T_ID         │
-└────────────────────────────────┘
-          │
-          ▼
-[ Clean Anonymous Token (T_ID) ] ──► (256-bit Random-Looking String) 
+========================================================================================================================
+                  SOVEREIGN BIO-OS / DEEP NEURO-NEX: SRA FACULTY CONSORTIUM TOPOLOGY (IIT MADRAS)
+========================================================================================================================
+
+                                  NODAL INSTITUTIONAL UMBRELLA & CLINICAL GOVERNANCE
+                                Healthcare Technology Innovation Centre (HTIC), IIT Madras[cite: 577]
+                               Prof. Mohanasankar Sivaprakasam (Director, HTIC / EE)[cite: 468, 589]
+                                                │
+         ┌──────────────────────────────────────┼──────────────────────────────────────┐
+         ▼                                      ▼                                      ▼
+ [WP 1: INGRESS & FPGA DDC]            [WP 2: LIE GROUP & MAMBA]             [WP 3: TEE, ZK & CVRDT]
+ • Prof. K. Sridharan (EE)             • Dr. Harish G. R. (DSAI)             • Dr. Chester Rebeiro (CSE)
+ • Prof. R. Sarathi (EE)               • Prof. Rupesh Nasre (CSE)            • Prof. Shweta Agrawal (CSE)
+ • Dr. Arun K. Thittai (AMBM)           • Dr. Sivaram Ambikasaran (DSAI)      • Prof. K. Giridhar (EE)
+         │                                      │                                      │
+         ▼                                      ▼                                      ▼
+ [WP 4: CAUSAL MLOPS & TEE]            [WP 5: HUD & ACOUSTIC SLAM]           [WP 6: KINETIC CBF & SAFETY]
+ • Dr. L. N. Theagarajan (EE)          • Dr. Kaushik Mitra (EE)              • Prof. Asokan Thondiyath (ED)
+ • Dr. Saurav Prakash (EE)             • Prof. M. Ramanathan (ED)            • Dr. Niravkumar Patel (ED)
+ • Prof. G. Krishnamurthi (DSAI)       • Dr. Pravin Nair (EE)                • Dr. Devaprakash Muniraj (AE)
+======================================================================================================================== 
 ```
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
