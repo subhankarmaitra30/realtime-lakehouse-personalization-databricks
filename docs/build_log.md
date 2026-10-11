@@ -21,6 +21,61 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
+                  DUAL PAGE-LOCKED RING-BUFFER TOPOLOGY
+                                   │
+                                   ▼
+PHYSICAL VIDEO INGRESS STREAM (Uncompressed 1080p 12-bit RGB via 4 kV Samtec FireFly Tap)
+                                   │
+                                   ▼
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│ HOST MEMORY ARENA (Pinned Zero-Copy DMA Allocation: cudaHostAllocMapped)            │
+│                                                                                     │
+│ ┌───────────────────────────────────────┐   ┌─────────────────────────────────────┐ │
+│ │ RING BUFFER 0 (12.44 MB)              │   │ RING BUFFER 1 (12.44 MB)            │ │
+│ │ [Currently Processing Frame N]        │   │ [Ingesting Frame N+1 via DMA]       │ │
+│ │ Status: LOCKED_BY_COMPUTE_STREAM      │   │ Status: WRITING_BY_DMA_STREAM       │ │
+│ └───────────────────────────────────────┘   └─────────────────────────────────────┘ │
+│                     ▲                                           ▲                   │
+│                     └───────────────────┬───────────────────────┘                   │
+│                                         │                                           │
+│                       (Atomic Ping-Pong Swap on Display V-Sync)                     │
+└─────────────────────────────────────────┬───────────────────────────────────────────┘
+                                          │
+                     ┌────────────────────┴────────────────────┐
+                     ▼                                         ▼
+         [CUDA Stream 1: Ingress DMA]            [CUDA Stream 2: Compute Core]
+┌─────────────────────────────────────────┐ ┌─────────────────────────────────────────┐
+│ ASYNCHRONOUS DMA INGRESS (0.83 ms)      │ │ NPU INT8 TENSORRT INFERENCE (7.20 ms)   │
+│ PCIe Gen 6 x16 Link (B_DMA = 15.0 GB/s) │ │ Vision Transformer + Mamba SSM Backbone │
+│ Bypasses Host CPU Cache (Direct to VRAM)│ │ Generates Semantic Diagnostic Heatmap   │
+└─────────────────────────────────────────┘ │ I_AI                                    │
+                     │                      └────────────────────┬────────────────────┘
+                     │                                           │
+                     │                                           ▼
+                     │                      ┌─────────────────────────────────────────┐
+                     │                      │ DIFFERENTIABLE RAYMARCHING CORE(4.15 ms)│
+                     │                      │ 512^3 FP16 Continuous Density Frustum   │
+                     │                      │ Real-Time Tissue Isosurface Extraction  │
+                     │                      │ (M)                                     │
+                     │                      └────────────────────┬────────────────────┘
+                     └────────────────────┬──────────────────────┘
+                                          │
+                                          ▼
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│ BARE-METAL CUDA ALPHA COMPOSITOR KERNEL (0.42 ms)                                   │
+│ • Physical Linear Blend: I_HUD = alpha * I_AI + (1 - alpha) * I_Source              │
+│ • Hardware Register Clamp: alpha (x, y) <= 0.65                                     │
+│ • Retinal Illumination Floor (Guarantees T >= 35% Physical Photon Floor )           │
+└─────────────────────────────────────────┬───────────────────────────────────────────┘
+                                          │
+                                          ▼
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│ PRIMARY SURGICAL MONITOR SCANOUT (Total Critical Path Latency: 12.60 ms Native V-S) │
+│ Headroom: +4.07 ms    (Zero DWM OSWindow Lag)                                       │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+```
 ========================================================================================================================
                                      THE UNIVERSAL BIOPHYSICAL SUBSTRATE
 ========================================================================================================================
