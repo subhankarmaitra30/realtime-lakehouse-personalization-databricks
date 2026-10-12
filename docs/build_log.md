@@ -21,23 +21,23 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                                                                  [ Local 2D Image Pixels I_echo ] 
-                                                                                   |
-                                                                                   ▼
-                                                                    [ Atomic Silicon Integration]
-                                                                                   |
-                                                                                   ▼
-                                                                       [ FP16 Voxel Frustum (512³) ]
-                                                                               │
-                                             ┌─────────────────────────────────┴────────────────────────────┐
-                                             ▼ (Forward Rendering Pass)       (Isosurface Extraction Pass)  ▼
+                                                      [ Local 2D Image Pixels I_echo ]             
+                                                                       |            
+                                                                       ▼            
+                                                       [ Atomic Silicon Integration]             
+                                                                        |           
+                                                                        ▼           
+                                                         [ FP16 Voxel Frustum (512³) ]              
+                                                                           │    
+                                         ┌─────────────────────────────────┴────────────────────────────┐
+                                         ▼ (Forward Rendering Pass)       (Isosurface Extraction Pass)  ▼
 
-                             [ Differentiable Volume Raymarching ]                   [ Differentiable Marching Cubes ]
-                             Accumulates density via Beer-Lambert Law                 Extracts boundary meshes at
-                                                                                         explicit threshold τ = 0.45           
-                                             │                                                           │                
-                                             ▼                                                            ▼               
-                             [ 3D Render Output to Scanout Mux ]                [ Phong Shaded Watertight 3D Organ Mesh ]
+                             [ Differentiable Volume Raymarching ]               [ Differentiable Marching Cubes ]
+                             Accumulates density via Beer-Lambert Law             Extracts boundary meshes at
+                                                                                  explicit threshold τ = 0.45                  
+                                             │                                                │                           
+                                             ▼                                                ▼                           
+                             [ 3D Render Output to Scanout Mux ]           [ Phong Shaded Watertight 3D Organ Mesh ]
 ```
 
 ```
