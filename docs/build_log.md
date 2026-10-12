@@ -59,16 +59,16 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 | • Edge PPO Retraining with 1-Wasserstein (D_W) drift parameter freeze      |
 └──────────────────────────────────────┬─────────────────────────────────────┘
                                        |
-                 ┌───────────────────────────────────────────┐
-                 |                                           |
-      [Trajectory Certified Safe]                  [CRITICAL SAFETY BREACH]
-                 |                                 • Heartbeat Stall (Delta_t > 2000 us)
-                 ▼                                 • Margin Breach (h(x) <= 1.0 mm)
-    MOTOR PWM SERVO CONTROLLERS                              |
-    • Actuates 6-DoF Micro-Effector                          ▼ 
-    • Executes Sub-Millimeter Clamp                HARDWARE ZERO-TORQUE E-STOP
-    • Cycle Time: t_loop = 1.0 ms                  • Volatile Write: *mut 0x5000_1004 = 0
-                                                   • Actuator Power Cut in < 1.0 ms
+  ┌───────────────────────────────────────────┐
+  |                                           |
+  [Trajectory Certified Safe]          [CRITICAL SAFETY BREACH]
+             |                         • Heartbeat Stall (Delta_t > 2000 us)
+             ▼                         • Margin Breach (h(x) <= 1.0 mm)
+ MOTOR PWM SERVO CONTROLLERS                      |
+ • Actuates 6-DoF Micro-Effector                  ▼ 
+ • Executes Sub-Millimeter Clamp      HARDWARE ZERO-TORQUE E-STOP
+ • Cycle Time: t_loop = 1.0 ms        • Volatile Write: *mut 0x5000_1004 = 0
+                                      • Actuator Power Cut in < 1.0 ms
 ```
 
 ```
