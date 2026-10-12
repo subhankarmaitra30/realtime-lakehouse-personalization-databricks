@@ -21,23 +21,54 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                                                      [ Local 2D Image Pixels I_echo ]             
-                                                                       |            
-                                                                       ▼            
-                                                       [ Atomic Silicon Integration]             
-                                                                        |           
-                                                                        ▼           
-                                                         [ FP16 Voxel Frustum (512³) ]              
-                                                                           │    
-                                         ┌─────────────────────────────────┴────────────────────────────┐
-                                         ▼ (Forward Rendering Pass)       (Isosurface Extraction Pass)  ▼
-
-                             [ Differentiable Volume Raymarching ]               [ Differentiable Marching Cubes ]
-                             Accumulates density via Beer-Lambert Law             Extracts boundary meshes at
-                                                                                  explicit threshold τ = 0.45                  
-                                             │                                                │                           
-                                             ▼                                                ▼                           
-                             [ 3D Render Output to Scanout Mux ]           [ Phong Shaded Watertight 3D Organ Mesh ]
+6-Dimensional Invariant Biological Token Stream: v_m(t) in S^{1023} (Module 2)
+                                       |
+                                       ▼ 
+┌────────────────────────────────────────────────────────────────────────────┐
+| TIER 1: ASYNCHRONOUS CAUSAL AUTOREGRESSIVE POLICY MATRIX (In-Enclave TEE)  |
+| • Tracks sub-visual tissue kinetics (impending arterial wall rupture)      |
+| • Evaluates interventions via Pearl's do-calculus graph surgery:           |
+|   pi*(a | v_m) = argmax E_{P(Y | do(A=a), v_m)} [ U(Y) ]                   |
+| • Back-door adjustment severs observational trauma confounding             |
+| • Clinical Utility Metric U(Y): MAP >= 65 mmHg, zero active hemorrhage     |
+└──────────────────────────────────────┬─────────────────────────────────────┘
+                                       |
+                          [Selected Causal Action: a*]
+                                       |
+                                       ▼ 
+┌────────────────────────────────────────────────────────────────────────────┐
+| TIER 2: REAL-TIME NON-EUCLIDEAN ACTION-SPACE TRANSFORMER                   |
+| • Query: Q = v_m * W_Q; Keys/Values: K = K_safe * W_K, V = K_safe * W_V    |
+| • Cross-Attention over pre-compiled safe SE(3) kinematic basis library     |
+| • Generates C^2 continuous splines with bounded jerk (<= 2.0 m/s^3)        |
+|   +---------------------------------+  +-------------------------------+   |
+|   | CHANNEL A: COPILOT HUD DRIVER   |  | CHANNEL B: AGENTIC AUTOPILOT  |   |
+|   | (Sub-16ms Predictive AR Overlay)|  | (Direct Micro-Robotic PWM)    |   |
+|   +---------------------------------+  +-------------------------------+   |
+└──────────────────────────────────────┬─────────────────────────────────────┘
+                                       |
+                       [Commanded Trajectory Spline: tau(t)]
+                                       |
+                                       ▼ 
+┌────────────────────────────────────────────────────────────────────────────┐
+| TIER 3: BARE-METAL 1 kHz CBF SAFETY KERNEL & HARDWARE WATCHDOG (ARM64)     |
+| • 1000 Hz Nagumo-CBF Invariance Check: h_dot >= -gamma * h(x)              |
+| • Dynamic velocity clamping to safe boundary approach speed                |
+| • Kinematic velocity ceiling: ||q_dot||_inf <= 0.05 m/s (50 mm/s)          |
+| • Hardware Fail-Safe Interlock: Register 0x5000_1004 (E-Stop in < 1 ms)    |
+| • Edge PPO Retraining with 1-Wasserstein (D_W) drift parameter freeze      |
+└──────────────────────────────────────┬─────────────────────────────────────┘
+                                       |
+                 ┌───────────────────────────────────────────┐
+                 |                                           |
+      [Trajectory Certified Safe]                  [CRITICAL SAFETY BREACH]
+                 |                                 • Heartbeat Stall (Delta_t > 2000 us)
+                 ▼                                 • Margin Breach (h(x) <= 1.0 mm)
+    MOTOR PWM SERVO CONTROLLERS                              |
+    • Actuates 6-DoF Micro-Effector                          ▼ 
+    • Executes Sub-Millimeter Clamp                HARDWARE ZERO-TORQUE E-STOP
+    • Cycle Time: t_loop = 1.0 ms                  • Volatile Write: *mut 0x5000_1004 = 0
+                                                   • Actuator Power Cut in < 1.0 ms
 ```
 
 ```
