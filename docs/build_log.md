@@ -59,9 +59,9 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 | • Edge PPO Retraining with 1-Wasserstein (D_W) drift parameter freeze      |
 └──────────────────────────────────────┬─────────────────────────────────────┘
                                        |
-  ┌───────────────────────────────────────────┐
-  |                                           |
-  [Trajectory Certified Safe]          [CRITICAL SAFETY BREACH]
+              ┌───────────────────────────────────────────┐
+              |                                           |
+  [Trajectory Certified Safe]              [CRITICAL SAFETY BREACH]
              |                         • Heartbeat Stall (Delta_t > 2000 us)
              ▼                         • Margin Breach (h(x) <= 1.0 mm)
  MOTOR PWM SERVO CONTROLLERS                      |
