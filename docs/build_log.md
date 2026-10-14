@@ -21,6 +21,45 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
+                          CVRDT STATE MACHINE TRANSITION TOPOLOGY
+                          ---------------------------------------
+
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+| STATE 0: STATUS_ONLINE_QUORUM                                                                    |
+| • Enclave connects to k-of-n distributed quorum nodes over tactical mesh.                        |
+| • Derives globally unique, unlinkable identity token T_ID via Curve25519 Threshold OPRF.         |
+| • Diagnostic state committed with status: STATUS_GLOBAL_RECONCILED.                              |
+└────────────────────────────────────────────────┬─────────────────────────────────────────────────┘
+                                                 |
+                       [Event: Network Heartbeat Timeout > 2000 ms / Reachable Nodes < k]
+                                                 |
+                                                 ▼ 
+┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+| STATE 1: STATUS_OFFLINE_PENDING (Autonomous Air-Gap Mode)                                         |
+| • Hardware TEE isolates seed generation from external network interfaces.                         |
+| • Reads TPM 2.0 PCR digests: PCR_state = SHA256(PCR_0 || PCR_7 || PCR_14).                        |
+| • Derives Ephemeral Seed: Seed_Eph = HKDF-Extract(Salt=PCR_state, IKM=DeviceUniqueSecret).        |
+| • Emits Deterministic Provisional Token: T_PROV = HMAC-SHA256(Seed_Eph, LocalScanID || NodeID).   |
+| • Hardware Sealing: Blinds curve point Y_offline = r_eph H_1(x) and seals r_eph to TPM 2.0        |
+|   PCR_state inside TEE NVRAM; plaintext identifier x is zeroized via memset(0x00) within 16.67 ms |
+| • Logs record to static append-only FIFO; increments local Vector Clock: V_local[Node_ID] += 1.   |
+└────────────────────────────────────────────────┬──────────────────────────────────────────────────┘
+                                                 |
+                      [Event: Tactical Mesh Handshake Established (HF/VHF/LoRa at <2 Kbps)]
+                                                 |
+                                                 ▼ 
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+| STATE 2: STATUS_CVRDT_RECONCILIATION (Global Asynchronous Convergence)                           |
+| • Enclave broadcasts 512-byte packed binary CvRDT delta synchronization frame.                   |
+| • Executes Join-Semilattice Least Upper Bound (LUB) merge: S_merged = S_local |_| S_remote.      |
+| • Resolves concurrent conflicts deterministically via unique hardware Node_ID ranking.           |
+| • Bridges provisional token T_PROV -> T_ID via delayed TOPRF quorum interpolation.               |
+| • State transitions to STATUS_GLOBAL_RECONCILED across all cluster replicas with SEC.            |
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+```
+
+```
 6-Dimensional Invariant Biological Token Stream: v_m(t) in S^{1023} (Module 2)
                                        |
                                        ▼ 
