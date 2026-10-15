@@ -21,6 +21,32 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
+                [ Raw Physical Ingress Stream: X ] (Buffers A, B, C)
+                                          |
+                                          ▼
+       [ Steerable 3D Spherical Harmonic Convolution Kernels (l = 0, 1, 2) ]
+        (Factored into Isotropic Radial RBFs W_l(||r||) & Harmonics Y_l^m)
+                                          |
+                                          ▼
+       [ Wigner-D Equivariant Routing & SO(3)-Invariant Irrep Norm Gate ]
+        (Scalar l=0: f_0 | Vector l=1: ||f_1||₂ | Tensor l=2: ||f_2||_F)
+                                          |
+                     +--------------------+--------------------+
+                     |                                         |
+                     ▼                                         ▼
+ ┌───────────────────────────────────────┐     ┌───────────────────────────────────────┐
+ |        [ Local Edge Sub-Block ]       |     |    [ Global Structure Sub-Block ]     |
+ |    SE(3)-Invariant ConvNeXt Fabric    |     |  Geodesic Vision Transformer Fabric   | 
+ |  (Extracts Micro-Textures & Margins)  |     |   (Extracts Multi-Organ Alignments)   | 
+ └───────────────────────────────────────┘     └───────────────────────────────────────┘
+                     |                                         |
+                     +--------------------+--------------------+
+                                          |
+                                          ▼
+                 [ Purified Spatial Invariant Manifold: S(t) ∈ ℝ⁵¹² ]
+```
+
+```
                  ===============================================================================
                       DUAL-LOOP PRE-DRAM ADAPTIVE CANCELLATION DFE
                  ===============================================================================
