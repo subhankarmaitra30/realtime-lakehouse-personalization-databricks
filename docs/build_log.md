@@ -21,29 +21,17 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                [ Raw Physical Ingress Stream: X ] (Buffers A, B, C)
-                                          |
-                                          ▼
-       [ Steerable 3D Spherical Harmonic Convolution Kernels (l = 0, 1, 2) ]
-        (Factored into Isotropic Radial RBFs W_l(||r||) & Harmonics Y_l^m)
-                                          |
-                                          ▼
-       [ Wigner-D Equivariant Routing & SO(3)-Invariant Irrep Norm Gate ]
-        (Scalar l=0: f_0 | Vector l=1: ||f_1||₂ | Tensor l=2: ||f_2||_F)
-                                          |
-                     +--------------------+--------------------+
-                     |                                         |
-                     ▼                                         ▼
- ┌───────────────────────────────────────┐     ┌───────────────────────────────────────┐
- |        [ Local Edge Sub-Block ]       |     |    [ Global Structure Sub-Block ]     |
- |    SE(3)-Invariant ConvNeXt Fabric    |     |  Geodesic Vision Transformer Fabric   | 
- |  (Extracts Micro-Textures & Margins)  |     |   (Extracts Multi-Organ Alignments)   | 
- └───────────────────────────────────────┘     └───────────────────────────────────────┘
-                     |                                         |
-                     +--------------------+--------------------+
-                                          |
-                                          ▼
-                 [ Purified Spatial Invariant Manifold: S(t) ∈ ℝ⁵¹² ]
+========================================================================================
+                        COMBINATORIAL 6-MODAL INFONCE MATRIX
+========================================================================================
+              v_video     v_packet    v_physics   v_telemetry   v_omics     v_audio
+v_video        [---]       Pair 1      Pair 2       Pair 3      Pair 4      Pair 5
+v_packet      Pair 1        [---]      Pair 6       Pair 7      Pair 8      Pair 9
+v_physics     Pair 2       Pair 6       [---]       Pair 10     Pair 11     Pair 12
+v_telemetry   Pair 3       Pair 7      Pair 10       [---]      Pair 13     Pair 14
+v_omics       Pair 4       Pair 8      Pair 11      Pair 13      [---]      Pair 15
+v_audio       Pair 5       Pair 9      Pair 12      Pair 14     Pair 15      [---]
+========================================================================================
 ```
 
 ```
