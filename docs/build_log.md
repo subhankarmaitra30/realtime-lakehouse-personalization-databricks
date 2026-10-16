@@ -21,17 +21,19 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-========================================================================================
-                        COMBINATORIAL 6-MODAL INFONCE MATRIX
-========================================================================================
-              v_video     v_packet    v_physics   v_telemetry   v_omics     v_audio
-v_video        [---]       Pair 1      Pair 2       Pair 3      Pair 4      Pair 5
-v_packet      Pair 1        [---]      Pair 6       Pair 7      Pair 8      Pair 9
-v_physics     Pair 2       Pair 6       [---]       Pair 10     Pair 11     Pair 12
-v_telemetry   Pair 3       Pair 7      Pair 10       [---]      Pair 13     Pair 14
-v_omics       Pair 4       Pair 8      Pair 11      Pair 13      [---]      Pair 15
-v_audio       Pair 5       Pair 9      Pair 12      Pair 14     Pair 15      [---]
-========================================================================================
+                 REGISTER-LEVEL HARDWARE PROPENSITY CLAMP
+                 ----------------------------------------
+                    Input Propensity: e(X) ∈ (0.0, 1.0)
+                                      |
+                                      ▼
+      ┌───────────────────────────────────────────────────────────────┐
+      | REG_CLAMP_MIN (0x4000_2010): 0x211F (IEEE 754 FP16: 0.01000)  |
+      | REG_CLAMP_MAX (0x4000_2014): 0x3BEC (IEEE 754 FP16: 0.99023)  |
+      └───────────────────────────────┬───────────────────────────────┘
+                                      |
+                                      ▼
+                     Clamped Output: ẽ(X) ∈ [0.01, 0.99]
+             Maximum Multiplier: |1 / ẽ(X)| ≤ 100.0 (Zero FP16 NaNs)
 ```
 
 ```
