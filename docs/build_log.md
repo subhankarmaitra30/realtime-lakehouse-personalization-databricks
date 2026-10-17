@@ -21,19 +21,21 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                 REGISTER-LEVEL HARDWARE PROPENSITY CLAMP
-                 ----------------------------------------
-                    Input Propensity: e(X) ∈ (0.0, 1.0)
-                                      |
-                                      ▼
-      ┌───────────────────────────────────────────────────────────────┐
-      | REG_CLAMP_MIN (0x4000_2010): 0x211F (IEEE 754 FP16: 0.01000)  |
-      | REG_CLAMP_MAX (0x4000_2014): 0x3BEC (IEEE 754 FP16: 0.99023)  |
-      └───────────────────────────────┬───────────────────────────────┘
-                                      |
-                                      ▼
-                     Clamped Output: ẽ(X) ∈ [0.01, 0.99]
-             Maximum Multiplier: |1 / ẽ(X)| ≤ 100.0 (Zero FP16 NaNs)
+========================================================================================
+                 4-CLOCK DOMAIN CROSSING (CDC) SYNCHRONIZATION
+========================================================================================
+Domain 1: Optical SerDes Receiver (f_clk1 = 350.0 MHz RF / 594.0 MHz HDMI 2.1 DDR)
+  |  [Deserializes 12-bit RGB Video & JESD204C Streams into 16-bit Parallel Words]
+  ▼
+Domain 2: FPGA DDC & PCIe Gen 6 DMA Core (f_clk2 = 250.0 MHz DSP / 1.00 GHz PCIe)
+  |  [Asynchronous Dual-Clock Block RAM FIFO with Gray-Coded Read/Write Pointers]
+  ▼
+Domain 3: NPU Tensor & GPU Shader Cores (f_clk3 = 1.40 GHz Sustained Compute)
+  |  [Executes Multi-Stream Int8 Inference, 6-DoF Raymarching & Alpha Clamp Kernels]
+  ▼
+Domain 4: Primary Surgical Display Serializer (f_pix = 148.5 MHz Native 1080p60)
+     [Direct DisplayPort / HDMI Hardware Scanout Synchronized to Monitor V-Sync]
+========================================================================================
 ```
 
 ```
