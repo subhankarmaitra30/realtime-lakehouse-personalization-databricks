@@ -22,37 +22,41 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                     MODULE 1: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+                     MODULE 2: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
 ====================================================================================================
 
-                  [SATELLITE ASSET 1: PHYSICAL & INFORMATION-THEORETIC PROOFS]
-                         docs/proofs/reverse_injection_immunity.md
-                   * Proof 1: Physical Ohmic Severance (Z_Tx -> inf, I_rev = 0.00 A)
-                   * Proof 2: Parasitic Coupling Bound (C_parasitic = 1.33 fF, I_disp = 33.22 uA)
-                   * Proof 3: 4 kV 2-MOPP Dielectric Withstand (V_breakdown = 24.0 kV_peak)
-                   * Proof 4: Zero-Capacity Shannon Simplex (C_{E->H} = 0.000000 bps)
+                  [SATELLITE ASSET 1: MATHEMATICAL, GROUP-THEORETIC & STATUTORY PROOFS]
+                         docs/proofs/rank_nullity_security.md
+                   * Proof 1: Rank-Nullity Chain-Rule Annihilation (44.789B -> 1,024 Dims)
+                   * Proof 2: Hadamard Ill-Posedness & Continuum Pre-Image (|F_v| = 2^{\aleph_0})
+                   * Proof 3: Statutory Safe-Harbor (DPDP Act Sec 3/8, HIPAA § 164.514, GDPR Rec 26)
+                         docs/proofs/se3_equivariance.md
+                   * Proof 4: Lie Group SE(3) Haar Measure Commutativity: F(pi(g)X) = rho(g)F(X)
+                   * Proof 5: Steerable Spherical Harmonics (l=0,1,2) & SO(3) Irrep Norm Gate
                                                 |
                                                 ▼
-[SATELLITE ASSET 5: REGULATORY & DEFENSE]   +-----------------------+   [SATELLITE ASSET 2: SILICON & RF BUDGETS]
-compliance/defense_medical_standards.md     |                       |   hardware/rf_ingress_budget.md
-* IEC 60601-1 Cl. 8 (2 MOPP / 4 kV_rms)     |     MASTER CORE:      |   * 8.960 Tbps -> 80.000 GB/s DDC (M = 32)
-* MIL-STD-461G (CS114-116, RS103 200 V/m) ->|     NEXUS-INGEST      |<- * +15.05 dB SQNR Gain (16.50-Bit ENOB)
-* MIL-STD-1275E (28V DC / 250V Surge)       |      (MODULE 1)       |   * Dual-Loop MVDR + Kalman Sieve (256.0 ns)
-compliance/IEC62304_MIL_STD_882E_matrix.md  |                       |   hardware/timing_budget_proof.md
-* Clause 5.1.8 (Volatile Memory Isolation)  +-----------------------+   * On-Die DDC Group Delay (t_DDC = 294.6 ns)
+[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] +-----------------------+ [SATELLITE ASSET 2: BARE-METAL CUDA KERNELS]
+docs/architecture/vectorization_at_birth.md    |                       | engine/cuda/se3_steerable_kernel.cu
+* 3-Tier Pipeline & Pinned Ring Double-Buffer  |     MASTER CORE:      | * 9-Harmonic (l=0,1,2) + 32-RBF Compositor
+compliance/defense_medical_standards.md        |   VECTORIZATION-AT-   | engine/cuda/mamba_selective_scan.cu
+* India DPDP Act 2023 / HIPAA / GDPR Rec 26  ->|         BIRTH         |<- * Exact ZOH O(L) Scan in 32.768 KB Reg SRAM
+* MIL-STD-810H (Method 514.8 Cat 20 Vibration) |      (MODULE 2)       | engine/cuda/test_cuda_kernels_sil.cpp
+* IEC 62304 Class C (Deterministic Invariance) +-----------------------+ * C++20 Host-Emulated CUDA SIL Verification
                                                 |
                                                 ▼
-                  [SATELLITE ASSET 3: SYNTHESIZABLE RTL & TIMING CONSTRAINTS]
-                   * hardware/rtl/ddc_polyphase_cic_fir.sv (NCO + CIC R1=16 + Half-Band FIR R2=2)
-                   * hardware/bench/tb_ddc_polyphase_cic_fir.sv (Bit-Exact 320 -> 10 DDC Bench)
-                   * hardware/bench/tb_jesd204c_ingress.sv (350 MHz -> 250 MHz Gray-Code CDC FIFO)
-                   * hardware/constraints/versal_vp1802_timing.xdc (AMD Versal VP1802 Static Timing)
+                  [SATELLITE ASSET 3: EXECUTABLE PYTORCH NEURAL ENGINES]
+                   * engine/python/se3_mamba.py
+                     - Tier 1: SteerableSphericalHarmonicConv3D + SO(3) Irrep Norm Gate
+                     - Tier 2: MambaSelectiveSSM (Exact ZOH, L = 7,200 Frames, 32.768 KB State)
+                     - Tier 3: VariationalInformationBottleneckHead (beta = 1e-3, ||v_bio||_2 = 1.0)
+                   * engine/python/multimodal_infonce.py
+                     - Combinatorial 6-Modal InfoNCE Lattice (15 Pairs + B=1 Q=256 FIFO Queue)
                                                 |
                                                 ▼
-                  [SATELLITE ASSET 4: BARE-METAL HAL & SIL VERIFICATION SUITE]
-                   * firmware/src/hal_rx.rs (#![no_std] 64B DmaDescriptor, dmb/dsb sy, dc civac)
-                   * docs/architecture/nexus_ingest_pipeline.md (End-to-End Multimodal Contracts)
-                   * engine/python/test_module1_rf.py (6-Gate Physics, Bus & 10k-Step Kalman SIL)
+                  [SATELLITE ASSET 4: BARE-METAL HAL & 6-GATE SIL VERIFICATION]
+                   * firmware/src/hal_rx.rs (#![no_std] flash_scrub_volatile_arena <= 16.67 ms)
+                   * hardware/timing_budget_proof.md (Single-Stream: 3.41 ms | 6-Modal Int8: 7.20 ms)
+                   * engine/python/test_module2_vectorization.py (6-Gate Automated SIL Harness)
 ====================================================================================================
 ```
 
