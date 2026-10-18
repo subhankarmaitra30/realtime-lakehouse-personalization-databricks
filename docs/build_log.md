@@ -21,7 +21,7 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-              [ INCOMING MULTI-MODAL INGRESS STREAMS ]
+                [ INCOMING MULTI-MODAL INGRESS STREAMS ]
        (Buffer A Video, Buffer B Telemetry, Buffer C RF Physics)
                                    |
                                    ▼
