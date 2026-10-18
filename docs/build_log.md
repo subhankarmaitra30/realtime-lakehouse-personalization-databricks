@@ -21,21 +21,39 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-========================================================================================
-                 4-CLOCK DOMAIN CROSSING (CDC) SYNCHRONIZATION
-========================================================================================
-Domain 1: Optical SerDes Receiver (f_clk1 = 350.0 MHz RF / 594.0 MHz HDMI 2.1 DDR)
-  |  [Deserializes 12-bit RGB Video & JESD204C Streams into 16-bit Parallel Words]
-  ▼
-Domain 2: FPGA DDC & PCIe Gen 6 DMA Core (f_clk2 = 250.0 MHz DSP / 1.00 GHz PCIe)
-  |  [Asynchronous Dual-Clock Block RAM FIFO with Gray-Coded Read/Write Pointers]
-  ▼
-Domain 3: NPU Tensor & GPU Shader Cores (f_clk3 = 1.40 GHz Sustained Compute)
-  |  [Executes Multi-Stream Int8 Inference, 6-DoF Raymarching & Alpha Clamp Kernels]
-  ▼
-Domain 4: Primary Surgical Display Serializer (f_pix = 148.5 MHz Native 1080p60)
-     [Direct DisplayPort / HDMI Hardware Scanout Synchronized to Monitor V-Sync]
-========================================================================================
+====================================================================================================
+                     MODULE 1: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+====================================================================================================
+
+                  [SATELLITE ASSET 1: PHYSICAL & INFORMATION-THEORETIC PROOFS]
+                         docs/proofs/reverse_injection_immunity.md
+                   * Proof 1: Physical Ohmic Severance (Z_Tx -> inf, I_rev = 0.00 A)
+                   * Proof 2: Parasitic Coupling Bound (C_parasitic = 1.33 fF, I_disp = 33.22 uA)
+                   * Proof 3: 4 kV 2-MOPP Dielectric Withstand (V_breakdown = 24.0 kV_peak)
+                   * Proof 4: Zero-Capacity Shannon Simplex (C_{E->H} = 0.000000 bps)
+                                                |
+                                                ▼
+[SATELLITE ASSET 5: REGULATORY & DEFENSE]   +-----------------------+   [SATELLITE ASSET 2: SILICON & RF BUDGETS]
+compliance/defense_medical_standards.md     |                       |   hardware/rf_ingress_budget.md
+* IEC 60601-1 Cl. 8 (2 MOPP / 4 kV_rms)     |     MASTER CORE:      |   * 8.960 Tbps -> 80.000 GB/s DDC (M = 32)
+* MIL-STD-461G (CS114-116, RS103 200 V/m) ->|     NEXUS-INGEST      |<- * +15.05 dB SQNR Gain (16.50-Bit ENOB)
+* MIL-STD-1275E (28V DC / 250V Surge)       |      (MODULE 1)       |   * Dual-Loop MVDR + Kalman Sieve (256.0 ns)
+compliance/IEC62304_MIL_STD_882E_matrix.md  |                       |   hardware/timing_budget_proof.md
+* Clause 5.1.8 (Volatile Memory Isolation)  +-----------------------+   * On-Die DDC Group Delay (t_DDC = 294.6 ns)
+                                                |
+                                                ▼
+                  [SATELLITE ASSET 3: SYNTHESIZABLE RTL & TIMING CONSTRAINTS]
+                   * hardware/rtl/ddc_polyphase_cic_fir.sv (NCO + CIC R1=16 + Half-Band FIR R2=2)
+                   * hardware/bench/tb_ddc_polyphase_cic_fir.sv (Bit-Exact 320 -> 10 DDC Bench)
+                   * hardware/bench/tb_jesd204c_ingress.sv (350 MHz -> 250 MHz Gray-Code CDC FIFO)
+                   * hardware/constraints/versal_vp1802_timing.xdc (AMD Versal VP1802 Static Timing)
+                                                |
+                                                ▼
+                  [SATELLITE ASSET 4: BARE-METAL HAL & SIL VERIFICATION SUITE]
+                   * firmware/src/hal_rx.rs (#![no_std] 64B DmaDescriptor, dmb/dsb sy, dc civac)
+                   * docs/architecture/nexus_ingest_pipeline.md (End-to-End Multimodal Contracts)
+                   * engine/python/test_module1_rf.py (6-Gate Physics, Bus & 10k-Step Kalman SIL)
+====================================================================================================
 ```
 
 ```
