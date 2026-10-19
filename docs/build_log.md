@@ -35,16 +35,16 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                    * Proof 5: 1 kHz Convex Active-Set CBF-CLF QP Solvability (t_QP <= 0.18 ms)
                    * Proof 6: 1-Wasserstein Drift Parameter Freeze (lim_{D_W->inf} ||Delta theta|| = 0)
                                                 |
-                                                v
-[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] +-----------------------+ [SATELLITE ASSET 2: NEURAL C2 & PPO ENGINES]
+                                                ▼
+[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] ┌───────────────────────┐[SATELLITE ASSET 2: NEURAL C2 & PPO ENGINES]
 docs/architecture/nexus_avatar_c2.md           |                       | engine/python/ppo_drift_regularizer.py
 * Dual-Channel: Copilot HUD vs. Autopilot PWM  |     MASTER CORE:      | * NonEuclideanActionTransformer
 * Direct MMIO Register 0x5000_1004 (<1 ms Cut) |     NEXUS-AVATAR      |   - Cross-Attention over 32 Bezier Primitives
 compliance/defense_medical_standards.md        |   KINETIC C2 ENGINE   |   - Radial Jerk-Ball Projection (<= 2.0 m/s^3)
-* MIL-STD-882E (Cat I) / ISO 10218-1/2 Safety ->|      (MODULE 6)       |<- * EdgeDriftRegularizedPPOLoss
-* IEC 62304 Class C / FDA PCCP Drift Lock      +-----------------------+   - Kantorovich-Rubinstein 1-Wasserstein Gate
+* MIL-STD-882E (Cat I) /ISO 10218-1/2 Safety ->|      (MODULE 6)       |<- * EdgeDriftRegularizedPPOLoss
+* IEC 62304 Class C / FDA PCCP Drift Lock      └───────────────────────┘   - Kantorovich-Rubinstein 1-Wasserstein Gate
                                                 |                          - Catastrophic Shock Freeze (||d_theta||=0)
-                                                v
+                                                ▼
                   [SATELLITE ASSET 3: BARE-METAL #![no_std] RUST & SYSTEMVERILOG RTL]
                    * firmware/src/safety_watchdog.rs
                      - 1 kHz Active-Set HOCBF QP Solver (t_QP <= 0.18 ms, <= 50 mm/s Ceiling)
@@ -53,7 +53,7 @@ compliance/defense_medical_standards.md        |   KINETIC C2 ENGINE   |   - Rad
                      - 250 MHz AXI4-Lite Slave @ 0x5000_1000 (<= 4.0 ns Single-Cycle Gate Cutoff)
                      - Independent 2000 us Countdown Timer & <= 1000 um Proximity Latch
                                                 |
-                                                v
+                                                ▼
                   [SATELLITE ASSET 4: MULTI-TIER SIL VERIFICATION BENCHMARKS]
                    * hardware/bench/tb_avatar_pwm_watchdog.sv (4-Gate Icarus Verilog RTL Bench)
                    * engine/python/test_avatar_c2.py (5-Gate Python Spline, PPO, QP & Causal SIL)
