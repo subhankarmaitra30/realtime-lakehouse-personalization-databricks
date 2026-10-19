@@ -21,37 +21,46 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-                [ INCOMING MULTI-MODAL INGRESS STREAMS ]
-       (Buffer A Video, Buffer B Telemetry, Buffer C RF Physics)
-                                   |
-                                   ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-| RocksDB State 1: STATUS_PENDING_CROSS_ALIGNMENT                             |
-| • Volatile memory-mapped queues hold raw vector frames.                     |
-| • Sliding-window cross-sync aligns nanosecond hardware timestamps.          |
-└─────────────────────────────────────────────────────────────────────────────┘
-                                   |
-                                   ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-| RocksDB State 2: STATUS_PENDING_GROUND_TRUTH                                |
-| • Aligned multi-modal vectors committed to persistent NVMe arrays.          |
-| • Compound Key: Key = T_ID (32B) || Modality_ID (4B) || Channel_Mask (4B)   |
-|                                || Epoch_Timestamp (8B)  (48 Bytes Total)    |
-| • Awaits definitive diagnostic confirmation (14 to 45 Day Window).          |
-└─────────────────────────────────────────────────────────────────────────────┘
-                                   |
-                 +-----------------+-----------------+
-                 |                                   |
-                 ▼ [Tissue Biopsy / LIS Match]       ▼ [Unmatched after 90 Days]
-┌──────────────────────────────────────────┐  ┌──────────────────────────────────────────┐
-| RocksDB State 3:                         |  | RocksDB State 4:                         |
-| STATUS_GROUND_TRUTH_ACQUIRED             |  | STATUS_TTL_EXPIRED_UNSUPERVISED          |
-| • Clinical NLP listener parses report.   |  | • 90-Day Time-To-Live window expires.    |
-| • Strips PHI; extracts soft label y.     |  | • Token drops into self-supervised       |
-| • Matches anonymous token T_ID.          |  |   contrastive learning pool.             |
-| • Triggers closed-loop midnight edge     |  | • Refines anatomical spatial manifolds   |
-|   backpropagation inside TEE enclave.    |  |   without wasting storage capacity.      |
-└──────────────────────────────────────────┘  └──────────────────────────────────────────┘
+ ==========================================================================================================================
+                     MODULE 4: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+===========================================================================================================================
+
+                  [SATELLITE ASSET 1: MATHEMATICAL, CAUSAL & PRIVACY PROOFS]
+                         docs/proofs/aipw_gradient_stability.md
+                   * Proof 1: Doubly Robust Unbiased Expectation (E[Y_hat^{AIPW}] = E[Y(a)])
+                   * Proof 2: Hardware Propensity Clamp (eps = 0.01 => ||grad L||_2 <= 404.0)
+                   * Proof 3: Renyi DP & Cuff-Yu Bound (I(X_i; g_tilde) = 0.000099 <= 1e-4 bits)
+                   * Proof 4: Non-Convex DP-SGD Convergence Rate O(1 / sqrt(T))
+                   * Proof 5: Zero-Sum Pairwise ECDH Mask Cancellation (Sum S_{u,v} = 0.000000)
+                         docs/proofs/causal_action_space.md
+                   * Proof 6: Pearl's Do-Calculus Back-Door Adjustment Identification
+                                                |
+                                                ▼
+[SATELLITE ASSET 5: COMPLIANCE & VERIFICATION] ┌───────────────────────┐ [SATELLITE ASSET 2: PIPELINE & BUS SPECS]
+compliance/defense_medical_standards.md        |                       | docs/architecture/causal_mlops_pipeline.md
+* India DPDP Act 2023 (Sec 3 & Sec 8 Safe)     |     MASTER CORE:      | * K-Fold DML Cross-Fitting (Neyman-Orthogonal)
+* US HIPAA Privacy Rule (45 CFR § 164.514)     |     NEXUS-CAUSAL      | * Hardware Clamp Hex: 0x211F / 0x3BEC (FP16)
+* IEC 62304 Class C / IEEE 754-2019 FP16 Safe->|   MLOPS & FEDERATED   |<- * 64B Top-K EF-SGD Slice (Offset 0x01C0..0x01FF)
+* MIL-STD-882E (Cat I) / MIL-STD-188-220 CNR   |      (MODULE 4)       | * 2.048 s Burst @ 2 Kbps (3.41% Radio Duty)
+* Common Criteria EAL5+ (AES-XTS TEE Enclave)  └───────────────────────┘ * Asynchronous CvRDT Mesh Model Convergence
+                                                |
+                                                ▼
+                  [SATELLITE ASSET 3: EXECUTABLE PYTORCH CAUSAL & DP ENGINES]
+                   * engine/python/causal_aipw.py
+                     - DoublyRobustAIPWLoss (eps = 0.01 Clamp, Treated & Control Branches)
+                     - CausalPolicyNetwork (Spectral Norm Lipschitz-1, |f_theta| <= 1.0)
+                     - InEnclaveDPSanitizer (L2 Clip C = 1.0, Gaussian Noise sigma = 0.1)
+                     - TopKSparsifierWithEF (K = 16 FP16 + 16 int16 = 64B Error-Feedback)
+                     - ShamirSecAggEngine (Curve25519 ECDH Pairwise Anti-Symmetric Masks)
+                     - DoubleMachineLearningHarness (2-Fold Orthogonal DML Cross-Fitting)
+                                                |
+                                                ▼
+                  [SATELLITE ASSET 4: BARE-METAL TEE DRIVER & SIL BENCHMARKS]
+                   * firmware/src/secagg_enclave.rs (#![no_std] Newton-Raphson L2 Clip & 64B Pack)
+                   * crypto/src/zk_lineage.rs & firmware/src/cvrdt_ledger.rs (256B ZK + 512B Frame)
+                   * engine/python/test_causal_aipw.py (5-Gate Python Causal, DP & SecAgg SIL)
+                   * tests/src/bin/test_module4.rs (3-Gate Bare-Metal Rust TEE & 512B Wire Bench)
+==========================================================================================================================
 ```
 
 ```
