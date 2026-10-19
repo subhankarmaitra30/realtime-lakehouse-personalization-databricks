@@ -21,44 +21,59 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-==========================================================================================================================
-                     MODULE 6: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
-==========================================================================================================================
-
-                  [SATELLITE ASSET 1: MATHEMATICAL, CAUSAL & ROBOTIC SAFETY PROOFS]
-                         docs/proofs/causal_action_space.md
-                   * Proof 1: Pearl's Micro-Do-Calculus Interventional Unconfounding
-                   * Proof 2: Causal Policy Gradient Theorem (grad J = E[grad ln pi * Q^do])
-                   * Proof 3: Non-Euclidean Bezier C^2 Manifold (Jerk <= 2.0 m/s^3)
-                         docs/proofs/cbf_robotic_safety.md
-                   * Proof 4: Nagumo-HOCBF Forward Set Invariance (h(t) >= h(0)*e^{-gamma*t} >= 0)
-                   * Proof 5: 1 kHz Convex Active-Set CBF-CLF QP Solvability (t_QP <= 0.18 ms)
-                   * Proof 6: 1-Wasserstein Drift Parameter Freeze (lim_{D_W->inf} ||Delta theta|| = 0)
+====================================================================================================
+           SOVEREIGN BIO-OS / NEXUS-CORE: MASTER SIX-MODULE CLOSED-LOOP EXECUTION HIGHWAY
+====================================================================================================
+                         ┌──────────────────────────────────────┐
+                         |     [MODULE 1: NEXUS-INGEST]         |      
+                         |     * 4 kV Optical Moat (24 kVpk)    |
+                         |     * Z_Tx -> inf, C_{E->H} = 0      | 
+                         |     * 8.96 Tbps -> 80 GB/s (M=32)    |
+                         |     * RLS-MVDR + Kalman (256 ns)     |
+                         |     * <16.67 ms Flash-Scrub Gate     |
+                         └──────────────────────────────────────┘
+                                            |Decimated Baseband Payload 
+                                            │ (PCIe Gen 6 / CXL.mem)
+                                            ▼
+                          ┌─────────────────────────────────────┐
+                          |   [MODULE 2: NEXUS-VECTOR]          | 
+                          |    * Tier 1: SE(3) Harmonics        |
+                          |    * Tier 2: O(L) Mamba (32 KB)     | 
+                          |    * Tier 3: VIB -> S^{1023}        |
+                          |    * 44.789B Null Dims Erased       |
+                          |    * 15-Pair InfoNCE (B=1 Queue)    |
+                          └─────────────────────────────────────┘
+                                           |
+      ┌────────────────────────────────────┴─────────────────────────────────────┐
+      ▼                                                                          ▼
+ ┌─────────────────────────────────────────┐          ┌─────────────────────────────────────────┐
+ |  [MODULE 3: NEXUS-LEDGER]               |          |  [MODULE 4: NEXUS-CAUSAL]               |
+ |   * (3,5)-Threshold Ristretto255 OPRF   |          |    * Doubly Robust AIPW (eps = 0.01)    |
+ |   * I(X; Y) = 0.000000 bits Blindness   |          |    * ||grad L||_2 <= 404.0 << 65,504    |
+ |   * 512B CvRDT Envelope (<2 Kbps CNR)   |          |    * K-Fold Neyman-Orthogonal DML       |
+ |   * 48B RocksDB PGTQ (45-Day Biopsy)    |          |    * In-Enclave Renyi DP (0.000099 b)   |
+ |   * 256B Recursive ZK Proof (<=2.15ms)  |          |    * Zero-Sum ECDH Pairwise SecAgg      |
+ └─────────────────────────────────────────┘          |    * 64B Top-K EF-SGD (2.048s @ 2Kbps)  |
+       |                                              └─────────────────────────────────────────┘
+       |                                                                                |
+       └────────────────────────────────────────┬───────────────────────────────────────┘
                                                 |
-                                                ▼
-[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] ┌───────────────────────┐[SATELLITE ASSET 2: NEURAL C2 & PPO ENGINES]
-docs/architecture/nexus_avatar_c2.md           |                       | engine/python/ppo_drift_regularizer.py
-* Dual-Channel: Copilot HUD vs. Autopilot PWM  |     MASTER CORE:      | * NonEuclideanActionTransformer
-* Direct MMIO Register 0x5000_1004 (<1 ms Cut) |     NEXUS-AVATAR      |   - Cross-Attention over 32 Bezier Primitives
-compliance/defense_medical_standards.md        |   KINETIC C2 ENGINE   |   - Radial Jerk-Ball Projection (<= 2.0 m/s^3)
-* MIL-STD-882E (Cat I) /ISO 10218-1/2 Safety ->|      (MODULE 6)       |<- * EdgeDriftRegularizedPPOLoss
-* IEC 62304 Class C / FDA PCCP Drift Lock      └───────────────────────┘   - Kantorovich-Rubinstein 1-Wasserstein Gate
-                                                |                          - Catastrophic Shock Freeze (||d_theta||=0)
-                                                ▼
-                  [SATELLITE ASSET 3: BARE-METAL #![no_std] RUST & SYSTEMVERILOG RTL]
-                   * firmware/src/safety_watchdog.rs
-                     - 1 kHz Active-Set HOCBF QP Solver (t_QP <= 0.18 ms, <= 50 mm/s Ceiling)
-                     - Direct Volatile MMIO E-Stop (*mut 0x5000_1004 = 0x00, dmb/dsb sy)
-                   * hardware/rtl/avatar_pwm_watchdog.sv
-                     - 250 MHz AXI4-Lite Slave @ 0x5000_1000 (<= 4.0 ns Single-Cycle Gate Cutoff)
-                     - Independent 2000 us Countdown Timer & <= 1000 um Proximity Latch
+                                                | Reconciled Causal State & 3D Spatial Prior
                                                 |
-                                                ▼
-                  [SATELLITE ASSET 4: MULTI-TIER SIL VERIFICATION BENCHMARKS]
-                   * hardware/bench/tb_avatar_pwm_watchdog.sv (4-Gate Icarus Verilog RTL Bench)
-                   * engine/python/test_avatar_c2.py (5-Gate Python Spline, PPO, QP & Causal SIL)
-                   * tests/src/bin/test_module6.rs (4-Gate Bare-Metal Rust QP & MMIO Watchdog Bench)
-==========================================================================================================================
+       ┌────────────────────────────────────────┴────────────────────────────────────────┐                      
+       |                                                                                 |
+       ▼                                                                                 ▼                             
+ ┌─────────────────────────────────────┐                 ┌─────────────────────────────────────┐
+ |  [MODULE 5: NEXUS-HUD-SLAM]         |                 |   [MODULE 6: NEXUS-AVATAR C2]       |
+ |      (Visual Channel A)             |                 |       (Kinetic Channel B)           |
+ |  * 12.60 ms Capture-to-Scanout      |                 |    * Pearl Micro-Do-Calculus Q^do   |
+ |  * 14.36 ms Thermal WCET (100C)     |                 |    * C^2 Bezier Action Transformer  |
+ |  * Alpha <= 0.65 (35% Floor)        |                 |    * Jerk ||tau'''||_2 <= 2.0m/s^3  | 
+ |  * 512^3 FP16 Morton Voxel Grid     |                 |    * 1-Wasserstein Drift Freeze     |
+ |  * Sensorless 6-DoF SE(3) SLAM      |                 |    * 1 kHz HOCBF Active-Set QP      |
+ |  * 0.00 ms OS Window Bypass         |                 |    * <1ms MMIO E-Stop (0x50001004)  | 
+ └─────────────────────────────────────┘                 └─────────────────────────────────────┘ 
+====================================================================================================
 ```
 
 ```
