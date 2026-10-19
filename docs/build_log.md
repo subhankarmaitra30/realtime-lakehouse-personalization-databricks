@@ -21,45 +21,44 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-======================================================================================================================
-                     MODULE 5: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
-======================================================================================================================
+==========================================================================================================================
+                     MODULE 6: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+==========================================================================================================================
 
-                  [SATELLITE ASSET 1: MATHEMATICAL, OPTICAL & SLAM PROOFS]
-                         docs/proofs/hud_slam_latency_proof.md
-                   * Proof 1: Critical Path Latency Budget (t_total = 12.60 ms <= 16.67 ms)
-                   * Proof 2: Direct-Silicon OS Window Manager Bypass (t_OS_jitter = 0.00 ms)
-                   * Proof 3: IEC 62304 Class C Photon Floor (T_photon >= 35.0%, 879.6 Td)
-                   * Proof 4: Thermal Throttling Worst-Case Execution (t_WCET = 14.36 ms)
-                         docs/proofs/slam_raymarching_derivation.md
-                   * Proof 5: Sensorless 6-DoF SE(3) Odometry (Lucas-Kanade + Clamped Speckle)
-                   * Proof 6: Lateral-Axis Pitch Projection R_x(theta) & Adjoint Grad dC/dV_i
-                   * Proof 7: 512^3 FP16 Voxel Bounds (256.0 MiB / 268.44 MB, 16.11 GB/s)
-                   * Proof 8: 30-Bit 3D Morton Z-Curve Indexing (16.0x L2 Cache Locality)
-                                                        |
-                                                        ▼
-[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] ┌───────────────────────┐[SATELLITE ASSET 2: BARE-METAL CUDA KERNELS]
-docs/architecture/hud_slam_architecture.md     |                       | engine/cuda/hud_compositor.cu
-* Dual Page-Locked Ping-Pong Ring (Ring 0/1)   |     MASTER CORE:      | * Fused Alpha Clamp (0.0 <= alpha <= 0.65)
-* 4-Clock Domain Crossing (CDC MTBF ~10^257y)  |    AMBIENT HUD &      | * NaN/Overflow Scrubbing (T_photon >= 35.0%)
-compliance/defense_medical_standards.md        |       3D SLAM         | engine/cuda/slam_raymarching.cu
-* IEC 62304 Class C / IEC 60601-1-11         ->|      (MODULE 5)       |<- * 30-Bit Morton Atomic Voxel Splatting
-* MIL-STD-461G / MIL-STD-810H / IEEE 754-2019  └───────────────────────┘ * 64-Step Beer-Lambert Raymarch & Adjoint
-                                                       |                  engine/cuda/test_cuda_m5_sil.cpp
-                                                       ▼                 * C++20 Host-Emulated CUDA SIL Benchmark
-                  [SATELLITE ASSET 3: BARE-METAL SCANOUT HAL & TIMING BUDGETS]
-                   * firmware/src/display_scanout.rs (#![no_std] MMIO 0x4000_3000, V-Sync Flip)
-                   * hardware/timing_budget_proof.md
-                     - Stage 1: Pinned DMA Ingress (t_DMA = 0.83 ms @ 15.0 GB/s QoS Slice)
-                     - Stage 2: Int8 TensorRT Vision-SSM Inference (t_Inference = 7.20 ms)
-                     - Stage 3: 6-DoF SLAM Volume Raymarching (t_Raymarch = 4.15 ms)
-                     - Stage 4: Fused CUDA Alpha Compositor (t_AlphaBlend = 0.42 ms)
+                  [SATELLITE ASSET 1: MATHEMATICAL, CAUSAL & ROBOTIC SAFETY PROOFS]
+                         docs/proofs/causal_action_space.md
+                   * Proof 1: Pearl's Micro-Do-Calculus Interventional Unconfounding
+                   * Proof 2: Causal Policy Gradient Theorem (grad J = E[grad ln pi * Q^do])
+                   * Proof 3: Non-Euclidean Bezier C^2 Manifold (Jerk <= 2.0 m/s^3)
+                         docs/proofs/cbf_robotic_safety.md
+                   * Proof 4: Nagumo-HOCBF Forward Set Invariance (h(t) >= h(0)*e^{-gamma*t} >= 0)
+                   * Proof 5: 1 kHz Convex Active-Set CBF-CLF QP Solvability (t_QP <= 0.18 ms)
+                   * Proof 6: 1-Wasserstein Drift Parameter Freeze (lim_{D_W->inf} ||Delta theta|| = 0)
                                                 |
-                                                ▼
-                  [SATELLITE ASSET 4: AUTOMATED SIL VERIFICATION SUITES]
-                   * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint SIL)
-                   * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
-======================================================================================================================
+                                                v
+[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] +-----------------------+ [SATELLITE ASSET 2: NEURAL C2 & PPO ENGINES]
+docs/architecture/nexus_avatar_c2.md           |                       | engine/python/ppo_drift_regularizer.py
+* Dual-Channel: Copilot HUD vs. Autopilot PWM  |     MASTER CORE:      | * NonEuclideanActionTransformer
+* Direct MMIO Register 0x5000_1004 (<1 ms Cut) |     NEXUS-AVATAR      |   - Cross-Attention over 32 Bezier Primitives
+compliance/defense_medical_standards.md        |   KINETIC C2 ENGINE   |   - Radial Jerk-Ball Projection (<= 2.0 m/s^3)
+* MIL-STD-882E (Cat I) / ISO 10218-1/2 Safety ->|      (MODULE 6)       |<- * EdgeDriftRegularizedPPOLoss
+* IEC 62304 Class C / FDA PCCP Drift Lock      +-----------------------+   - Kantorovich-Rubinstein 1-Wasserstein Gate
+                                                |                          - Catastrophic Shock Freeze (||d_theta||=0)
+                                                v
+                  [SATELLITE ASSET 3: BARE-METAL #![no_std] RUST & SYSTEMVERILOG RTL]
+                   * firmware/src/safety_watchdog.rs
+                     - 1 kHz Active-Set HOCBF QP Solver (t_QP <= 0.18 ms, <= 50 mm/s Ceiling)
+                     - Direct Volatile MMIO E-Stop (*mut 0x5000_1004 = 0x00, dmb/dsb sy)
+                   * hardware/rtl/avatar_pwm_watchdog.sv
+                     - 250 MHz AXI4-Lite Slave @ 0x5000_1000 (<= 4.0 ns Single-Cycle Gate Cutoff)
+                     - Independent 2000 us Countdown Timer & <= 1000 um Proximity Latch
+                                                |
+                                                v
+                  [SATELLITE ASSET 4: MULTI-TIER SIL VERIFICATION BENCHMARKS]
+                   * hardware/bench/tb_avatar_pwm_watchdog.sv (4-Gate Icarus Verilog RTL Bench)
+                   * engine/python/test_avatar_c2.py (5-Gate Python Spline, PPO, QP & Causal SIL)
+                   * tests/src/bin/test_module6.rs (4-Gate Bare-Metal Rust QP & MMIO Watchdog Bench)
+==========================================================================================================================
 ```
 
 ```
