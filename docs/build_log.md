@@ -21,46 +21,45 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
- ==========================================================================================================================
-                     MODULE 4: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
-===========================================================================================================================
+======================================================================================================================
+                     MODULE 5: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+======================================================================================================================
 
-                  [SATELLITE ASSET 1: MATHEMATICAL, CAUSAL & PRIVACY PROOFS]
-                         docs/proofs/aipw_gradient_stability.md
-                   * Proof 1: Doubly Robust Unbiased Expectation (E[Y_hat^{AIPW}] = E[Y(a)])
-                   * Proof 2: Hardware Propensity Clamp (eps = 0.01 => ||grad L||_2 <= 404.0)
-                   * Proof 3: Renyi DP & Cuff-Yu Bound (I(X_i; g_tilde) = 0.000099 <= 1e-4 bits)
-                   * Proof 4: Non-Convex DP-SGD Convergence Rate O(1 / sqrt(T))
-                   * Proof 5: Zero-Sum Pairwise ECDH Mask Cancellation (Sum S_{u,v} = 0.000000)
-                         docs/proofs/causal_action_space.md
-                   * Proof 6: Pearl's Do-Calculus Back-Door Adjustment Identification
+                  [SATELLITE ASSET 1: MATHEMATICAL, OPTICAL & SLAM PROOFS]
+                         docs/proofs/hud_slam_latency_proof.md
+                   * Proof 1: Critical Path Latency Budget (t_total = 12.60 ms <= 16.67 ms)
+                   * Proof 2: Direct-Silicon OS Window Manager Bypass (t_OS_jitter = 0.00 ms)
+                   * Proof 3: IEC 62304 Class C Photon Floor (T_photon >= 35.0%, 879.6 Td)
+                   * Proof 4: Thermal Throttling Worst-Case Execution (t_WCET = 14.36 ms)
+                         docs/proofs/slam_raymarching_derivation.md
+                   * Proof 5: Sensorless 6-DoF SE(3) Odometry (Lucas-Kanade + Clamped Speckle)
+                   * Proof 6: Lateral-Axis Pitch Projection R_x(theta) & Adjoint Grad dC/dV_i
+                   * Proof 7: 512^3 FP16 Voxel Bounds (256.0 MiB / 268.44 MB, 16.11 GB/s)
+                   * Proof 8: 30-Bit 3D Morton Z-Curve Indexing (16.0x L2 Cache Locality)
+                                                        |
+                                                        ▼
+[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE] ┌───────────────────────┐[SATELLITE ASSET 2: BARE-METAL CUDA KERNELS]
+docs/architecture/hud_slam_architecture.md     |                       | engine/cuda/hud_compositor.cu
+* Dual Page-Locked Ping-Pong Ring (Ring 0/1)   |     MASTER CORE:      | * Fused Alpha Clamp (0.0 <= alpha <= 0.65)
+* 4-Clock Domain Crossing (CDC MTBF ~10^257y)  |    AMBIENT HUD &      | * NaN/Overflow Scrubbing (T_photon >= 35.0%)
+compliance/defense_medical_standards.md        |       3D SLAM         | engine/cuda/slam_raymarching.cu
+* IEC 62304 Class C / IEC 60601-1-11         ->|      (MODULE 5)       |<- * 30-Bit Morton Atomic Voxel Splatting
+* MIL-STD-461G / MIL-STD-810H / IEEE 754-2019  └───────────────────────┘ * 64-Step Beer-Lambert Raymarch & Adjoint
+                                                       |                  engine/cuda/test_cuda_m5_sil.cpp
+                                                       ▼                 * C++20 Host-Emulated CUDA SIL Benchmark
+                  [SATELLITE ASSET 3: BARE-METAL SCANOUT HAL & TIMING BUDGETS]
+                   * firmware/src/display_scanout.rs (#![no_std] MMIO 0x4000_3000, V-Sync Flip)
+                   * hardware/timing_budget_proof.md
+                     - Stage 1: Pinned DMA Ingress (t_DMA = 0.83 ms @ 15.0 GB/s QoS Slice)
+                     - Stage 2: Int8 TensorRT Vision-SSM Inference (t_Inference = 7.20 ms)
+                     - Stage 3: 6-DoF SLAM Volume Raymarching (t_Raymarch = 4.15 ms)
+                     - Stage 4: Fused CUDA Alpha Compositor (t_AlphaBlend = 0.42 ms)
                                                 |
                                                 ▼
-[SATELLITE ASSET 5: COMPLIANCE & VERIFICATION] ┌───────────────────────┐ [SATELLITE ASSET 2: PIPELINE & BUS SPECS]
-compliance/defense_medical_standards.md        |                       | docs/architecture/causal_mlops_pipeline.md
-* India DPDP Act 2023 (Sec 3 & Sec 8 Safe)     |     MASTER CORE:      | * K-Fold DML Cross-Fitting (Neyman-Orthogonal)
-* US HIPAA Privacy Rule (45 CFR § 164.514)     |     NEXUS-CAUSAL      | * Hardware Clamp Hex: 0x211F / 0x3BEC (FP16)
-* IEC 62304 Class C / IEEE 754-2019 FP16 Safe->|   MLOPS & FEDERATED   |<- * 64B Top-K EF-SGD Slice (Offset 0x01C0..0x01FF)
-* MIL-STD-882E (Cat I) / MIL-STD-188-220 CNR   |      (MODULE 4)       | * 2.048 s Burst @ 2 Kbps (3.41% Radio Duty)
-* Common Criteria EAL5+ (AES-XTS TEE Enclave)  └───────────────────────┘ * Asynchronous CvRDT Mesh Model Convergence
-                                                |
-                                                ▼
-                  [SATELLITE ASSET 3: EXECUTABLE PYTORCH CAUSAL & DP ENGINES]
-                   * engine/python/causal_aipw.py
-                     - DoublyRobustAIPWLoss (eps = 0.01 Clamp, Treated & Control Branches)
-                     - CausalPolicyNetwork (Spectral Norm Lipschitz-1, |f_theta| <= 1.0)
-                     - InEnclaveDPSanitizer (L2 Clip C = 1.0, Gaussian Noise sigma = 0.1)
-                     - TopKSparsifierWithEF (K = 16 FP16 + 16 int16 = 64B Error-Feedback)
-                     - ShamirSecAggEngine (Curve25519 ECDH Pairwise Anti-Symmetric Masks)
-                     - DoubleMachineLearningHarness (2-Fold Orthogonal DML Cross-Fitting)
-                                                |
-                                                ▼
-                  [SATELLITE ASSET 4: BARE-METAL TEE DRIVER & SIL BENCHMARKS]
-                   * firmware/src/secagg_enclave.rs (#![no_std] Newton-Raphson L2 Clip & 64B Pack)
-                   * crypto/src/zk_lineage.rs & firmware/src/cvrdt_ledger.rs (256B ZK + 512B Frame)
-                   * engine/python/test_causal_aipw.py (5-Gate Python Causal, DP & SecAgg SIL)
-                   * tests/src/bin/test_module4.rs (3-Gate Bare-Metal Rust TEE & 512B Wire Bench)
-==========================================================================================================================
+                  [SATELLITE ASSET 4: AUTOMATED SIL VERIFICATION SUITES]
+                   * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint SIL)
+                   * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
+======================================================================================================================
 ```
 
 ```
