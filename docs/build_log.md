@@ -22,46 +22,18 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                   TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
+                     SPRINT-BY-SPRINT DUAL-TRACK COLLABORATIVE WORKFLOW
 ====================================================================================================
-
-        ┌──────────────────────────────────────────────────────────────────────────────────┐
-        |         TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd.)          |
-        | * Managing Director & Principal Architect: Subhankar Maitra                      |
-        | * System Invariants, Architecture, IP Strategy (Patent App. No. 202631094668)    |
-        | * Defense Liaison (iDEX DIO, Army Design Bureau, DG AFMS) & Clinical MoUs        |
-        └────────────────────────────────────────┬─────────────────────────────────────────┘
-                                                 |
-                                                 ▼
-        ┌──────────────────────────────────────────────────────────────────────────────────┐
-        |     TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)   |
-        +----------------------------------------+-----------------------------------------+
-        | [LEAD MICROELECTRONICS HARDWARE &      | [LEAD SYSTEMS SOFTWARE &                |
-        |  EMBEDDED SYSTEMS ENGINEER]            |  GEOMETRIC DL COMPILER ENGINEER]        |
-        | * Owns synthesizable SystemVerilog RTL | * Owns CUDA C++20 & TensorRT INT8 cores |
-        |   (M = 32 DDC & 250 MHz PWM Watchdog)  |   (SE(3) Harmonics, ZOH Mamba, SLAM)    |
-        | * Owns Altium PCB layout, Samtec 4 kV  | * Owns #![no_std] Rust HAL, 256 B ZK    |
-        |   FireFly moat & Versal timing closure |   verifier, 512 B CvRDT mesh & TOPRF    |
-        └────────────────────────────────────────┬─────────────────────────────────────────┘
-                                                 |
-                         [Joint SRA Work Package Execution & Bi-Weekly Co-Dev Sprints]
-                                                 |
-                                                 ▼
-        ┌──────────────────────────────────────────────────────────────────────────────────┐
-        |   TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & PERSONNEL (Via IC&SR / HTIC SRA)   |
-        +----------------------------------------+-----------------------------------------+
-        | [1. HIGH-SPEED DIGITAL & HV SAFETY]    | [2. COMPUTATIONAL BIOPHYSICS & HPC AI]  |
-        | * Dept. of Electrical Engineering      | * CSE / Neuromorphic & HPC Centre       |
-        | * 25 GHz SerDes & 24 kV 2-MOPP Chamber | * TensorRT INT8 & 15-Pair InfoNCE Train |
-        +----------------------------------------+-----------------------------------------+
-        | [3. CRYPTOGRAPHY & SECURE SYSTEMS]     | [4. CLINICAL ANALYTICS & BIOPSY BRIDGE] |
-        | * Secure Systems / Trusted Compute Lab | * HTIC Clinical Core & Hospital Liaison |
-        | * SEV-SNP / TrustZone & < 2 kbps CNR   | * 20,000+ Trajectory DML & LIS NLP      |
-        +----------------------------------------+-----------------------------------------+
-        | [5. INTERVENTIONAL SLAM & HYDROPHONE]  | [6. DEFENSE MECHATRONICS & EMI/EMC]     |
-        | * HTIC Imaging & Acoustic Tank Suite   | * Centre for Robotics & Telecom Testbed |
-        | * 12.60 ms HUD & 512³ Morton Phantoms  | * 1 kHz CBF HIL & MIL-STD-810H/461G     |
-        └──────────────────────────────────────────────────────────────────────────────────┘
+ [TIER 1: FOUNDER / ARCHITECT]  ---> Locks Mathematical Invariants, Register Maps & Gate Criteria
+               |
+               ▼
+ [TIER 2: INTERNAL CORE LEADS]  ---> Develops Synthesizable RTL, #![no_std] Firmware & CUDA Kernels
+               |                     (Verified against ./scripts/run_all_benchmarks.sh CI Gate)
+               ▼
+ [TIER 3: IITM / HTIC SRA LABS] ---> Executes Dielectric, Hydrophone, SDR & MIL-STD Chamber Runs
+               |
+               ▼
+ [CERTIFIED GATE CLEARANCE]     ---> Emits Stamped IC&SR / NABL Dossier for iDEX Tranche Release
 ====================================================================================================
 ```
 
