@@ -22,18 +22,18 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                     SPRINT-BY-SPRINT DUAL-TRACK COLLABORATIVE WORKFLOW
+                        SOVEREIGN BIO-OS: 18-MONTH DUAL-USE SRA MASTER ROADMAP
 ====================================================================================================
- [TIER 1: FOUNDER / ARCHITECT]  ---> Locks Mathematical Invariants, Register Maps & Gate Criteria
-               |
-               ▼
- [TIER 2: INTERNAL CORE LEADS]  ---> Develops Synthesizable RTL, #![no_std] Firmware & CUDA Kernels
-               |                     (Verified against ./scripts/run_all_benchmarks.sh CI Gate)
-               ▼
- [TIER 3: IITM / HTIC SRA LABS] ---> Executes Dielectric, Hydrophone, SDR & MIL-STD Chamber Runs
-               |
-               ▼
- [CERTIFIED GATE CLEARANCE]     ---> Emits Stamped IC&SR / NABL Dossier for iDEX Tranche Release
+
+Months: 0      2      4      6      8      10     12     14     16     18
+        ├──────┴──────┼──────┴──────┼──────┴──────┼──────┴──────┼──────┴──────┤
+WPs:    [--- WP 1 ---]              [--- WP 3 ---]              [--- WP 5 ---]
+        (Mod 1: Ingress/DDC)        (Mod 3: TEE/CvRDT)          (Mod 5: HUD/SLAM)
+               [--- WP 2 ---]              [--- WP 4 ---]              [--- WP 6 ---]
+               (Mod 2: SE(3)/Mamba)        (Mod 4: Causal MLOps)       (Mod 6: Kinetic C2 / Sandbox)
+        ├───────────────────────────┼───────────────────────────┼─────────────┤
+Gates:                G1 (M4)   G2 (M7)    G3 (M10)  G4 (M13)   G5 (M16)      G6 (M18)
+TRL:             TRL 3/4 -> 4                  TRL 4 -> 5               TRL 5 -> 6+ (Flagship MVP)
 ====================================================================================================
 ```
 
