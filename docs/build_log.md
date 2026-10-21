@@ -21,20 +21,40 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-====================================================================================================
-                        SOVEREIGN BIO-OS: 18-MONTH DUAL-USE SRA MASTER ROADMAP
-====================================================================================================
+============================================================================================================================
+                      SOVEREIGN BIO-OS / NEXUS-CORE: VALUE & REVENUE CAPTURE ENGINE
+============================================================================================================================
 
-Months: 0      2      4      6      8      10     12     14     16     18
-        ├──────┴──────┼──────┴──────┼──────┴──────┼──────┴──────┼──────┴──────┤
-WPs:    [--- WP 1 ---]              [--- WP 3 ---]              [--- WP 5 ---]
-        (Mod 1: Ingress/DDC)        (Mod 3: TEE/CvRDT)          (Mod 5: HUD/SLAM)
-               [--- WP 2 ---]              [--- WP 4 ---]              [--- WP 6 ---]
-               (Mod 2: SE(3)/Mamba)        (Mod 4: Causal MLOps)       (Mod 6: Kinetic C2 / Sandbox)
-        ├───────────────────────────┼───────────────────────────┼─────────────┤
-Gates:                G1 (M4)   G2 (M7)    G3 (M10)  G4 (M13)   G5 (M16)      G6 (M18)
-TRL:             TRL 3/4 -> 4                  TRL 4 -> 5               TRL 5 -> 6+ (Flagship MVP)
-====================================================================================================
+                PHYSICAL DATA GENERATION BOUNDARY (RAW BIOPHYSICAL WAVEFIELD LAYER)
+          Ultrasound 2.5 GSPS RF Wavefields | Endoscopic Video Rasters | Microvolt ICU Telemetry
+                                                |
+                                                ▼ 
+┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│             MODULE 1 & 2: THE PHYSICAL INGRESS & GEOMETRIC REPRESENTATION MONOPOLY                 |                                  |  * Simplex Optical Tap (Z_Tx -> inf, I_rev = 0.00 A, C_rev = 0.00 bps, 24 kVpk) [Claims 1 & 2]     |
+|  * On-Die DDC + Kalman Sieve: 8.96 Tbps -> 80.0 GB/s (M=32, +15.05 dB, 256 ns)  [Claim 3]          | 
+│  * SE(3)-Mamba-VIB Vectorization-at-Birth: 44.789B Null Dims Erased -> S^{1023} [Claims 4 & 5]     |               
+│  * Volatile RAM Flash-Scrub: memset(0x00) + dc civac <= 16.67 ms (DPDP Act Sec. 8 Safe Harbor)     |                  └──────────────────────────────────────────────|─────────────────────────────────────────────────────┘
+                                               |
+          ┌────────────────────────────────────┴─────────────────────────────────────┐
+          ▼                                                                          ▼ 
+┌──────────────────────────────────────────────────────────┐   ┌──────────────────────────────────────────────────────────┐
+| CLINICAL WORKFLOW & KINETIC C2 LAYER                     |   |  FEDERATED BIO-INTELLIGENCE & DATA GRAVITY               | 
+| * Module 5: Sub-16ms Direct-Scanout HUD Compositor       |   |   * Module 3: Ristretto255 TOPRF & 48B RocksDB           |
+|   (t = 12.60 ms, alpha <= 0.65 -> 35% Floor)             |   |     PGTQ Suspense Ledger Sync  [Claims 6 & 7]            |
+| * Module 5: Sensorless 6-DoF 512^3 FP16                  |   |   * Module 3: 256B Plonky2 ZK Lineage Proof              |
+|    30-Bit Morton SLAM Mesh    [Claims 11 & 12]           |   |     (<= 2.15 ms) & 512B CvRDT    [Claim 8]               |
+| * Module 6: C^2 Bezier Action Transformer,               |   |   * Module 4: 2-Fold DML Doubly Robust AIPW              |
+|    1 kHz HOCBF QP & <=4.0 ns 0x5000_1004                 |   |    (||grad|| <= 404.0), Renyi DP (0.000099 b)            |
+|    Zero-Torque E-Stop  [Add. Claims 14 - 16]             |   |     & 64B Top-K ECDH SecAgg      [Claims 9 & 10]         |
+└──────────────────────────────────────────────────────────┘   └──────────────────────────────────────────────────────────┘ 
+                            |                                                                |
+                            ▼                                                                ▼ 
+                COMMERCIAL DEPLOYMENT                                           ENTERPRISE MONETIZATION
+    * Two-Tier Hospital Fleet HaaS (LITE / PRO)                     * Biopharma TEE Cleanroom Trials ($250K-$1M+)
+    * Defense Role 1-3 Trauma Resuscitation Pods                    * 60/30/10 Hospital Cleanroom Revenue Share
+    * Zero-Click Clinician Cockpit HUD Licenses                     * Third-Party AI Runtime Royalties (20-30%)
+    * Indigenous Tier-2 OEM Integration Kits                        * National Biosecurity Radar & DAP 2020 Tranches
+============================================================================================================================
 ```
 
 ```
