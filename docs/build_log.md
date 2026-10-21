@@ -34,7 +34,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 |  * Simplex Optical Tap (Z_Tx -> inf, I_rev = 0.00 A, C_rev = 0.00 bps, 24 kVpk) [Claims 1 & 2]     |
 |  * On-Die DDC + Kalman Sieve: 8.96 Tbps -> 80.0 GB/s (M=32, +15.05 dB, 256 ns)  [Claim 3]          | 
 │  * SE(3)-Mamba-VIB Vectorization-at-Birth: 44.789B Null Dims Erased -> S^{1023} [Claims 4 & 5]     |               
-│  * Volatile RAM Flash-Scrub: memset(0x00) + dc civac <= 16.67 ms (DPDP Act Sec. 8 Safe Harbor)     |                                                                                                            └──────────────────────────────────────────────|─────────────────────────────────────────────────────┘
+│  * Volatile RAM Flash-Scrub: memset(0x00) + dc civac <= 16.67 ms (DPDP Act Sec. 8 Safe Harbor)     |
+└──────────────────────────────────────────────┬─────────────────────────────────────────────────────┘                
                                                |
           ┌────────────────────────────────────┴─────────────────────────────────────┐
           ▼                                                                          ▼ 
