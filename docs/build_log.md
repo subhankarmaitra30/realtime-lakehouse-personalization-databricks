@@ -21,6 +21,23 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
+========================================================================================================================
+       GRANT CAPITAL ALLOCATION & DISTRIBUTION ARCHITECTURE-- Baseline Commitment: ₹1.50 Cr (₹150.00 Lakhs)                             
+========================================================================================================================
+ Operational Budget Head & Scope                         Visual Distribution         Ratio (%)   Capital Tranche
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ 01 Capital Expenditure (CapEx: Silicon, Hardware & Kits)  [████████████████████]       25.0%       ₹37.50 L
+ 02 Internal Core Engineering Team Payroll (Vested Leads)  [████████████████████]       25.0%       ₹37.50 L
+ 03 IIT Madras Institutional SRA Contract (HTIC / Labs)    [████████████████████]       25.0%       ₹37.50 L
+ 04 Defense Test Chambers & Certification (NABL / MIL-STD) [████████]                   10.0%       ₹15.00 L
+ 05 Clinical Operations & Hospital Data Taps (PGIMER)      [██████]                      7.5%       ₹11.25 L
+ 06 Statutory IP Prosecution (PCT / US/IN) & Reg. DHF      [██████]                      7.5%       ₹11.25 L
+========================================================================================================================
+    TOTAL CAPITAL DEPLOYED                                 [████████████████████████]   100.0%      ₹150.00 L (₹1.50 Cr)
+========================================================================================================================
+```
+
+```
 ============================================================================================================================
                       SOVEREIGN BIO-OS / NEXUS-CORE: VALUE & REVENUE CAPTURE ENGINE
 ============================================================================================================================
