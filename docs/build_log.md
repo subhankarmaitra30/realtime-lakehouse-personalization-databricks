@@ -23,7 +23,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
  ┌───────────────────────────────────────────────────────────────────────────┐
  │ 1. HARDWARE INGRESS LOCK-IN                                               │
- │ Simplex optical taps deploy non-invasively, eliminating CapEx friction.   │
+ │ Simplex optical taps deploy non-invasively across hospital fleet,         |
+ | eliminating CapEx friction.                                               │
  └─────────────────────────────────────┬─────────────────────────────────────┘
                                        ▼
  ┌───────────────────────────────────────────────────────────────────────────┐
@@ -39,7 +40,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                                        ▼                                        │
  ┌───────────────────────────────────────────────────────────────────────────┐  │
  │ 4. SELF-HEALING CAUSAL ACCELERATION                                       │  │
- │ Doubly Robust AIPW + 90-day RocksDB PGTQ biopsy linkage sharpen accuracy. │  │
+ │ Doubly Robust AIPW + 90-day RocksDB PGTQ biopsy linkage sharpen           |  |
+ | diagnostic accuracy and data utility.                                     |  |
  └─────────────────────────────────────┬─────────────────────────────────────┘  │
                                        ▼                                        │
  ┌───────────────────────────────────────────────────────────────────────────┐  │
