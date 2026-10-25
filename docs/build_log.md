@@ -21,20 +21,32 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-========================================================================================================================
-       GRANT CAPITAL ALLOCATION & DISTRIBUTION ARCHITECTURE-- Baseline Commitment: ₹1.50 Cr (₹150.00 Lakhs)                             
-========================================================================================================================
- Operational Budget Head & Scope                         Visual Distribution         Ratio (%)   Capital Tranche
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
- 01 Capital Expenditure (CapEx: Silicon, Hardware & Kits)  [████████████████████]       25.0%       ₹37.50 L
- 02 Internal Core Engineering Team Payroll (Vested Leads)  [████████████████████]       25.0%       ₹37.50 L
- 03 IIT Madras Institutional SRA Contract (HTIC / Labs)    [████████████████████]       25.0%       ₹37.50 L
- 04 Defense Test Chambers & Certification (NABL / MIL-STD) [████████]                   10.0%       ₹15.00 L
- 05 Clinical Operations & Hospital Data Taps (PGIMER)      [██████]                      7.5%       ₹11.25 L
- 06 Statutory IP Prosecution (PCT / US/IN) & Reg. DHF      [██████]                      7.5%       ₹11.25 L
-========================================================================================================================
-    TOTAL CAPITAL DEPLOYED                                 [████████████████████████]   100.0%      ₹150.00 L (₹1.50 Cr)
-========================================================================================================================
+ ┌───────────────────────────────────────────────────────────────────────────┐
+ │ 1. HARDWARE INGRESS LOCK-IN                                               │
+ │ Simplex optical taps deploy non-invasively, eliminating CapEx friction.   │
+ └─────────────────────────────────────┬─────────────────────────────────────┘
+                                       ▼
+ ┌───────────────────────────────────────────────────────────────────────────┐
+ │ 2. NON-PERSONAL VECTOR LAKEHOUSE EXPANSION                                │
+ │ "Vectorization-at-Birth" populates a DPDP-exempt 1024-D S^1023 repository.│
+ └─────────────────────────────────────┬─────────────────────────────────────┘
+                                       ▼
+ ┌───────────────────────────────────────────────────────────────────────────┐
+ │ 3. ENTERPRISE DATA GRAVITY & 70/20/10 FLYWHEEL                            │
+ │ Biopharma & AI devs pay TEE Cleanroom fees; 20% hospital royalty offsets  │◄─┐
+ │ HaaS lease costs, driving hospital CFOs to mandate 100% fleet expansion.  │  │
+ └─────────────────────────────────────┬─────────────────────────────────────┘  │
+                                       ▼                                        │
+ ┌───────────────────────────────────────────────────────────────────────────┐  │
+ │ 4. SELF-HEALING CAUSAL ACCELERATION                                       │  │
+ │ Doubly Robust AIPW + 90-day RocksDB PGTQ biopsy linkage sharpen accuracy. │  │
+ └─────────────────────────────────────┬─────────────────────────────────────┘  │
+                                       ▼                                        │
+ ┌───────────────────────────────────────────────────────────────────────────┐  │
+ │ 5. NATIONAL EMBEDDING SPECIFICATION MONOPOLY                              │  │
+ │ 1024-D SE(3)-invariant vector codified into BIS/ABDM & public RFP tenders.├──┘
+ └───────────────────────────────────────────────────────────────────────────┘
+        (Feedback Loop: Statutory Mandate + 20% Royalty Drives Step 1)
 ```
 
 ```
