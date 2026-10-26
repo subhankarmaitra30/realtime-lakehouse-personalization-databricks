@@ -21,35 +21,76 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-           The Sovereign Bio-OS Data Gravity & Standardization Flywheel
- ┌───────────────────────────────────────────────────────────────────────────┐
- │ 1. HARDWARE INGRESS LOCK-IN                                               │
- │ Simplex optical taps deploy non-invasively across hospital fleet,         |
- | eliminating CapEx friction.                                               │
- └─────────────────────────────────────┬─────────────────────────────────────┘
-                                       ▼
- ┌───────────────────────────────────────────────────────────────────────────┐
- │ 2. NON-PERSONAL VECTOR LAKEHOUSE EXPANSION                                │
- │ "Vectorization-at-Birth" populates a DPDP-exempt 1024-D S^1023 repository.│
- └─────────────────────────────────────┬─────────────────────────────────────┘
-                                       ▼
- ┌───────────────────────────────────────────────────────────────────────────┐
- │ 3. ENTERPRISE DATA GRAVITY & 70/20/10 FLYWHEEL                            │
- │ Biopharma & AI devs pay TEE Cleanroom fees; 20% hospital royalty offsets  │◄─┐
- │ HaaS lease costs, driving hospital CFOs to mandate 100% fleet expansion.  │  │
- └─────────────────────────────────────┬─────────────────────────────────────┘  │
-                                       ▼                                        │
- ┌───────────────────────────────────────────────────────────────────────────┐  │
- │ 4. SELF-HEALING CAUSAL ACCELERATION                                       │  │
- │ Doubly Robust AIPW + 90-day RocksDB PGTQ biopsy linkage sharpen           |  |
- | diagnostic accuracy and data utility.                                     |  |
- └─────────────────────────────────────┬─────────────────────────────────────┘  │
-                                       ▼                                        │
- ┌───────────────────────────────────────────────────────────────────────────┐  │
- │ 5. NATIONAL EMBEDDING SPECIFICATION MONOPOLY                              │  │
- │ 1024-D SE(3)-invariant vector codified into BIS/ABDM & public RFP tenders.├──┘
- └───────────────────────────────────────────────────────────────────────────┘
-        (Feedback Loop: Statutory Mandate + 20% Royalty Drives Step 1)
+====================================================================================================
+      SOVEREIGN BIO-OS (NEXUS-CORE): UNIFIED CLOSED-LOOP EXECUTION & VALUE CAPTURE ARCHITECTURE
+               (Indian Patent App. No. 202631094668 | Verified 9-Stage SIL/RTL Baseline)
+====================================================================================================
+
+      ╔══════════════════════════════════════════════════════════════════════════════════════╗
+  ┌──►║          PHYSICAL DATA GENERATION BOUNDARY (RAW BIOPHYSICAL WAVEFIELD LAYER)         ║
+  │   ║   256-Ch 2.50 GSPS Pre-Beamformed RF | 4K/8K Surgical Video | Bedside ICU Telemetry  ║
+  │   ╚══════════════════════════════════════════╦═══════════════════════════════════════════╝
+  │                                              │ Non-Invasive ZIF & Pass-Through Interposers
+  │                                              ▼ (Z_in > 1 MOhm, C_in < 1.5 pF)
+  │   ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │   │ TIER I: UPSTREAM PHYSICAL INGRESS & GEOMETRIC REFINERY (THE DATA INGESTION MONOPOLY) │
+  │   ├──────────────────────────────────────────────────────────────────────────────────────┤
+  │   │ [MODULE 1: NEXUS-INGEST] (Physical-Layer Cyber-Isolation & On-Die Front-End)         │
+  │   │  * 8.0 mm Samtec FireFly Simplex Optical Moat: Z_Tx -> inf, I_rev = 0.00 A,          │
+  │   │    C_{E->H} = 0.00 bps, C_parasitic = 1.33 fF (I_disp = 33.22 uA), 24.0 kV_peak      │
+  │   │    (4 kV_rms) Dielectric Isolation (+324% IEC 60601-1 2-MOPP)          [Claims 1, 2] │
+  │   │  * SystemVerilog M=32 Polyphase DDC (294.6 ns) + RLS-MVDR & Spectral Kurtosis        │
+  │   │    Kalman Sieve (256.0 ns, dSIR >= 38.45 dB): 8.96 Tbps -> 80.0 GB/s IQ    [Claim 3] │
+  │   │                                          │                                           │
+  │   │                                          ▼ PCIe Gen 6 / CXL.mem (33.88% Headroom)    │
+  │   │ [MODULE 2: NEXUS-VECTOR] (Geometric Vectorization-at-Birth & Statutory Safe Harbor)  │
+  │   │  * Tier 1: SE(3) Steerable 3D Harmonics (l in {0,1,2}) + SO(3) Irrep Gate  [Claim 4] │
+  │   │  * Tier 2: O(L) ZOH Selective State-Space Mamba Scan (7,200 Frames in 32.768 KB SRAM)│
+  │   │  * Tier 3: VIB Head Erases 44.789B Null Dims -> S^{1023} (||v_bio||_2 = 1.0, I = 0)  │
+  │   │  * Volatile DMA Scrub: memset(0x00) + ARM64 dc civac <= 16.67 ms (DPDP Sec. 8)       │
+  │   │  * 6-Modal, 15-Pair Symmetric InfoNCE Lattice (Q=256 FIFO, B=1 Triage)     [Claim 5] │
+  │   └──────────────────────────────────────────┬───────────────────────────────────────────┘
+  │                                              │ Standardized 1024-D Non-Personal Vector (v_bio)
+  │                     ┌────────────────────────┴────────────────────────┐
+  │                     ▼                                                 ▼
+  │   ┌──────────────────────────────────────────┐      ┌────────────────────────────────────┐
+  │   │ TIER II-A: ASYNCHRONOUS TEE STATE LEDGER │      │ TIER II-B: CAUSAL FEDERATED MESH   │
+  │   │ [MODULE 3: NEXUS-LEDGER]                 │      │ [MODULE 4: NEXUS-CAUSAL]           │
+  │   │ * #![no_std] Ristretto255 (3,5)-TOPRF    │      │ * Pearl Do-Calculus + 2-Fold DML   │
+  │   │   & DLEQ NIZK (I(X;Y) = 0.000000 bits)   │      │   Doubly Robust AIPW (e in [.01,.99│
+  │   │ * 48B Key RocksDB PGTQ (90-Day TTL:      │◄────►│   at 0x211F/0x3BEC, ||grad||<=404) │
+  │   │   7.776x10^15 ns) + Levi-Civita Transport│      │ * Newton-Raphson L2 Clip (C = 1.0) │
+  │   │   [Claims 6 & 7]                         │      │   + Renyi DP (eps=6.87, 0.000099 b)│
+  │   │ * 256B Plonky2 ZK Proof (<= 2.15 ms)     │      │ * 64B Top-K Error-Feedback Slice   │
+  │   │ * 512B Binary CvRDT Semilattice Sync     │      │   (2.048s @ 2 Kbps, 3.41% Duty) &  │
+  │   │   (<2 Kbps MIL-STD-188-220 CNR) [Claim 8]│      │   Curve25519 SecAgg [Claims 9, 10] │
+  │   └─────────────────┬────────────────────────┘      └─────────────────┬──────────────────┘
+  │                     └────────────────────────┬────────────────────────┘
+  │                                              │ Reconciled Causal Policy & 3D Spatial Prior
+  │                     ┌────────────────────────┴────────────────────────┐
+  │                     ▼                                                 ▼
+  │   ┌──────────────────────────────────────────┐      ┌────────────────────────────────────┐
+  │   │ TIER III-A: AMBIENT CLINICAL HUD & SLAM  │      │ TIER III-B: AUTONOMOUS KINETIC C2  │
+  │   │ [MODULE 5: NEXUS-HUD-SLAM] (Visual Ch A) │      │ [MODULE 6: NEXUS-AVATAR] (Kin Ch B)│
+  │   │ * Dual Page-Locked MMIO 0x4000_3000      │      │ * Non-Euclidean Action Transformer │
+  │   │   Scanout (0.00 ms OS Window Jitter)     │      │   M=32 C^2 Cubic Bezier Primitives │
+  │   │ * 12.60 ms Nominal / 14.36 ms (100C WCET)│      │   (||tau'''||_2 <= 2.0 m/s^3)      │
+  │   │ * Clamped Alpha <= 0.65 (35% Photon Floor│      │ * 1 kHz Active-Set QP Watchdog     │
+  │   │   / 879.6 Trolands, IEC 62304 Class C)   │      │   (<=0.18 ms, Nagumo HOCBF h(t)>=0)│
+  │   │ * Sensorless 6-DoF SLAM -> 30-Bit Morton │      │ * 1-Wasserstein Shock Drift Freeze │
+  │   │   512^3 FP16 Grid (256 MiB) [Claims 11-13│      │ * 4.0 ns RTL Gate Cut (0x5000_1004)│
+  │   └─────────────────┬────────────────────────┘      │   -> 0.60 ms Zero-Torque [Cl 14-16]│
+  │                     │                               └─────────────────┬──────────────────┘
+  │                     ▼                                                 ▼
+  │   ╔══════════════════════════════════════════╗      ╔════════════════════════════════════╗
+  │   ║    BEDSIDE & TACTICAL HaaS DEPLOYMENT    ║      ║  ENTERPRISE CLEANROOM MONETIZATION ║
+  │   ╠══════════════════════════════════════════╣      ╠════════════════════════════════════╣
+  │   ║ * NEXUS-LITE (Rs 35K/mo) & PRO (Rs 1.25L)║      ║ * Biopharma TEE Trials ($250K-$1M) ║
+  │   ║ * Defense Role 1-3 DAP 2020 Pods + AMC   ║◄────►║ * 70 / 20 / 10 Hospital Rev-Share  ║
+  │   ║ * Indigenous Tier-2 OEM Integration Kits ║      ║ * 3rd-Party AI App-Store (20-30%)  ║
+  │   ║ * BIS / DPDP Act Public RFP Codification ║      ║ * National Biosecurity Radar (D_W) ║
+  └───╨══════════════════════════════════════════╝      ╚════════════════════════════════════╝
+   Closed-Loop Physical & Economic Feedback (Actuation Modulates Tissue; 20% Royalty Funds Fleet)
 ```
 
 ```
