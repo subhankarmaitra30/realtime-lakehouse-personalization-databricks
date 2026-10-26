@@ -41,7 +41,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   │   │    (4 kV_rms) Dielectric Isolation (+324% IEC 60601-1 2-MOPP)          [Claims 1, 2] │
   │   │  * SystemVerilog M=32 Polyphase DDC (294.6 ns) + RLS-MVDR & Spectral Kurtosis        │
   │   │    Kalman Sieve (256.0 ns, dSIR >= 38.45 dB): 8.96 Tbps -> 80.0 GB/s IQ    [Claim 3] │
-  │   │                                          │                                           │
+  │   │                                          │                                           |
+  |   |                                          | Decimated Baseband Payload                |                    
   │   │                                          ▼ PCIe Gen 6 / CXL.mem (33.88% Headroom)    │
   │   │ [MODULE 2: NEXUS-VECTOR] (Geometric Vectorization-at-Birth & Statutory Safe Harbor)  │
   │   │  * Tier 1: SE(3) Steerable 3D Harmonics (l in {0,1,2}) + SO(3) Irrep Gate  [Claim 4] │
