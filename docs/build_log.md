@@ -21,33 +21,30 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-        The Nexus Bio-OS Data Gravity & Standardization Flywheel
- ┌───────────────────────────────────────────────────────────────────────────┐
- │ 1. HARDWARE INGRESS LOCK-IN                                               │◄─┐
- │ Simplex optical taps deploy non-invasively, eliminating CapEx friction.   │  |
- └─────────────────────────────────────┬─────────────────────────────────────┘  | 
-                                       ▼                                        | 
- ┌───────────────────────────────────────────────────────────────────────────┐  |
- │ 2. NON-PERSONAL VECTOR LAKEHOUSE EXPANSION                                │  |
- │ "Vectorization-at-Birth" populates a DPDP-exempt 1024-D S^1023 repository.│  |
- └─────────────────────────────────────┬─────────────────────────────────────┘  |
-                                       ▼                                        | 
- ┌───────────────────────────────────────────────────────────────────────────┐  |
- │ 3. ENTERPRISE DATA GRAVITY & 70/20/10 FLYWHEEL                            │  |
- │ Biopharma & AI devs pay TEE Cleanroom fees; 30% hospital royalty offsets  │  |
- │ HaaS lease costs, driving hospital CFOs to mandate 100% fleet expansion.  │  │
- └─────────────────────────────────────┬─────────────────────────────────────┘  │
-                                       ▼                                        │
- ┌───────────────────────────────────────────────────────────────────────────┐  │
- │ 4. SELF-HEALING CAUSAL ACCELERATION                                       │  │
- │ Doubly Robust AIPW + 90-day RocksDB PGTQ biopsy linkage sharpen accuracy. │  │
- └─────────────────────────────────────┬─────────────────────────────────────┘  │
-                                       ▼                                        │
- ┌───────────────────────────────────────────────────────────────────────────┐  │
- │ 5. NATIONAL EMBEDDING SPECIFICATION MONOPOLY                              │  │
- │ 1024-D SE(3)-invariant vector codified into BIS/ABDM & public RFP tenders.├──┘
- └───────────────────────────────────────────────────────────────────────────┘
-        (Feedback Loop: Statutory Mandate + 30% Royalty Drives Step 1)
+========================================================================================================
+             PHASED SOVEREIGN INSTITUTIONAL & COMMERCIAL PENETRATION HORIZONS
+========================================================================================================
+┌────────────────────────────────────────────────┐     ┌─────────────────────────────────────────────────┐
+| [ PHASE 1: THE SOVEREIGN & ACADEMIC WEDGE ]    | ──► |  [ PHASE 2: TIER-2 INDIGENOUS OEM ALLIANCES ]   |
+| • Timeline: Months 0 – 18 (TRL 3/4 -> TRL 6+)  |     | • Timeline: Months 18 – 36 (TRL 6+ MVP Launch)  |
+| • SRA Testbeds: PGIMER Chandigarh & AIIMS Nets |     | • Partners: Trivitron, Skanray, BPL, Allengers  |
+| • Defense Engine: iDEX SPARK/ADITI Fast-Track  |     | • Compliance: MoD GFR Rule 144(xi) Supply Clamp |
+| • Defense Leverage: MoD Corps of EME Right-to- |     | • Strategy: License Core RTL Kit into ₹15L local| 
+|  -Repair mandates bypass Tier-1 warranty locks |     |  consoles to outperform imported ₹1.2Cr systems.|
+└────────────────────────────────────────────────┘     └─────────────────────────────────────────────────┘
+                       │                                                 │
+                       ▼                                                 ▼
+┌──────────────────────────────────────────────────┐     ┌──────────────────────────────────────────────────┐
+| [ PHASE 3: PUBLIC MUNICIPAL RFP CODIFICATION ]   | ──► |    [ PHASE 4: GLOBAL BIOPHARMA TOLLGATE ]        | 
+|  • Timeline: Years 2 – 4 (Market Dominance)      |     |   • Timeline: Year 4+ (Exponential Expansion)    |
+|  • Regulatory Hook: DPDP Act 2023 Sec.8 Fiduciary|     |   • Network Moat: High-density  Vector Lakehouse | 
+|    penalties (₹250 Cr personal board liability). |     |   • Monetization Engine:On-premise TEE Cleanrooms|
+|  • RFP Specifications Codified via BIS/ABDM:     |     |   • Value Flywheel: 60/30/10 Tri-Partite Model   |
+|    1. Mandatory 2-MOPP Simplex Optical Diode     |     |  (60% Deep Neuro-Nex / 30% Host Hospital Network | 
+|    2. Mandatory Sub-16.67ms Volatile RAM Ingress |     |   to erase HaaS CapEx / 10% Departmental R&D Fund| 
+|    Zeroization (memset 0x00 / dim(ker(J))>=10^9) |     |   to incentivize continuous PGTQ ground-truth).  | 
+└──────────────────────────────────────────────────┘     └──────────────────────────────────────────────────┘ 
+========================================================================================================
 ```
 
 ```
