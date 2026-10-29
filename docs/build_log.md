@@ -33,7 +33,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
  └─────────────────────────────────────┬─────────────────────────────────────┘  |
                                        ▼                                        | 
  ┌───────────────────────────────────────────────────────────────────────────┐  |
- │ 3. ENTERPRISE DATA GRAVITY & 60/30/10 FLYWHEEL                            │  |
+ │ 3. ENTERPRISE DATA GRAVITY & 70/20/10 FLYWHEEL                            │  |
  │ Biopharma & AI devs pay TEE Cleanroom fees; 30% hospital royalty offsets  │  |
  │ HaaS lease costs, driving hospital CFOs to mandate 100% fleet expansion.  │  │
  └─────────────────────────────────────┬─────────────────────────────────────┘  │
