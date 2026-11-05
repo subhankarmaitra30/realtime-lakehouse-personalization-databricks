@@ -21,49 +21,20 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-====================================================================================================
-                        TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
-====================================================================================================
-       ┌──────────────────────────────────────────────────────────────────────────────────┐
-       |   TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd.)                |
-       |  • Managing Director & Principal Architect: Subhankar Maitra                     |
-       |  • Strategic Direction, System Invariants, IP Prosecution (Patent 202631094668)  |
-       |  • Defense Liaison (iDEX, Army Design Bureau, DG AFMS) & Clinical MoUs           |
-       └───────────────────────────────────────┬──────────────────────────────────────────┘ 
-                                               ▼ 
-┌────────────────────────────────────────────────────────────────────────────────────────────┐
-| TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)                 |                                                       
-| [LEAD Microelectronics HARDWARE &             [LEAD SYSTEMS SOFTWARE & Geometric           |
-|       EMBEDDED SYSTEMS ENGINEER]                   Deep Lerarning  COMPILER ENG]           |
-| * Owns synthesizable SystemVerilog RTL         * Owns CUDA C++20 & TensorRT Int8 cores     |
-|  (SSR=8 M=32 DDC & 4ns PWM Watchdog)               (4-Shell SE(3), expm1f Mamba, SLAM)     |
-| * Owns Altium PCB layout, Samtec 4 kV          * Owns #![no_std] Rust HAL, TOPRF,          |
-|   FireFly moat & Versal timing closure              Goldilocks ZK & 512B CvRDT mesh        |
-└──────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                               | Joint SRA Work Package Execution, Bi-Weekly 
-                                               ▼   Co-Dev Sprints & Hardware-in-the-Loop Gates                                                
-┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-| TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Via IC&SR/ HTIC SRA Allocation)  |
-|                                                                                                  |
-| [HIGH-SPEED DIGITAL & HV SAFETY]                 [CRYPTOGRAPHY & SECURE DISTRIBUTED SYSTEMS]     |
-| • Dept. of Electrical Engineering /             • Secure Systems Centre / Trusted Computing Lab  |
-|   High-Speed Digital & RF Lab                   • Hardware TEE Enclaves (AMD SEV-SNP / TrustZone)|
-| • High-Voltage Medical Safety Chamber           • Plonky2 ZK-SNARKs & Bare-Metal CvRDT           |
-| * 25 GHz SerDes & 24 kV Type-CF Chamber|          Verification & <2 Kbps CNR                     |
-|                                                                                                  |
-| [COMPUTATIONAL BIOPHYSICS & HPC AI]              [INTERVENTIONAL SLAM & HYDROPHONE]              |
-| • Centre for Programmable Photonic &            • HTIC Imaging & Acoustic Tank Suite             |
-|   Neuromorphic Systems / HPC Centre             • Calibrated Hydrophone Tanks & Optical Motion   |
-| • TensorRT Int8 Compilation, SE(3) Mamba          Analysis                                       |
-|   & 15-Pair InfoNCE Train                       • Sub-16ms Direct Video Compositor, 3D Voxel     |
-|                                                   Meshing & 512^3 Morton Phantoms                |
-|                                                                                                  |
-| [DEFENSE RUGGEDIZATION MECHATRONICS]          [CLINICAL SITE INTEGRATION (PGIMER / AIIMS)]       |
-| • Centre for Robotics Mechatronics            * HTIC Clinical Core & Apex AIIMS Data Liaison     |
-| • IITM Telecom testbed & Defense              • 20,000+ Patient Trajectory Validation Pipeline   |
-|   Testing Centre, EMI/EMC                     • Ground-Truth Matching (Radiology to LIS          |
-| • 1 kHz CBF HIL MIL-STD-810H / 461G               Pathology)                                     |
-└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+[ Raw 256-Ch Acoustic RF ] ──► (2.50 GSPS @ 14-bit | 8.960 Tbps / 1.120 TB/s)
+              │
+              ▼ Deserialization to SSR = 8 Polyphase Sub-Streams
+ ┌───────────────────────────┐
+ │   312.50 MHz DSP58 Domain │ ──► Bounded securely below 350.0 MHz
+ ├───────────────────────────┤
+ │ • 48-bit Taylor NCO       │ ──► Phase bits locked for >102 dB SFDR
+ │ • 5-Stage Hogenauer CIC   │ ──► R_1 = 16 Decimation | Multicycle Path 16/15
+ │ • Polyphase Half-Band FIR │ ──► R_2 = 2 Decimation  | Folded Symmetric 8-Tap
+ │ • IEEE 754 Saturation     │ ──► Round-to-Nearest-Even Bit Clamping
+ └────────────┬──────────────┘
+              │
+              ▼ (14:1 Ingress Data Compression Ratio | Latency = 294.600 ns)
+ [ Baseband Complex IQ Payload ] ──► (80.000 GB/s | Q1.15 int16 | 16.50-bit ENOB)
 ```
 
 ```
