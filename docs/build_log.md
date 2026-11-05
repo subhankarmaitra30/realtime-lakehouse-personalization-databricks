@@ -21,21 +21,19 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-           [ RAW MACHINE BUS / TRANSDUCER ] 
-                │ (Z_in > 1 MOhm, C_in < 1.5 pF)
+  [ Raw Ingress Baseband Stream ] (80.000 GB/s)
+                │
                 ▼
-  ┌──────────────────────────────┐
-  │ Floating Node-H Microcontrol │ ──► Powered via Host Aux / 850 nm Power-over-Fiber
-  └────────────┬─────────────────┘     (Zero Cross-Moat Transformer Windings)
-               │
-               ▼
-   ============ ============  ──► 8.0 mm Dielectric Clearance Moat (No Copper Tx)
-               │
-               ▼ (Samtec FireFly Rx-Only Optical Assembly | Z_Tx -> inf)
-  ┌──────────────────────────────┐
-  │ EDGE COMPUTE NODE (NODE E)   │ ──► C_parasitic = 1.33 fF | I_disp = 33.22 uA
-  └──────────────────────────────┘     Continuous 4000 V_rms Leakage = 2.004 nA
-                                       [ IEC 60601-1 2 MOPP & Type CF Certified ]
+ ┌────────────────────────────────────────────────────────┐
+ │ 4-Shell Pre-Cached Isotropic Stencil (r^2 in {0,1,2,3})│ ──► Reduces Voxel RBF Tax by 6.75x
+ ├────────────────────────────────────────────────────────┤
+ │ Wigner-Eckart 3D Spherical Harmonics Convolutions (l)  │ ──► Extracts 9 Orthonormal Real Irreps
+ ├────────────────────────────────────────────────────────┤
+ │ SO(3) Quadratic Casimir & Frobenius Norm Gate          │ ──► Guarantees Invariance under random Tilt
+ └──────────────┬─────────────────────────────────────────┘
+                │
+                ▼ (Zero Dynamic Heap Allocation | Latency t_single <= 3.41 ms)
+ [ Equivariant Geometric State Representation ]
 ```
 
 ```
