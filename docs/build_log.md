@@ -21,20 +21,21 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-[ Raw 256-Ch Acoustic RF ] ──► (2.50 GSPS @ 14-bit | 8.960 Tbps / 1.120 TB/s)
-              │
-              ▼ Deserialization to SSR = 8 Polyphase Sub-Streams
- ┌───────────────────────────┐
- │   312.50 MHz DSP58 Domain │ ──► Bounded securely below 350.0 MHz
- ├───────────────────────────┤
- │ • 48-bit Taylor NCO       │ ──► Phase bits locked for >102 dB SFDR
- │ • 5-Stage Hogenauer CIC   │ ──► R_1 = 16 Decimation | Multicycle Path 16/15
- │ • Polyphase Half-Band FIR │ ──► R_2 = 2 Decimation  | Folded Symmetric 8-Tap
- │ • IEEE 754 Saturation     │ ──► Round-to-Nearest-Even Bit Clamping
- └────────────┬──────────────┘
-              │
-              ▼ (14:1 Ingress Data Compression Ratio | Latency = 294.600 ns)
- [ Baseband Complex IQ Payload ] ──► (80.000 GB/s | Q1.15 int16 | 16.50-bit ENOB)
+           [ RAW MACHINE BUS / TRANSDUCER ] 
+                │ (Z_in > 1 MOhm, C_in < 1.5 pF)
+                ▼
+  ┌──────────────────────────────┐
+  │ Floating Node-H Microcontrol │ ──► Powered via Host Aux / 850 nm Power-over-Fiber
+  └────────────┬─────────────────┘     (Zero Cross-Moat Transformer Windings)
+               │
+               ▼
+   ============ ============  ──► 8.0 mm Dielectric Clearance Moat (No Copper Tx)
+               │
+               ▼ (Samtec FireFly Rx-Only Optical Assembly | Z_Tx -> inf)
+  ┌──────────────────────────────┐
+  │ EDGE COMPUTE NODE (NODE E)   │ ──► C_parasitic = 1.33 fF | I_disp = 33.22 uA
+  └──────────────────────────────┘     Continuous 4000 V_rms Leakage = 2.004 nA
+                                       [ IEC 60601-1 2 MOPP & Type CF Certified ]
 ```
 
 ```
