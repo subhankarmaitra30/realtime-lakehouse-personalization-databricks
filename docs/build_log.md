@@ -152,7 +152,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
       ║    BEDSIDE & TACTICAL HaaS DEPLOYMENT    ║      ║  ENTERPRISE CLEANROOM MONETIZATION ║
       ╠══════════════════════════════════════════╣      ╠════════════════════════════════════╣
       ║ * NEXUS-LITE (Rs 35K/mo) & PRO (Rs 1.25L)║      ║ * Biopharma TEE Trials ($250K-$1M) ║
-      ║ * Defense Role 1-3 DAP 2020 Pods + AMC   ║◄────►║ * 70 / 20 / 10 Hospital Rev-Share  ║
+      ║ * Defense Role 1-3 DAP 2020 Pods + AMC   ║◄────►║ * 85 / 10 / 5  Hospital Rev-Share  ║
       ║ * Indigenous Tier-2 OEM Integration Kits ║      ║ * 3rd-Party AI App-Store (20-30%)  ║
       ║ * BIS / DPDP Act Public RFP Codification ║      ║ * National Biosecurity Radar (D_W) ║
       ╚══════════════════════════════════════════╝      ╚════════════════════════════════════╝
