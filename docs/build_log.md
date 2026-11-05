@@ -21,19 +21,30 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-  [ Raw Ingress Baseband Stream ] (80.000 GB/s)
-                │
-                ▼
- ┌────────────────────────────────────────────────────────┐
- │ 4-Shell Pre-Cached Isotropic Stencil (r^2 in {0,1,2,3})│ ──► Reduces Voxel RBF Tax by 6.75x
- ├────────────────────────────────────────────────────────┤
- │ Wigner-Eckart 3D Spherical Harmonics Convolutions (l)  │ ──► Extracts 9 Orthonormal Real Irreps
- ├────────────────────────────────────────────────────────┤
- │ SO(3) Quadratic Casimir & Frobenius Norm Gate          │ ──► Guarantees Invariance under random Tilt
- └──────────────┬─────────────────────────────────────────┘
-                │
-                ▼ (Zero Dynamic Heap Allocation | Latency t_single <= 3.41 ms)
- [ Equivariant Geometric State Representation ]
+  [ Vector Projection Complete ]
+               │
+               ▼
+ ┌──────────────────────────────────────────┐
+ │ IngressDmaDescriptor Checksum Validation │ ──► Hardware Castagnoli CRC32C Pass
+ └─────────────┬────────────────────────────┘
+               │
+               ▼
+ ┌──────────────────────────────────────────┐
+ │ Core Hardware write_bytes(0x00) Pass     │ ──► Overwrites 12.4416 MB Frame Buffer
+ └─────────────┬────────────────────────────┘
+               │
+               ▼
+ ┌──────────────────────────────────────────┐
+ │ 64-Byte Stride dc civac Line Flushing    │ ──► Cleans & Invalidates CPU Data Caches
+ └─────────────┬────────────────────────────┘
+               │
+               ▼
+ ┌──────────────────────────────────────────┐
+ │ dsb sy Barrier Fence + Sentinel Readback │ ──► Blocks Compiler Dead-Store Elision
+ └─────────────┬────────────────────────────┘
+               │
+               ▼ (Total Verification Time t_scrub <= 1.50 ms << 16.67 ms)
+ [ Memory Domain Cleared ] ──► Statutory Safe Harbor Under India DPDP Act 2023 Locked
 ```
 
 ```
