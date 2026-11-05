@@ -45,13 +45,13 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 | TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Via IC&SR/ HTIC SRA Allocation)  |
 |                                                                                                  |
-| [1. HIGH-SPEED DIGITAL & HV SAFETY]              [CRYPTOGRAPHY & SECURE DISTRIBUTED SYSTEMS]     |
+| [HIGH-SPEED DIGITAL & HV SAFETY]                 [CRYPTOGRAPHY & SECURE DISTRIBUTED SYSTEMS]     |
 | • Dept. of Electrical Engineering /             • Secure Systems Centre / Trusted Computing Lab  |
 |   High-Speed Digital & RF Lab                   • Hardware TEE Enclaves (AMD SEV-SNP / TrustZone)|
 | • High-Voltage Medical Safety Chamber           • Plonky2 ZK-SNARKs & Bare-Metal CvRDT           |
 | * 25 GHz SerDes & 24 kV Type-CF Chamber|          Verification & <2 Kbps CNR                     |
 |                                                                                                  |
-| [COMPUTATIONAL BIOPHYSICS & HPC AI]                 [INTERVENTIONAL SLAM & HYDROPHONE]           |
+| [COMPUTATIONAL BIOPHYSICS & HPC AI]              [INTERVENTIONAL SLAM & HYDROPHONE]              |
 | • Centre for Programmable Photonic &            • HTIC Imaging & Acoustic Tank Suite             |
 |   Neuromorphic Systems / HPC Centre             • Calibrated Hydrophone Tanks & Optical Motion   |
 | • TensorRT Int8 Compilation, SE(3) Mamba          Analysis                                       |
