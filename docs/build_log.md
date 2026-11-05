@@ -32,9 +32,9 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
        └───────────────────────────────────────┬──────────────────────────────────────────┘ 
                                                ▼ 
 ┌────────────────────────────────────────────────────────────────────────────────────────────┐
-| TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)                 |                                                                                 
-| [LEAD Microelectronics HARDWARE &               [LEAD SYSTEMS SOFTWARE &                   |
-|       EMBEDDED SYSTEMS ENGINEER]                 Geometric DL COMPILER ENG]                |
+| TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)                 |                                                       
+| [LEAD Microelectronics HARDWARE &             [LEAD SYSTEMS SOFTWARE & Geometric           |
+|       EMBEDDED SYSTEMS ENGINEER]                   Deep Lerarning  COMPILER ENG]           |
 | * Owns synthesizable SystemVerilog RTL         * Owns CUDA C++20 & TensorRT Int8 cores     |
 |  (SSR=8 M=32 DDC & 4ns PWM Watchdog)               (4-Shell SE(3), expm1f Mamba, SLAM)     |
 | * Owns Altium PCB layout, Samtec 4 kV          * Owns #![no_std] Rust HAL, TOPRF,          |
