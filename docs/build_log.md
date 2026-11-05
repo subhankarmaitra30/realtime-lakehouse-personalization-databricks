@@ -22,39 +22,46 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                  THE NEXUS BIO-OS DATA GRAVITY & STANDARDIZATION FLYWHEEL
+                   TRI-TIER COLLABORATIVE GOVERNANCE & EXECUTION TOPOLOGY
 ====================================================================================================
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | 1. HARDWARE INGRESS LOCK-IN (ZERO-CAPEX INTERCEPTION)                                        |◄───-+
-  |    24 kVpk simplex optical taps deploy non-invasively in <15 mins, bypassing OEM APIs.       |     |
-  └──────────────────────────────────────────────┬───────────────────────────────────────────────┘     |
-                                                 |                                                     |
-                                                 ▼                                                     |
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐     |
-  | 2. NON-PERSONAL VECTOR LAKEHOUSE EXPANSION (DPDP ACT SEC. 8 SAFE HARBOR)                     |     |
-  |    <16.67 ms volatile RAM scrub + 43.74M:1 Rank-Nullity surjection populate S^1023 vectors.  |     |
-  └──────────────────────────────────────────────┬───────────────────────────────────────────────┘     |
-                                                 |                                                     |
-                                                 ▼                                                     |
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐     |
-  | 3. ENTERPRISE DATA GRAVITY & 85/10/5 DIVIDEND FLYWHEEL                                       |     |
-  |    Biopharma & AI devs pay TEE Cleanroom fees; 15% institutional dividend (10% Hospital +    |     |
-  |    5% Dept/PI R&D Fund) offsets HaaS lease costs, driving CFOs to mandate 100% fleet rollout.|     |
-  └──────────────────────────────────────────────┬───────────────────────────────────────────────┘     |
-                                                 |                                                     |
-                                                 ▼                                                     |
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐     |
-  | 4. SELF-HEALING CAUSAL ACCELERATION (45-DAY BIOPSY BRIDGE)                                   |     |
-  |    2-Fold DML Doubly Robust AIPW + 48B RocksDB PGTQ biopsy linkage sharpen model accuracy.   |     |
-  └──────────────────────────────────────────────┬───────────────────────────────────────────────┘     |
-                                                 |                                                     |
-                                                 ▼                                                     |
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐     |
-  | 5. NATIONAL EMBEDDING SPECIFICATION MONOPOLY                                                 |     |
-  |    1024-D SE(3)-invariant vector & 2-MOPP optical moat codified into BIS/ABDM public RFPs.   |     |
-  └──────────────────────────────────────────────┬───────────────────────────────────────────────┘     |
-                                                 ▼                                                     | 
-              (Feedback Loop: Statutory Mandate + 15% Cleanroom Dividend Drives Step 1) --------------►|
+
+        ┌──────────────────────────────────────────────────────────────────────────────────┐
+        |         TIER 1: FOUNDER & VENTURE LEADERSHIP (Deep Neuro-Nex Pvt. Ltd.)          |
+        | * Managing Director & Principal Architect: Subhankar Maitra                      |
+        | * System Invariants, Architecture, IP Strategy (Patent App. No. 202631094668)    |
+        | * Defense Liaison (iDEX DIO, Army Design Bureau, DG AFMS) & Clinical MoUs        |
+        └────────────────────────────────────────┬─────────────────────────────────────────┘
+                                                 |
+                                                 ▼ 
+        ┌──────────────────────────────────────────────────────────────────────────────────┐
+        |     TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)   |
+        +----------------------------------------+-----------------------------------------+
+        | [LEAD MICROELECTRONICS HARDWARE &      | [LEAD SYSTEMS SOFTWARE &                |
+        |  EMBEDDED SYSTEMS ENGINEER]            |  GEOMETRIC DL COMPILER ENGINEER]        |
+        | * Owns synthesizable SystemVerilog RTL | * Owns CUDA C++20 & TensorRT Int8 cores |
+        |   (SSR=8 M=32 DDC & 4ns PWM Watchdog)  |   (4-Shell SE(3), expm1f Mamba, SLAM)   |
+        | * Owns Altium PCB layout, Samtec 4 kV  | * Owns #![no_std] Rust HAL, TOPRF,      |
+        |   FireFly moat & Versal timing closure |   Goldilocks ZK & 512B CvRDT mesh       |
+        └────────────────────────────────────────┬─────────────────────────────────────────┘
+                                                 |
+                         [Bi-Weekly Co-Dev Sprints & Hardware-in-the-Loop Gates]
+                                                 |
+                                                 ▼ 
+        ┌──────────────────────────────────────────────────────────────────────────────────┐
+        |   TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & PERSONNEL (Via IC&SR / HTIC SRA)   |
+        +----------------------------------------+-----------------------------------------+
+        | [1. HIGH-SPEED DIGITAL & HV SAFETY]    | [2. COMPUTATIONAL BIOPHYSICS & HPC AI]  |
+        | * Dept. of Electrical Engineering      | * CSE / Neuromorphic & HPC Centre       |
+        | * 25 GHz SerDes & 24 kV Type-CF Chamber| * TensorRT Int8 & 15-Pair InfoNCE Train |
+        +----------------------------------------+-----------------------------------------+
+        | [3. CRYPTOGRAPHY & SECURE SYSTEMS]     | [4. CLINICAL ANALYTICS & BIOPSY BRIDGE] |
+        | * Secure Systems / Trusted Compute Lab | * HTIC Clinical Core & PGIMER Liaison   |
+        | * SEV-SNP / TrustZone & <2 Kbps CNR    | * 20,000+ Trajectory DML & LIS NLP      |
+        +----------------------------------------+-----------------------------------------+
+        | [5. INTERVENTIONAL SLAM & HYDROPHONE]  | [6. DEFENSE MECHATRONICS & EMI/EMC]     |
+        | * HTIC Imaging & Acoustic Tank Suite   | * Centre for Robotics & Telecom Testbed |
+        | * 12.60 ms HUD & 512^3 Morton Phantoms | * 1 kHz CBF HIL & MIL-STD-810H/461G     |
+        └──────────────────────────────────────────────────────────────────────────────────┘
 ====================================================================================================
 ```
 
