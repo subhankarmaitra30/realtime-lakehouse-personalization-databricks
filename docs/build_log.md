@@ -29,11 +29,10 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
        |  • Managing Director & Principal Architect: Subhankar Maitra                     |
        |  • Strategic Direction, System Invariants, IP Prosecution (Patent 202631094668)  |
        |  • Defense Liaison (iDEX, Army Design Bureau, DG AFMS) & Clinical MoUs           |
-       └───────────────────────────────────────┬──────────────────────────────────────────┘                                                                         |
+       └───────────────────────────────────────┬──────────────────────────────────────────┘ 
                                                ▼ 
 ┌────────────────────────────────────────────────────────────────────────────────────────────┐
-| TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)                 |
-|                                                                                            |
+| TIER 2: INTERNAL VENTURE CORE ENGINEERING TEAM (Full-Time / Equity-Vested)                 |                                                                                 
 | [LEAD Microelectronics HARDWARE &               [LEAD SYSTEMS SOFTWARE &                   |
 |       EMBEDDED SYSTEMS ENGINEER]                 Geometric DL COMPILER ENG]                |
 | * Owns synthesizable SystemVerilog RTL         * Owns CUDA C++20 & TensorRT Int8 cores     |
@@ -42,8 +41,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 |   FireFly moat & Versal timing closure              Goldilocks ZK & 512B CvRDT mesh        |
 └──────────────────────────────────────────────┬─────────────────────────────────────────────┘
                                                | Joint SRA Work Package Execution, Bi-Weekly 
-                                               |  Co-Dev Sprints & Hardware-in-the-Loop Gates       
-                                               ▼  
+                                               ▼   Co-Dev Sprints & Hardware-in-the-Loop Gates                                                
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 | TIER 3: IIT MADRAS SRA INSTITUTIONAL LABS & RESEARCH PERSONNEL (Via IC&SR/ HTIC SRA Allocation)  |
 |                                                                                                  |
