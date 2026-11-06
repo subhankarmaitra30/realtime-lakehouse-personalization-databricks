@@ -21,30 +21,20 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
-  [ Vector Projection Complete ]
-               │
-               ▼
- ┌──────────────────────────────────────────┐
- │ IngressDmaDescriptor Checksum Validation │ ──► Hardware Castagnoli CRC32C Pass
- └─────────────┬────────────────────────────┘
-               │
-               ▼
- ┌──────────────────────────────────────────┐
- │ Core Hardware write_bytes(0x00) Pass     │ ──► Overwrites 12.4416 MB Frame Buffer
- └─────────────┬────────────────────────────┘
-               │
-               ▼
- ┌──────────────────────────────────────────┐
- │ 64-Byte Stride dc civac Line Flushing    │ ──► Cleans & Invalidates CPU Data Caches
- └─────────────┬────────────────────────────┘
-               │
-               ▼
- ┌──────────────────────────────────────────┐
- │ dsb sy Barrier Fence + Sentinel Readback │ ──► Blocks Compiler Dead-Store Elision
- └─────────────┬────────────────────────────┘
-               │
-               ▼ (Total Verification Time t_scrub <= 1.50 ms << 16.67 ms)
- [ Memory Domain Cleared ] ──► Statutory Safe Harbor Under India DPDP Act 2023 Locked
+  [ FULLY INTEGRATED SIX-MODULE APPLIANCE ]
+                     │
+                     ▼ Packaged inside Fanless Conduction-Cooled Faraday Chassis
+ ┌────────────────────────────────────────────────────────┐
+ │ Beryllium-Copper (BeCu) Gasketed Shielding Enclosure   │ ──► Radiated RF Susceptibility RS103 (200 V/m)
+ ├────────────────────────────────────────────────────────┤     Traverses 2 MHz to 40 GHz EW Jamming Band
+ │ MIL-STD-810H Structural & Environmental Chambers       │ ──► Tracked-Vehicle Broadband Vibration Cat 20
+ │                                                        │     Operational Envelope: -40C to +55C
+ ├────────────────────────────────────────────────────────┤
+ │ MIL-STD-1275E Power Conditioning Front-End             │ ──► Absorbs +100V Surges / +/-250V Transients
+ └───────────────────────┬────────────────────────────────┘     Protects 28V DC Nominal Vehicle Input Rail
+                         │
+                         ▼ (TRL 6+ Flagship MVP Prototype)
+ [ Stamped NABL Defense & Medical Certification Dossier ]
 ```
 
 ```
