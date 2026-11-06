@@ -19,20 +19,98 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
+```
+[ Raw Identity Ingress ]
+            │
+            ▼ SHA-512 Wide Scalar Reduction (Bound Divergence Delta_TV < 2^-256)
+ ┌────────────────────────────────────────────────────────┐
+ │ Ristretto255 Group Head & Identity Subgroup Rejection  │ ──► Mutual Info I(X;Y) = 0.000000 bits
+ ├────────────────────────────────────────────────────────┤
+ │ Chaum-Pedersen NIZK-DLEQ Byzantine Share Auth          │ ──► Bars Malicious Quorum Node Distortion
+ └──────────┬─────────────────────────────────────────────┘
+            │
+            ▼ Mapped inside AMD SEV-SNP / ARM TrustZone Enclaves
+ ┌────────────────────────────────────────────────────────┐
+ │ STATE_0: Online Quorum ◄───► STATE_1: Air-Gap T_PROV   │ ──► Seals r_offline to FIPS 140-3 TPM 2.0
+ └──────────┬─────────────────────────────────────────────┘     via SHA256(PCR_0 || PCR_7 || PCR_14)
+            │
+            ▼ Reconnection & Zero-Plaintext Token Expansion Pass
+ ┌────────────────────────────────────────────────────────┐
+ │ STATE_2: Cryptographically Reconciled Token (T_ID)     │ ──► Volatile Drop Secret Zeroization Complete
+ └────────────────────────────────────────────────────────┘
+```
+```
+[ RAW ULTRASOUND / ENDOSCOPY CONSOLE ] 
+                 │
+                 ▼ Non-Invasive Passive Shadow Tap (CDSCO Form MD-13 / 2 MOPP)
+  ┌──────────────────────────────────────────────┐
+  │ Module 1 Ingress: Simplex Optical Moat       │
+  └──────────────┬───────────────────────────────┘
+                 │
+                 ▼ Standardized 1024-D Non-Personal Vector (v_bio)
+  ┌──────────────────────────────────────────────┐       ┌─────────────────────────────────┐
+  │ Module 2/3: TEE Enclave Vector Lakehouse     │◄─────►│ Hospital LIS Pathology Database │
+  └──────────────┬───────────────────────────────┘       └────────────────┬────────────────┘
+                 │                                                        │
+                 │                                                        │ Asynchronous NLP Listener
+                 │                                                        ▼ Parses Text to Extract y_soft
+                 │                             Reconciles T_ID Keys       │ Across 14-to-45-Day Windows
+                 └────────────────────────────────────────────────────────┘
+                                                 │
+                                                 ▼
+                             [ Cleaned Ground-Truth Causal Trajectory ]
+```
+```
+[ Raw Counterfactual Local Gradients ]
+                 │
+                 ▼ Newton-Raphson L2 Clipping (Force ||g_bar||_2 = 1.000000)
+ ┌──────────────────────────────────────────────┐
+ │ Renyi DP Noise Injection (sigma = 0.1)       │ ──► Bounds Record Leakage to <= 10^-4 bits
+ └──────────────┬───────────────────────────────┘
+                 │
+                 ▼ Top-K Error-Feedback SGD Compression (pack_topk_slice_with_ef)
+ ┌──────────────────────────────────────────────┐
+ │ Anti-Symmetric Curve25519 ECDH SecAgg Pass   │ ──► Pairwise Masks Sum to 0.000000
+ └──────────────┬───────────────────────────────┘     (k,n)-Shamir Node Dropout Insulated
+                 │
+                 ▼ Embedded at 512B Envelope Offset 0x01C0..0x01FF
+ ┌──────────────────────────────────────────────┐
+ │ 64-Byte SparseGradientSlice CNR Burst        │ ──► 2.048s Burst at 2.0 Kbps
+ └──────────────────────────────────────────────┘     3.41% RF Duty Cycle (LPI Electronic Moat)
+```
 
 ```
- [ FAULT: Proximity Breach / NPU Stall / MMIO Write ] 
-                         │
-                         ▼ Combinational direct_mmio_disarm Feedthrough
+[ Fused Model Weights & Frames ] ──► Pinned Direct DMA Ring Buffers (64 KB Aligned Stride)
+                                                            │
+ ┌──────────────────────────────────────────────────────────┘
+ ▼ MMIO Target 0x4000_3000 (Bypasses OS Compositor | t_OS_jitter = 0.00 ms)
+ ├──► Register 0x4000_3008 Clamped to 0x3F26_6666 (Alpha <= 0.6500)
+ ├──► Register 0x4000_3010 Clamped to 0x3EB3_3333 (T_photon >= 0.3500)
+ └──► CUDA uchar3 / ushort3 isnan() & isinf() Opacity Scrubbing Pass
+                                │
+                                ▼ (Photodiode Oscilloscope Confirmed)
+ [ Zero-Jitter Display Overlay ] ──► Latency = 12.60 ms (14.36 ms @ 100C Junction Peak)
+                                     [ Retinal Floor = 879.6 Trolands | IEC 62304 Class C ]
+```
+```
+[ Raw Ultrasound Phased Array / Camera Ingress ]
+                        │
+                        ▼
  ┌────────────────────────────────────────────────────────┐
- │ avatar_pwm_watchdog.sv RTL (250 MHz AXI4-Lite Slave)   │ ──► Byte-Lane Masked (s_axi_wstrb) at 0x5000_1004
- └───────────────────────┬────────────────────────────────┘
-                         ▼ Drops pwm_gate_enable_n within 1 Clock Cycle
+ │ Affine Lucas-Kanade Flow + 6-DoF R_z(phi)R_y(psi)R_x   │ ──► Resolves 3D Rotational & In-Plane Shifts
+ ├────────────────────────────────────────────────────────┤
+ │ compute_regularized_speckle_dz() Clamped Attenuation   │ ──► Solves Out-of-Plane Delta_z Depth Step
+ └──────────────────────┬─────────────────────────────────┘     (Singularity Clamped [10^-4, 0.9999])
+                        │
+                        ▼ Fused onto 30-bit Morton Z-Curve Structure (0x00111111)
  ┌────────────────────────────────────────────────────────┐
- │ Physical Optocoupler H-Bridge Inverter Gate Severed    │ ──► Latency = 4.0 ns (Oscilloscope Confirmed)
- └───────────────────────┬────────────────────────────────┘
-                         ▼ Phase Current Decay (L_m = 1.20 mH, R_m = 10.0 Ohm, tau_decay = 120 us)
- [ Zero-Torque Compliance State (tau = 0.00 Nm) ] ────────► Completed in 0.60 ms < 1.0 ms (MIL-STD-882E Cat I)
+ │ 512^3 FP16 Volumetric Grid Splatting (268.44 MB VRAM)  │ ──► Sustains 16.0x Local L2 Cache Locality
+ ├────────────────────────────────────────────────────────┤
+ │ 64-Step Beer-Lambert Adjoint Raymarching Pass          │ ──► Early-Ray Termination at tau = 0.45
+ └──────────────────────┬─────────────────────────────────┘     Calculates Closed-Form dC / dV_i
+                        │
+                        ▼
+ [ Real-Time 3D Volumetric Tissue Mesh ] ──► Consumes < 16.11 GB/s Bus Bandwidth | No External Collars
 ```
 
 ```
