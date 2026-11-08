@@ -45,13 +45,13 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
     └───────────────────────────────────────────┘   └────────────────────────────────────────────┘
                      |                                             |
                      ▼                                             ▼ 
-    ┌───────────────────────────────────────────┐  ┌─────────────────────────────────────────────┐
-    | [STAGE 3A: 64-TAP HALF-BAND FIR (R2 = 2)] |  | [STAGE 3B: 64-TAP HALF-BAND FIR (R2 = 2)]   |
-    |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)    |  |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)      |
-    |  Droop < 0.1 dB | Stopband Atten. > 85 dB |  |  Droop < 0.1 dB | Stopband Atten. > 85 dB   | 
-    |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 I |  |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 Q   |
-    |  Final Baseband Rate: f_base = 78.125 MSPS|  |   Final Baseband Rate: f_base = 78.125 MSPS |
-    └───────────────────────────────────────────┘   └────────────────────────────────────────────┘
+    ┌───────────────────────────────────────────┐  ┌────────────────────────────────────────────┐
+    | [STAGE 3A: 64-TAP HALF-BAND FIR (R2 = 2)] |  | [STAGE 3B: 64-TAP HALF-BAND FIR (R2 = 2)]  |
+    |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)    |  |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)     |
+    |  Droop < 0.1 dB | Stopband Atten. > 85 dB |  |  Droop < 0.1 dB | Stopband Atten. > 85 dB  | 
+    |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 I |  |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 Q  |
+    |  Final Baseband Rate: f_base = 78.125 MSPS|  |  Final Baseband Rate: f_base = 78.125 MSPS |
+    └───────────────────────────────────────────┘  └────────────────────────────────────────────┘
                      |                                             |
                      +----------------------+----------------------+
                                             |
