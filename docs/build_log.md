@@ -21,6 +21,50 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                        THE MULTI-STAGE POLYPHASE DDC CASCADE (M = 32)
+====================================================================================================
+          [ Incoming Raw RF Wavefield: f_s = 2.50 GSPS, 256 Channels, 14-Bit Real ADC ]
+                        Aggregate Rate: 8.960 Tbps (1,120.0 GB/s)
+                                            |
+                     +----------------------+----------------------+
+                     |                                             |
+                     ▼                                             ▼ 
+   ┌───────────────────────────────────────────┐  ┌───────────────────────────────────────────┐
+   | [ STAGE 1A: IN-PHASE (I) MIXER ]          |  | [ STAGE 1B: QUADRATURE (Q) MIXER ]        |
+   |  48-Bit Taylor-Interpolated DDS NCO       |  |  48-Bit Taylor-Interpolated DDS NCO       |
+   |  I_k = x_k * cos(w_0 * k) (f_0 = 7.5 MHz) |  |  Q_k = -x_k * sin(w_0 * k) (f_0 = 7.5 MHz)|
+   |  (30-Bit Product -> 34-Bit Sign-Extended) |  |  (30-Bit Product -> 34-Bit Sign-Extended) | 
+   └───────────────────────────────────────────┘  └───────────────────────────────────────────┘
+                     |                                             |
+                     ▼                                             ▼ 
+    ┌───────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+    |  [STAGE 2A: 5-STAGE CIC FILTER (R1 = 16)] |   | [STAGE 2B: 5-STAGE CIC FILTER (R1 = 16)]   |
+    |  H_CIC(z) = ((1 - z^-16) / (1 - z^-1))^5  |   |  H_CIC(z) = ((1 - z^-16) / (1 - z^-1))^5   |
+    |  Hogenauer Register Width: B_max = 34 Bits|   |  Hogenauer Register Width: B_max = 34 Bits | 
+    |  Intermediate Rate: f_s1 = 156.250 MHz    |   |  Intermediate Rate: f_s1 = 156.250 MHz     |
+    └───────────────────────────────────────────┘   └────────────────────────────────────────────┘
+                     |                                             |
+                     ▼                                             ▼ 
+    ┌───────────────────────────────────────────┐  ┌─────────────────────────────────────────────┐
+    | [STAGE 3A: 64-TAP HALF-BAND FIR (R2 = 2)] |  | [STAGE 3B: 64-TAP HALF-BAND FIR (R2 = 2)]   |
+    |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)    |  |  H_FIR(z) = E_0(z^2) + z^-1 * E_1(z^2)      |
+    |  Droop < 0.1 dB | Stopband Atten. > 85 dB |  |  Droop < 0.1 dB | Stopband Atten. > 85 dB   | 
+    |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 I |  |  IEEE 754 Round-to-Even -> 16-Bit Q1.15 Q   |
+    |  Final Baseband Rate: f_base = 78.125 MSPS|  |   Final Baseband Rate: f_base = 78.125 MSPS |
+    └───────────────────────────────────────────┘   └────────────────────────────────────────────┘
+                     |                                             |
+                     +----------------------+----------------------+
+                                            |
+                                            ▼ 
+          ┌───────────────────────────────────────────────────────────────────────────────────────┐
+          |  [ PACKED 32-BIT ANALYTIC BASEBAND STREAM (16-Bit I + 16-Bit Q, Q1.15) ]              |
+          |   256 Channels * 78.125 MSPS * 4 Bytes/Sample = 80.000 GB/s (640.0 Gbps)              |
+          |   Exact Byte Compression: 14.000 : 1 | Dynamic Range Gain: +15.05 dB (16.50-Bit ENOB) |
+          └───────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
               THE HARDWARE ISOLATION & ROUTING EXPRESSWAY (TRIPLE-LAYER PROOF BOUNDARY)
 ====================================================================================================
   HOST MEDICAL CONSOLE DOMAIN (NODE H: UNTOUCHED)      SOVEREIGN BIO-OS ACCELERATOR DOMAIN (NODE E)
