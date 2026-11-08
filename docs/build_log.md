@@ -20,42 +20,20 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-======================================================================================
-                     MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
-======================================================================================
-   DOMAIN A: INGRESS SERDES CLOCK (clk_rx = 350.0 MHz, T = 2.857 ns)
-   ┌───────────────────────────────────────────────────────────────┐
-   | 14-Bit Serialized ADC Data Ingress (raw_rf_in[13:0])          |
-   └───────────────────────────────────────────────────────────────┘
-                                   |
-                                   ▼ 
-   ┌───────────────────────────────────────────────────────────────┐
-   | Synthesizable Polyphase DDC Core (ddc_polyphase_cic_fir.sv)   |
-   | * 48-Bit Taylor-Interpolated DDS Mixer (f_0 = 7.50 MHz)       |
-   | * 5-Stage 34-Bit Hogenauer CIC Decimator (R_1 = 16)           |
-   | * Delay-Aligned Symmetric Half-Band FIR (R_2 = 2, M = 32)     |
-   | * IEEE 754 Convergent Rounding -> 32-Bit Complex I/Q (Q1.15)  |
-   └───────────────────────────────────────────────────────────────┘
-                                   |
-                        [wr_ptr_gray (350.0 MHz)]
-                                   |
-                                   ▼ 
-   ┌───────────────────────────────────────────────────────────────┐
-   | Dual-Clock Asynchronous Ring FIFO (tb_jesd204c_ingress.sv)    |
-   | * Combinatorial Binary-to-Gray Encoding: G = B ^ (B >> 1)     |
-   | * 2-Stage D-Flip-Flop Synchronizers (* ASYNC_REG = "TRUE" *)  |
-   | * MTBF >= 10^179 Operating Hours (Zero Metastability Drops)   |
-   └───────────────────────────────────────────────────────────────┘
-                                   |
-                        [rd_ptr_gray (250.0 MHz)]
-                                   |
-                                   ▼ 
-   DOMAIN B: INTERNAL AXI4-STREAM SYSTEM FABRIC (clk_sys = 250.0 MHz, T = 4.000 ns)
-   ┌───────────────────────────────────────────────────────────────┐
-   | Dual-Loop RLS-MVDR + Kurtosis Kalman Sieve (t_proc = 256 ns)  |
-   | 4.0 MB UltraRAM Buffer C -> Bare-Metal Rust HAL (hal_rx.rs)   |
-   └───────────────────────────────────────────────────────────────┘
-=====================================================================================
+====================================================================================================
+                         THE TRADITIONAL DECADES OF INFRASTRUCTURE FAILURE
+====================================================================================================
+  [Legacy Machine] ---►  [Lossy OEM Compression] ---►  [Vendor API Walls] ---►  [Manual PACS Scraping]
+                        (99.8% Physics Lost /        (Closed Ecosystem /     (3-5 Min Clerical Tax &
+                         8-Bit Log-Compressed)        $500K CapEx Lock-In)    DPDP Legal Deadlocks)
+
+====================================================================================================
+                        THE SOVEREIGN BIO-OS DETERMINISTIC INGRESS HIGHWAY
+====================================================================================================
+  [Raw Hardware Tap] -►  [4 kV Optical Moat] -►  [On-FPGA M=32 DDC] -►  [Zero-Copy CXL.mem] -► [Module 2]
+  (Bit-for-Bit Physics) (Z_Tx -> inf, C = 0)   (14:1 Compression &   (Sub-ms Pinned DMA &   (Immediate
+                         Zero Leakage)          +15.05 dB SQNR)       <=16.67ms RAM Scrub)   S^1023 Vec)
+====================================================================================================
 ```
 
 
