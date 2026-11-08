@@ -20,9 +20,9 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-===============================================================================================
+=========================================================================================
                      MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
-===============================================================================================
+=========================================================================================
    DOMAIN A: INGRESS SERDES CLOCK (clk_rx = 350.0 MHz, T = 2.857 ns)
    ┌───────────────────────────────────────────────────────────────┐
    | 14-Bit Serialized ADC Data Ingress (raw_rf_in[13:0])          |
@@ -55,7 +55,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
    | Dual-Loop RLS-MVDR + Kurtosis Kalman Sieve (t_proc = 256 ns)  |
    | 4.0 MB UltraRAM Buffer C -> Bare-Metal Rust HAL (hal_rx.rs)   |
    └───────────────────────────────────────────────────────────────┘
-===============================================================================================
+=====================================================================================
 ```
 
 
