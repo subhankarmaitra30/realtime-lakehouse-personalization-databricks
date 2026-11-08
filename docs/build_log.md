@@ -24,34 +24,34 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
               THE HARDWARE ISOLATION & ROUTING EXPRESSWAY (TRIPLE-LAYER PROOF BOUNDARY)
 ====================================================================================================
   HOST MEDICAL CONSOLE DOMAIN (NODE H: UNTOUCHED)      SOVEREIGN BIO-OS ACCELERATOR DOMAIN (NODE E)
-  +---------------------------------------------+      +-------------------------------------------+
+  ┌─────────────────────────────────────────────┐      ┌───────────────────────────────────────────┐
   | FDA/CE Certified Clinical Diagnostic Unit   |      | AMD Xilinx Versal Premium VP1802 SoC      |
   | Microvolt Transducer AFE / GPU / Switch     |      | Multi-Queue Scatter-Gather CXL DMA Core   |
   | Floating Patient Chassis Ground (GND_HOST)  |      | Digital System Enclosure Ground (GND_EDGE)|
-  +---------------------------------------------+      +-------------------------------------------+
+  └─────────────────────────────────────────────┘      └───────────────────────────────────────────┘
                          |                                                   🡅
             [ Forward Physical Signals ]                        [ Zero-Copy CXL.mem / PCIe Gen 6 ]
                          ▼                                                   |
-  +---------------------------------------------+      +-------------------------------------------+
+  ┌─────────────────────────────────────────────┐      ┌───────────────────────────────────────────┐
   | 256-Ch 850 nm GaAs/AlGaAs VCSEL Array       |      | Reverse-Biased PIN Photodiode Rx Array    |
   | Forward Bias (V_a > 1.46 V): Stimulated     | ===► | Reverse Bias (V_rev < 0 V): Internal      |
   | Radiative Photon Emission (h*nu = 1.46 eV)  |      | Photoelectric Absorption (e-/h+ Pairs)    |
-  +---------------------------------------------+      +-------------------------------------------+
+  └─────────────────────────────────────────────┘      └───────────────────────────────────────────┘
                          |                        4 kV                        |
                          |               Samtec FireFly Optical               ▼ 
-            [ MECHANICAL OMISSION ]          Ribbon Barrier     +----------------------------------+
+            [ MECHANICAL OMISSION ]          Ribbon Barrier     ┌──────────────────────────────────┐
             [ OF COPPER TX TRACES ]       (d_gap >= 8.0 mm Air  | VOLATILE PHI FLASH-SCRUB GATE    |
                          |                 & Borosilicate Moat) | * DSP OCR UI Chrome Bounding     |
                          ▼                                      | * In-SRAM Zeroization: memset(0) |
-  +---------------------------------------------+               | * ARM64 dc civac + dsb sy        |
+  ┌─────────────────────────────────────────────┐               | * ARM64 dc civac + dsb sy        |
   | * Layer 1 (Ohmic):   Z_Tx(w) -> Infinity    |               | * Volatile Lifetime <= 16.67 ms  |
-  |                      I_reverse = 0.000000 A |               +----------------------------------+
+  |                      I_reverse = 0.000000 A |               └──────────────────────────────────┘
   |                      I_disp <= 33.22 uA     |
   | * Layer 2 (Optical): V_break = 24.0 kV_peak |
   |                      P_rev,opt = 0.000000 W |
   | * Layer 3 (Shannon): S_rev = 0.000000 W     |
   |                      C_{E->H} = 0.00000 bps |
-  +---------------------------------------------+
+  └─────────────────────────────────────────────┘
 ====================================================================================================
 ```
 ```
