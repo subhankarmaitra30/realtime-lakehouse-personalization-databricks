@@ -21,6 +21,49 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                      DUAL-LOOP PRE-DRAM ADAPTIVE CANCELLATION DFE (250.0 MHz)
+====================================================================================================
+           RAW DECIMATED BASEBAND STREAM FROM DDC CASCADE (80.000 GB/s, y_k in C^256)
+                                                |
+                                                ▼ 
+          ┌───────────────────────────────────────────────────────────────────────────┐
+          | LOOP 1: CONSTRAINED SHERMAN-MORRISON RLS-MVDR SPATIAL NULL-STEERING ARRAY |
+          | * O(N^2) Inverse Sample Covariance Update: P_yy,k (Forgetting beta=0.985) |
+          | * Distortionless Weight Vector: w_k = (P_yy,k * a) / (a^H * P_yy,k * a)   |
+          | * Steers >= 40 dB Spatial Nulls Toward Adversarial Jammers (a^H * w_k = 1)|
+          └───────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                | Directed Beamspace Stream: x_tilde_k
+                                                +--------------------+
+                                                |                    |
+                                                |                    ▼ 
+                                                |   ┌──────────────────────────────────────────────┐
+                                                |   | LOOP 2: INNOVATION-ADAPTIVE KALMAN ESTIMATOR |
+                                                |   | * Tracks 300 kHz - 3.5 MHz ESU Harmonics     |
+                                                |   | * In-Band Kurtosis kappa_bio Inflates R_k    |
+                                                |   | * 14-Cycle Newton-Raphson Scalar Reciprocal  |
+                                                |   └──────────────────────────────────────────────┘
+                                                |                    |
+                                                |                    | Harmonic Estimate: H*x_hat
+                                                ▼                    ▼ 
+                                          ┌────────────────────────────────┐
+                                          |   HARMONIC SUBTRACTION NODE    |
+                                          | s_hat_int(k) = x_tilde - H*x   |
+                                          └────────────────────────────────┘
+                                                |
+                                                ▼ 
+                                          ┌────────────────────────────────┐
+                                          | KURTOSIS SPARK-TRANSIENT GATE  |
+                                          | s_clean(k) = psi(k) * s_int(k) |
+                                          | (Total Latency: 64 Cyc = 256ns)|
+                                          └────────────────────────────────┘
+                                                |
+                                                ▼ 
+                         TO BUFFER C (4.0 MB UltraRAM Circular Ring FIFO)
+====================================================================================================
+```
+```
+====================================================================================================
                 HOST INTERCONNECT CAPACITY & OCCUPANCY (CXL.mem / PCIe GEN 6 x16)
 ====================================================================================================
   Gross Simplex Physical Line Rate : 128.000 GB/s (64.0 GT/s PAM4, 16 Lanes)
