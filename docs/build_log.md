@@ -21,36 +21,40 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                REAL-TIME VOLATILE PHI FLASH-SCRUBBING PIPELINE (<= 16.67 ms LIFETIME)
+                     MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
 ====================================================================================================
-      Uncompressed 1080p60 12-Bit Video (Buffer A) / Structured HL7 & FHIR Frames (Buffer B)
-                                                |
-                                                ▼ 
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | 1. DOUBLE-BUFFERED PINNED VOLATILE DMA RING ARENA (PINNED_RING_0 / PINNED_RING_1)            |
-  | * Physical Allocation: 0x8000_0000 & 0x80BE_0000 (2 x 12,441,600 Bytes via cudaHostAlloc)    |
-  | * Non-Paged, Non-Swappable Physical Memory (Zero OS Swap-to-Disk or NVMe Write Descriptors)  |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                                                ▼ 
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | 2. STAGE A: IN-FLIGHT FPGA DSP REAL-TIME OCR & DEEP PACKET INSPECTION (DPI) BOUNDING GATE    |
-  | * Scans 1920x1080 Video Rasters at >= 60 fps & Parses HL7/FHIR/DICOM Headers at Line Rate    |
-  | * Isolates Diagnostic "Anatomical Pixels" from Cosmetic "UI Chrome" (Names, MRNs, Logos)     |
-  | * Overwrites UI Chrome Bounding-Box Coordinates In-Flight with Zero Bits: memset(0x00)       |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                         [ De-Identified Wavefield Hand-Off to Module 2 ]
-                         (Tier 1 SE(3) Feature Extraction: t <= 2.97 ms)
-                                                |
-                                                ▼ 
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | 3. STAGE B: BARE-METAL FULL-ARENA HARDWARE ZEROIZATION GATE (firmware/src/hal_rx.rs)         |
-  | * Invokes execute_volatile_flash_scrub(buffer_ptr, 12_441_600) upon Tier 1 Completion        |
-  | * Atomic Byte-Level Overwrite: core::ptr::write_bytes(buffer_ptr, 0x00, 12_441_600)          |
-  | * 64-Byte Stride ARM64 Cache Clean & Invalidate: asm!("dc civac, {0}") + asm!("dsb sy")      |
-  | * Volatile Sentinel Readback Verification Completed in t_scrub <= 0.42 ms (<< 16.67 ms)      |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+   DOMAIN A: INGRESS SERDES CLOCK (clk_rx = 350.0 MHz, T = 2.857 ns)
+   ┌───────────────────────────────────────────────────────────────┐
+   | 14-Bit Serialized ADC Data Ingress (raw_rf_in[13:0])          |
+   └───────────────────────────────────────────────────────────────┘
+                                   |
+                                   ▼ 
+   ┌───────────────────────────────────────────────────────────────┐
+   | Synthesizable Polyphase DDC Core (ddc_polyphase_cic_fir.sv)   |
+   | * 48-Bit Taylor-Interpolated DDS Mixer (f_0 = 7.50 MHz)       |
+   | * 5-Stage 34-Bit Hogenauer CIC Decimator (R_1 = 16)           |
+   | * Delay-Aligned Symmetric Half-Band FIR (R_2 = 2, M = 32)     |
+   | * IEEE 754 Convergent Rounding -> 32-Bit Complex I/Q (Q1.15)  |
+   └───────────────────────────────────────────────────────────────┘
+                                   |
+                        [wr_ptr_gray (350.0 MHz)]
+                                   |
+                                   ▼ 
+   ┌───────────────────────────────────────────────────────────────┐
+   | Dual-Clock Asynchronous Ring FIFO (tb_jesd204c_ingress.sv)    |
+   | * Combinatorial Binary-to-Gray Encoding: G = B ^ (B >> 1)     |
+   | * 2-Stage D-Flip-Flop Synchronizers (* ASYNC_REG = "TRUE" *)  |
+   | * MTBF >= 10^179 Operating Hours (Zero Metastability Drops)   |
+   └───────────────────────────────────────────────────────────────┘
+                                   |
+                        [rd_ptr_gray (250.0 MHz)]
+                                   |
+                                   ▼ 
+   DOMAIN B: INTERNAL AXI4-STREAM SYSTEM FABRIC (clk_sys = 250.0 MHz, T = 4.000 ns)
+   ┌───────────────────────────────────────────────────────────────┐
+   | Dual-Loop RLS-MVDR + Kurtosis Kalman Sieve (t_proc = 256 ns)  |
+   | 4.0 MB UltraRAM Buffer C -> Bare-Metal Rust HAL (hal_rx.rs)   |
+   └───────────────────────────────────────────────────────────────┘
 ====================================================================================================
 ```
 
