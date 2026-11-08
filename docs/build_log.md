@@ -20,9 +20,9 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-=========================================================================================
+======================================================================================
                      MODULE 1 HARDWARE RTL PIPELINE & CLOCK DOMAIN BOUNDARY
-=========================================================================================
+======================================================================================
    DOMAIN A: INGRESS SERDES CLOCK (clk_rx = 350.0 MHz, T = 2.857 ns)
    ┌───────────────────────────────────────────────────────────────┐
    | 14-Bit Serialized ADC Data Ingress (raw_rf_in[13:0])          |
