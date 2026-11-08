@@ -21,92 +21,39 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                      DUAL-LOOP PRE-DRAM ADAPTIVE CANCELLATION DFE (250.0 MHz)
+                REAL-TIME VOLATILE PHI FLASH-SCRUBBING PIPELINE (<= 16.67 ms LIFETIME)
 ====================================================================================================
-           RAW DECIMATED BASEBAND STREAM FROM DDC CASCADE (80.000 GB/s, y_k in C^256)
+      Uncompressed 1080p60 12-Bit Video (Buffer A) / Structured HL7 & FHIR Frames (Buffer B)
                                                 |
                                                 ▼ 
-          ┌───────────────────────────────────────────────────────────────────────────┐
-          | LOOP 1: CONSTRAINED SHERMAN-MORRISON RLS-MVDR SPATIAL NULL-STEERING ARRAY |
-          | * O(N^2) Inverse Sample Covariance Update: P_yy,k (Forgetting beta=0.985) |
-          | * Distortionless Weight Vector: w_k = (P_yy,k * a) / (a^H * P_yy,k * a)   |
-          | * Steers >= 40 dB Spatial Nulls Toward Adversarial Jammers (a^H * w_k = 1)|
-          └───────────────────────────────────────────────────────────────────────────┘
-                                                |
-                                                | Directed Beamspace Stream: x_tilde_k
-                                                +--------------------+
-                                                |                    |
-                                                |                    ▼ 
-                                                |   ┌──────────────────────────────────────────────┐
-                                                |   | LOOP 2: INNOVATION-ADAPTIVE KALMAN ESTIMATOR |
-                                                |   | * Tracks 300 kHz - 3.5 MHz ESU Harmonics     |
-                                                |   | * In-Band Kurtosis kappa_bio Inflates R_k    |
-                                                |   | * 14-Cycle Newton-Raphson Scalar Reciprocal  |
-                                                |   └──────────────────────────────────────────────┘
-                                                |                    |
-                                                |                    | Harmonic Estimate: H*x_hat
-                                                ▼                    ▼ 
-                                          ┌────────────────────────────────┐
-                                          |   HARMONIC SUBTRACTION NODE    |
-                                          | s_hat_int(k) = x_tilde - H*x   |
-                                          └────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | 1. DOUBLE-BUFFERED PINNED VOLATILE DMA RING ARENA (PINNED_RING_0 / PINNED_RING_1)            |
+  | * Physical Allocation: 0x8000_0000 & 0x80BE_0000 (2 x 12,441,600 Bytes via cudaHostAlloc)    |
+  | * Non-Paged, Non-Swappable Physical Memory (Zero OS Swap-to-Disk or NVMe Write Descriptors)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
                                                 ▼ 
-                                          ┌────────────────────────────────┐
-                                          | KURTOSIS SPARK-TRANSIENT GATE  |
-                                          | s_clean(k) = psi(k) * s_int(k) |
-                                          | (Total Latency: 64 Cyc = 256ns)|
-                                          └────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | 2. STAGE A: IN-FLIGHT FPGA DSP REAL-TIME OCR & DEEP PACKET INSPECTION (DPI) BOUNDING GATE    |
+  | * Scans 1920x1080 Video Rasters at >= 60 fps & Parses HL7/FHIR/DICOM Headers at Line Rate    |
+  | * Isolates Diagnostic "Anatomical Pixels" from Cosmetic "UI Chrome" (Names, MRNs, Logos)     |
+  | * Overwrites UI Chrome Bounding-Box Coordinates In-Flight with Zero Bits: memset(0x00)       |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                         [ De-Identified Wavefield Hand-Off to Module 2 ]
+                         (Tier 1 SE(3) Feature Extraction: t <= 2.97 ms)
                                                 |
                                                 ▼ 
-                         TO BUFFER C (4.0 MB UltraRAM Circular Ring FIFO)
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | 3. STAGE B: BARE-METAL FULL-ARENA HARDWARE ZEROIZATION GATE (firmware/src/hal_rx.rs)         |
+  | * Invokes execute_volatile_flash_scrub(buffer_ptr, 12_441_600) upon Tier 1 Completion        |
+  | * Atomic Byte-Level Overwrite: core::ptr::write_bytes(buffer_ptr, 0x00, 12_441_600)          |
+  | * 64-Byte Stride ARM64 Cache Clean & Invalidate: asm!("dc civac, {0}") + asm!("dsb sy")      |
+  | * Volatile Sentinel Readback Verification Completed in t_scrub <= 0.42 ms (<< 16.67 ms)      |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ====================================================================================================
 ```
-```
-====================================================================================================
-                HOST INTERCONNECT CAPACITY & OCCUPANCY (CXL.mem / PCIe GEN 6 x16)
-====================================================================================================
-  Gross Simplex Physical Line Rate : 128.000 GB/s (64.0 GT/s PAM4, 16 Lanes)
-  Net Usable Simplex Payload Limit : 121.000 GB/s (FLIT 242B/256B Framing Efficiency)
 
-  [0.0 GB/s]                                     [80.0 GB/s]                            [121.0 GB/s]
-  ┌───────────────────────────────────────────────────|────────────────────────────────────────────┐
-  |########## ACTIVE INGRESS PAYLOAD STREAM ##########|....... UNCONTESTED BUS HEADROOM ...........|
-  └───────────────────────────────────────────────────|────────────────────────────────────────────┘
-  |◀------------ 66.116% (80.000 GB/s)--------------▶|◀---------- 33.884% (41.000 GB/s)---------▶|
-
-  ┌───────────────────────────────────────────────────|────────────────────────────────────────────┐
-  | MODULE 1 DECIMATED BASEBAND STREAM                | UNCONTESTED SYSTEM BUS HEADROOM            |
-  | * Continuous Throughput : 80.000 GB/s (640 Gbps)  | * Unallocated Bus Margin : +41.000 GB/s    |
-  | * Bus Occupancy Ratio   : 66.116% (<= 75% Safe)   | * Headroom Margin Ratio  : 33.884%         |
-  | * Channel Configuration : 256 Ch @ 78.125 MSPS    | * Contention State       : Zero Backpress. |
-  | * Operational Status    : Deterministic Line-Rate | * Downstream Consumers   : Mod 2 & Mod 5   |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-====================================================================================================
-```
-```
-====================================================================================================
-                      SPECTRAL PROCESSING GAIN & NOISE FLOOR DYNAMICS
-====================================================================================================
-  Amplitude (dBFS)
-     0.00 +------------------------------------------------------------------- (Full Scale: 0 dBFS)
-          |
-          |
-   -86.04 +------------------------------------------------ [Raw Nyquist: f_s / 2 = 1.25 GHz]
-          | Raw Ingress Noise Floor: N_raw = -86.04 dBFS (14-Bit ADC Quantization)
-          |
-          |      ┌─────────────────────────────────────────────────────────────┐
-          |      | On-Die Polyphase DDC Decimation Cascade (M_total = 32)      |
-          |      | Oversampling Gain: Delta_SQNR = 10*log10(32) = +15.0515 dB  |
-          |      └─────────────────────────────────────────────────────────────┘
-          |                                     |
-          |                                     ▼ 
-  -101.09 +-------------------------- [Baseband Nyquist: f_base / 2 = 39.0625 MHz]
-          | Decimated Baseband Noise Floor: N_dec = -101.09 dBFS (Effective Resolution: 16.50 Bits)
-          ───────────────────────────|─────────────────────────────────────────|────►  Frequency (MHz)
-         0 Hz                    39.0625 MHz                              1250.0 MHz
-====================================================================================================
-```
 
 ```
 ====================================================================================================
