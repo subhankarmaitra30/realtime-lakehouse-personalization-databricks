@@ -21,6 +21,28 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                HOST INTERCONNECT CAPACITY & OCCUPANCY (CXL.mem / PCIe GEN 6 x16)
+====================================================================================================
+  Gross Simplex Physical Line Rate : 128.000 GB/s (64.0 GT/s PAM4, 16 Lanes)
+  Net Usable Simplex Payload Limit : 121.000 GB/s (FLIT 242B/256B Framing Efficiency)
+
+  [0.0 GB/s]                                     [80.0 GB/s]                            [121.0 GB/s]
+  ┌───────────────────────────────────────────────────|────────────────────────────────────────────┐
+  |########## ACTIVE INGRESS PAYLOAD STREAM ##########|....... UNCONTESTED BUS HEADROOM ...........|
+  └───────────────────────────────────────────────────|─────────────────────────────────────────────┘
+  |◀------------ 66.116% (80.000 GB/s)--------------▶|◀---------- 33.884% (41.000 GB/s)---------▶|
+
+  ┌───────────────────────────────────────────────────|────────────────────────────────────────────┐
+  | MODULE 1 DECIMATED BASEBAND STREAM                | UNCONTESTED SYSTEM BUS HEADROOM            |
+  | * Continuous Throughput : 80.000 GB/s (640 Gbps)  | * Unallocated Bus Margin : +41.000 GB/s    |
+  | * Bus Occupancy Ratio   : 66.116% (<= 75% Safe)   | * Headroom Margin Ratio  : 33.884%         |
+  | * Channel Configuration : 256 Ch @ 78.125 MSPS    | * Contention State       : Zero Backpress. |
+  | * Operational Status    : Deterministic Line-Rate | * Downstream Consumers   : Mod 2 & Mod 5   |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
                       SPECTRAL PROCESSING GAIN & NOISE FLOOR DYNAMICS
 ====================================================================================================
   Amplitude (dBFS)
