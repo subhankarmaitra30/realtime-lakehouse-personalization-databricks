@@ -21,6 +21,30 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                      SPECTRAL PROCESSING GAIN & NOISE FLOOR DYNAMICS
+====================================================================================================
+  Amplitude (dBFS)
+     0.00 +------------------------------------------------------------------- (Full Scale: 0 dBFS)
+          |
+          |
+   -86.04 +------------------------------------------------ [Raw Nyquist: f_s / 2 = 1.25 GHz]
+          | Raw Ingress Noise Floor: N_raw = -86.04 dBFS (14-Bit ADC Quantization)
+          |
+          |      ┌─────────────────────────────────────────────────────────────┐
+          |      | On-Die Polyphase DDC Decimation Cascade (M_total = 32)      |
+          |      | Oversampling Gain: Delta_SQNR = 10*log10(32) = +15.0515 dB  |
+          |      └─────────────────────────────────────────────────────────────┘
+          |                                     |
+          |                                     ▼ 
+  -101.09 +-------------------------- [Baseband Nyquist: f_base / 2 = 39.0625 MHz]
+          | Decimated Baseband Noise Floor: N_dec = -101.09 dBFS (Effective Resolution: 16.50 Bits)
+          ───────────────────────────|─────────────────────────────────────────|────►  Frequency (MHz)
+         0 Hz                    39.0625 MHz                              1250.0 MHz
+====================================================================================================
+```
+
+```
+====================================================================================================
                         THE MULTI-STAGE POLYPHASE DDC CASCADE (M = 32)
 ====================================================================================================
           [ Incoming Raw RF Wavefield: f_s = 2.50 GSPS, 256 Channels, 14-Bit Real ADC ]
