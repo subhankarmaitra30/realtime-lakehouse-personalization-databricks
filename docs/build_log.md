@@ -21,20 +21,46 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-         THE TRADITIONAL 8-YEAR INFRASTRUCTURE FAILURE (CASE STUDY: GAIA-MIL, PGIMER)
+                    THREE-TIER SPATIAL-TEMPORAL VECTORIZATION-AT-BIRTH ENGINE
 ====================================================================================================
-  [Raw Video Stream] --► [Operator Probe] --► [Quadratic ViT] --► [Static JPEG]  --► [DPDP / HIPAA]
-  (Multi-Gigabyte       Wobble (45 deg)     Attention O(L^2)    "Keyhole" Slice    Legal Breach
-   60 fps Sweep)        (Feature Dropout)   (Memory Choke)      (99.8% Kinetics    (250 Cr Penalty
-                                                                 Discarded)         Exposure)
-
-====================================================================================================
-                        THE SOVEREIGN BIO-OS DETERMINISTIC VECTOR HIGHWAY
-====================================================================================================
-  [Raw Hardware Tap] --► [SE(3) Steerable] --► [Linear Mamba] --► [VIB Projection] --► [Anonymous Unit]
-  (Buffers A, B, C      Harmonic Conv3D      Selective SSM      & Rank-Nullity     Hypersphere Token
-   in Pinned RAM)       (Exact 3D Pose       O(L) Scan in       Collapse           v_bio in S^{1023}
-                         Equivariance)        32.768 KB SRAM    (43.74M : 1)       (||v_bio||_2 = 1)
+       RAW PHYSICAL INGRESS STREAM: X in R^{T x H x W x C} (Module 1 Pinned Buffers A, B, C)
+       Instantaneous Frame Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions (t_lifetime <= 16.67 ms)
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 1: MULTI-BACKBONE SE(3)-EQUIVARIANT STEERABLE SPATIAL ENCODER (f_theta)                 |
+  | * Steerable 3D Spherical Harmonic Kernels (l = 0, 1, 2 -> 9 Harmonics x 32 Radial RBFs)      |
+  | * Wigner-Eckart Block-Diagonal Routing & SO(3)-Invariant Casimir/Frobenius Norm Gate         |
+  |   (Type-0 Scalar: f_0 | Type-1 Dipole: ||v_{l=1}||_2 | Type-2 Quadrupole: ||T_{l=2}||_F)     |
+  | * Parallel Dual-Path Fabric: Local Edge (ConvNeXt) + Global Structure (Geodesic Swin/ViT)    |
+  | * Annihilates 6,220,288 Spatial Dims/Frame -> Emits S(t) in R^512 in t_Tier1 <= 2.14 ms      |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                 +------------------------------+------------------------------+
+                 |                                                             |
+                 ▼ (Immediate Hardware Trigger at T = 3.00 ms)                 ▼
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | HARDWARE VOLATILE FLASH-SCRUB GATE          |   | TIER 2: CAUSAL SELECTIVE MAMBA SSM         |
+  | (firmware/src/hal_rx.rs)                    |   | (engine/cuda/mamba_selective_scan.cu)      |
+  | * memset(0x00) over 12,441,600 Bytes        |   | * Exact ZOH Discretization (expm1f Guard)  |
+  | * 64B-Stride ARM64 dc civac + dsb sy        |   | * Strict O(L) Scan across L = 7,200 Frames |
+  | * Wipes Ring Buffer in <= 0.42 ms           |   | * Fixed 32.768 KB Register SRAM (512x16x4B)|
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+                                                                               |
+                                                                               ▼
+                                                    [Accumulated Temporal State: h_T in R^{512}]
+                                                                               |
+                                                                               ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & HYPERSPHERE PROJECTION HEAD (g_phi)       |
+  | * Stochastic Reparameterization: z = mu_theta(h_T) + sigma_theta(h_T) * eps, eps ~ N(0, I)   |
+  | * KL Rate Pruning (beta = 1e-3 >= 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)  |
+  | * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 <= 0.42 ms)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼
+        1024-D ANONYMOUS BIOLOGICAL VECTOR: v_bio in S^{1023} subset R^{1024} (||v_bio||_2 = 1.0)
+        Cumulative Null Space Erased: 44,789,758,976 Dims (43,740,000 : 1 | I(PHI; v_bio) = 0.0b)
 ====================================================================================================
 ```
 ```
