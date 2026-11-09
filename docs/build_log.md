@@ -21,6 +21,23 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                          SE(3) COMMUTATIVE EQUIVARIANCE DIAGRAM
+====================================================================================================
+      f(x): Continuous Input Feature Field in L^2(R^3, R^{C_in})
+                   |                                                |
+                   | [Group Action pi_in(g)]                        | [Forward Layer F_Theta]
+                   ▼                                                ▼
+      tilde{f}(x) = rho_in(R) f(R^{-1}(x - t))            v_feat(x) = [F_Theta(f)](x) in R^{C_out}
+                   |                                                |
+                   | [Forward Layer F_Theta]                        | [Output Action rho_out(g)]
+                   ▼                                                ▼
+      [F_Theta(pi_in(g) f)](x) ============================► [rho_out(g) F_Theta(f)](x)
+                    Analytical Identity: F_Theta(pi_in(g) f) === rho_out(g) F_Theta(f)
+====================================================================================================
+```
+
+```
+====================================================================================================
                     CAUSAL MAMBA CONTINUOUS-TO-DISCRETE STATE-SPACE RECURRENCE
 ====================================================================================================
       Incoming Invariant Spatial Feature Stream: S(t) in R^{512} (from Tier 1 at 60 fps)
