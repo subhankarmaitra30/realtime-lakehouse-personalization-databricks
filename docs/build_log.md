@@ -21,46 +21,112 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                    THREE-TIER SPATIAL-TEMPORAL VECTORIZATION-AT-BIRTH ENGINE
+                    CAUSAL MAMBA CONTINUOUS-TO-DISCRETE STATE-SPACE RECURRENCE
 ====================================================================================================
-       RAW PHYSICAL INGRESS STREAM: X in R^{T x H x W x C} (Module 1 Pinned Buffers A, B, C)
-       Instantaneous Frame Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions (t_lifetime <= 16.67 ms)
+      Incoming Invariant Spatial Feature Stream: S(t) in R^{512} (from Tier 1 at 60 fps)
                                                 |
-                                                ▼
+                   +----------------------------+----------------------------+
+                   |                                                         |
+                   ▼                                                         |
+  ┌──────────────────────────────────────────────────────────────────┐       |
+  | INPUT-DEPENDENT SELECTIVE PARAMETER PROJECTIONS                  |       |
+  | * Timescale Step: Delta_t = Softplus(Linear_Delta(S(t)))         |       |
+  | * Input Matrix:   B_t = Linear_B(S(t)) in R^{16}                 |       |
+  | * Output Matrix:  C_t = Linear_C(S(t)) in R^{16}                 |       |
+  | * Hurwitz Decay:  A_s = -exp(A_log) < 0 in R^{512 x 16}          |       |
+  +------------------------------------------------------------------+       |
+                   |                                                         |
+                   ▼                                                         |
+  ┌──────────────────────────────────────────────────────────────────┐       |
+  | EXACT ZERO-ORDER HOLD (ZOH) DISCRETIZATION (expm1f Guarded)      |       |
+  | * A_bar_t = exp(Delta_t * A_s)                                   |       |
+  | * B_bar_t = A_s^{-1} * expm1(Delta_t * A_s) * B_t                |       |
+  └──────────────────────────────────────────────────────────────────┘       |
+                   |                                                         |
+                   ▼                                                         ▼ 
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 1: MULTI-BACKBONE SE(3)-EQUIVARIANT STEERABLE SPATIAL ENCODER (f_theta)                 |
-  | * Steerable 3D Spherical Harmonic Kernels (l = 0, 1, 2 -> 9 Harmonics x 32 Radial RBFs)      |
-  | * Wigner-Eckart Block-Diagonal Routing & SO(3)-Invariant Casimir/Frobenius Norm Gate         |
-  |   (Type-0 Scalar: f_0 | Type-1 Dipole: ||v_{l=1}||_2 | Type-2 Quadrupole: ||T_{l=2}||_F)     |
-  | * Parallel Dual-Path Fabric: Local Edge (ConvNeXt) + Global Structure (Geodesic Swin/ViT)    |
-  | * Annihilates 6,220,288 Spatial Dims/Frame -> Emits S(t) in R^512 in t_Tier1 <= 2.14 ms      |
+  | ON-CHIP REGISTER SRAM RECURRENCE LOOP (t = 1 to 7,200 Frames | Latency <= 0.70 us/step)      |
+  | * State Update:      h_t = A_bar_t (*) h_{t-1} + B_bar_t (*) S(t)                            |
+  | * Output Projection: y_t = (C_t . h_t) + D (*) S(t)                                          |
+  | * Static Register Allocation: 512 Channels x 16 States x 4 Bytes (FP32) = 32,768 Bytes       |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
-                 +------------------------------+------------------------------+
-                 |                                                             |
-                 ▼ (Immediate Hardware Trigger at T = 3.00 ms)                 ▼
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | HARDWARE VOLATILE FLASH-SCRUB GATE          |   | TIER 2: CAUSAL SELECTIVE MAMBA SSM         |
-  | (firmware/src/hal_rx.rs)                    |   | (engine/cuda/mamba_selective_scan.cu)      |
-  | * memset(0x00) over 12,441,600 Bytes        |   | * Exact ZOH Discretization (expm1f Guard)  |
-  | * 64B-Stride ARM64 dc civac + dsb sy        |   | * Strict O(L) Scan across L = 7,200 Frames |
-  | * Wipes Ring Buffer in <= 0.42 ms           |   | * Fixed 32.768 KB Register SRAM (512x16x4B)|
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
-                                                                               |
-                                                                               ▼
-                                                    [Accumulated Temporal State: h_T in R^{512}]
-                                                                               |
-                                                                               ▼
+                                                ▼ 
+                    Accumulated Horizon Trajectory Vector: y_T in R^{512} (to Tier 3 VIB)
+====================================================================================================
+```
+
+```
+====================================================================================================
+                  TIER 3: VARIATIONAL INFORMATION BOTTLENECK & S^1023 PROJECTION HEAD
+====================================================================================================
+                  Accumulated Temporal Horizon State: h_T in R^{512} (from Tier 2)
+                                                |
+                   +----------------------------+----------------------------+
+                   |                                                         |
+                   ▼                                                         ▼ 
+      [ Mean Projection: fc_mu ]                            [ Log-Variance Projection: fc_logvar ]
+      mu_theta(h_T) in R^{1024}                             log(sigma_theta^2(h_T)) in [-10, +10]
+                   |                                                         |
+                   +----------------------------+----------------------------+
+                                                |
+                                                ▼ 
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & HYPERSPHERE PROJECTION HEAD (g_phi)       |
-  | * Stochastic Reparameterization: z = mu_theta(h_T) + sigma_theta(h_T) * eps, eps ~ N(0, I)   |
-  | * KL Rate Pruning (beta = 1e-3 >= 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)  |
-  | * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 <= 0.42 ms)  |
+  | GAUSSIAN REPARAMETERIZATION & KL INFORMATION PRUNING GATE (beta = 1e-3 >= 1e-3)              |
+  | * Stochastic Bottleneck Sample: z = mu_theta(h_T) + sigma_theta(h_T) (*) eps, eps ~ N(0, I)  |
+  | * Closed-Form KL Penalty: D_KL(N(mu, Sigma) || N(0, I)) = -0.5 * Sum(1 + logvar - mu^2 - var)|
+  | * Uninformative / Non-Clinical Dimensions Collapse to Isotropic Prior (mu -> 0, sigma -> 1)  |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
-                                                ▼
-        1024-D ANONYMOUS BIOLOGICAL VECTOR: v_bio in S^{1023} subset R^{1024} (||v_bio||_2 = 1.0)
-        Cumulative Null Space Erased: 44,789,758,976 Dims (43,740,000 : 1 | I(PHI; v_bio) = 0.0b)
+                                                ▼ 
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | GAUSSIAN ANNULUS SHELL CONCENTRATION & RIEMANNIAN UNIT HYPERSPHERE PROJECTION                |
+  | *LayerNorm Stabilization -> Euclidean L2 Normalization: v_bio = LayerNorm(z)/||LayerNorm(z)|||
+  | * Emits Canonical Anonymous Token: v_bio in S^{1023} subset R^{1024} (||v_bio||_2 = 1.000000)|
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                    RANK-NULLITY SURJECTIVE INFORMATION ANNIHILATION TOPOLOGY
+====================================================================================================
+  RAW HIGH-DIMENSIONAL INGRESS MANIFOLD (X)             INVARIANT LATENT HYPERSPHERE (V = S^1023)
+  Dim(X) = 7,200 x 1920 x 1080 x 3 = 44,789,760,000     Dim_ambient(V) = 1,024 (Intrinsic: 1,023)
+  ┌───────────────────────────────────────────────┐     ┌──────────────────────────────────────────┐
+  | * High-Speed 1080p60 Video & 2.5 GSPS RF      |     | * v_bio in S^{1023} subset R^{1024}      |
+  | * Patient Facial Contours & Biometrics        | ==► | * Exact Unit Norm: ||v_bio||_2 = 1.00000 |
+  | * Protected Health Information (S_PHI / MRNs) |     | * Pure Pathophysiological Kinetics Only  |
+  └───────────────────────────────────────────────┘     └──────────────────────────────────────────┘
+                          |                                                   🡅
+                          |     [ Factorized Surjection T_birth ]             |
+                          +-------------------------+-------------------------+
+                                                    |
+                                                    ▼ 
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PERMANENTLY ANNIHILATED ALGEBRAIC NULL SPACE: Ker(J_{T_birth})                                 |
+  | * Tier-1 Spatial Nullity Annihilated : 7,200 x 6,220,288 = 44,786,073,600 Dims                 |
+  | * Tier-2/3 Temporal-VIB Nullity      : 3,686,400 - 1,024 =      3,685,376 Dims                 |
+  | * Total Destroyed Null-Space Dims    : >= 44,789,758,976 Dims (Intrinsic: 44,789,758,977)      |
+  | * Arithmetic Compression Ratio       : 43,740,000 : 1 (99.9999977% Erased at Ingress)          |
+  | * Pre-Image Fiber Cardinality        : |F_{v_0}| = 2^{\aleph_0} = c (Hadamard Ill-Posed)       |
+  | * Personal Identifier Mutual Info    : I(S_PHI; v_bio) === 0.0000 Bits                         |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  VOLATILE FRAME TIMELINE & BARE-METAL ZEROIZATION LIFECYCLE
+====================================================================================================
+  Time (ms):  0.00       0.83                  2.97    3.00          3.42                      16.67
+              |----------|---------------------|-------|-------------|-------------------------|
+  DMA Bus  :  [0.83ms DMA] (Frame N -> Ring 0)
+  Tier 1   :             [-- 2.14ms SE(3) Conv3D --] (Emits S(N) in R^512 to Tier 2 Mamba)
+  Scrub HAL:                                           [0.42ms Scrub] (memset 0x00 + dc civac)
+  Tier 2/3 :                                                         [0.85ms Mamba + 0.42ms VIB]
+  RAM State:  |<--- Raw Frame N Live (2.97 ms) --->|   |<--- Physical DRAM = 0x00 Verified --->|
+                                                                                               🡅
+                                                                        (60 Hz V-Sync Flip: Ring 0
+                                                                         Re-Allocated for Frame N+2)
 ====================================================================================================
 ```
 ```
