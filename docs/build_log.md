@@ -23,7 +23,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
                           SE(3) COMMUTATIVE EQUIVARIANCE DIAGRAM
 ====================================================================================================
-      f(x): Continuous Input Feature Field in L^2(R^3, R^{C_in})
+                f(x): Continuous Input Feature Field in L^2(R^3, R^{C_in})
                    |                                                |
                    | [Group Action pi_in(g)]                        | [Forward Layer F_Theta]
                    ▼                                                ▼
@@ -32,6 +32,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                    | [Forward Layer F_Theta]                        | [Output Action rho_out(g)]
                    ▼                                                ▼
       [F_Theta(pi_in(g) f)](x) ============================► [rho_out(g) F_Theta(f)](x)
+
                     Analytical Identity: F_Theta(pi_in(g) f) === rho_out(g) F_Theta(f)
 ====================================================================================================
 ```
