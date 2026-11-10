@@ -270,8 +270,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   * Proof 3: 256B Recursive Plonky2 ZK-SNARK (<= 2.15 ms)   * State 2: Async CvRDT LUB Convergence
   * Proof 4: S^1023 Geodesic d_g & Levi-Civita Transport    * Zero-Plaintext Sealed Commitment Bridge
   * Proof 5: Join-Semilattice (S, |_|, <=) SEC Convergence  * 512-Byte Packed Binary Telemetry Envelope
-                        \                                                   /
-                          \                                               /
+                        \                                                 /
+                          \                                             /
                            ▼                                           ▼
   [SATELLITE ASSET 5] ---► +-------------------------------------------+ ◄--- [SATELLITE ASSET 3]
   compliance/              |               MASTER CORE:                |      #![no_std] Rust Crates
