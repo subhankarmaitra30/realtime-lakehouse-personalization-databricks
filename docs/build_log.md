@@ -90,7 +90,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
                   EMBEDDED ROCKSDB PGTQ 4-STATE TRANSACTIONAL DATA LIFECYCLE
 ====================================================================================================
-      Incoming Multi-Modal Streams: Buffer A (16.67ms), Buffer B (1.0ms), Buffer C (294.6ns)
+                            [INCOMING MULTI-MODAL INGRESS STREAMS]
+           Buffer A Video(16.67ms), Buffer B Telemetry(1.0ms), Buffer C RF Physics(294.6ns)
                                                 |
                                                 ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
