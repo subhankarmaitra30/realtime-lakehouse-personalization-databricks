@@ -21,7 +21,7 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
- ====================================================================================================
+====================================================================================================
               CONFOUNDED OBSERVATIONAL FAILURE (SIMPSON'S PARADOX IN ACUTE TRAUMA)
 ====================================================================================================
   [Catastrophic Shock (U_C = 1)] ---► [Medic Applies Aortic Clamp (A = 1)] ---► [High Mortality]
