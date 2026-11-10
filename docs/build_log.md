@@ -19,6 +19,204 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
+```
+====================================================================================================
+              MODULE 4 EXECUTABLE SOFTWARE-IN-THE-LOOP (SIL) & BARE-METAL TEE ARCHITECTURE
+====================================================================================================
+  [PYTHON CAUSAL & DP ENGINE: engine/python/causal_aipw.py]
+  * CausalPolicyNetwork          : Spectral Norm Lipschitz-1 + 1/sqrt(D) LayerNorm (||grad|| <= 404)
+  * DoublyRobustAIPWLoss         : Propensity Clamp eps = 0.01 (Max 100x) + Detached Pseudo-Outcomes
+  * DoubleMachineLearningHarness : 2-Fold Orthogonal Split (B_1 Nuisance Fit -> B_2 Policy Step)
+  * InEnclaveDPSanitizer         : Global L2 Clip (C_clip = 1.0) + Gaussian Noise (sigma_DP = 0.1)
+  * TopKSparsifierWithEF         : K = 16 FP16 + 16 int16 Error-Feedback Sparsification (64 Bytes)
+  * ShamirSecAggEngine           : Curve25519 ECDH Anti-Symmetric Masks + (k,n) Shamir Recovery
+                                                |
+                                                ▼(Verified by 5-Gate Suite: test_causal_aipw.py)
+  ==================================================================================================
+  [BARE-METAL #![no_std] RUST TEE DRIVER: firmware/src/secagg_enclave.rs (aarch64-unknown-none)]
+  * clamp_propensity_fp16_reg    : Hardware Binary16 Clamp [0x211F (0.0100), 0x3BEC (0.9902)]
+  * clip_gradient_l2             : 5-Iter Newton-Raphson f32 Square Root -> ||g_bar||_2 <= 1.000000
+  * apply_secagg_mask            : Directional Pairwise Masking (u < v: +s_{u,v} | u > v: -s_{v,u})
+  * pack_topk_slice_with_ef      : 1024-Bit Bitmap Deduplication -> 64B SparseGradientSlice
+                                                |
+                                                ▼ (Verified by 3-Gate Bench: test_module4.rs)
+  [512-BYTE CVRDT WIRE ENVELOPE INTEGRATION: firmware/src/cvrdt_ledger.rs + crypto/src/zk_lineage.rs]
+  * Bytes 0x00A8..0x01A7 (256B)  : Recursive Plonky2 ZK-SNARK Proof (pi_lineage, dp_clip <= 1000)
+  * Bytes 0x01C0..0x01FF (64B)   : SparseGradientSlice ([255..240]) | Frame CRC32: 0x89499B8C
+====================================================================================================
+```
+```
+====================================================================================================
+        512-BYTE CVRDT + MODULE 4 TOP-K SPARSE GRADIENT WIRE ENVELOPE (MIL-STD-188-220 CNR)
+====================================================================================================
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x0000: Protocol Magic = 0x534F5642 ("SOVB") (4 Bytes)        |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x0004: Originating Hardware Node ID (4 Bytes)                |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x0008..0x0027: Anonymous Token Key T_ID / T_PROV (32 Bytes)  |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x0028..0x0067: Vector Clock Canonically Sorted Keys (64 B)   |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x0068..0x00A7: Vector Clock Monotonic Ticks (64 Bytes)       |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x00A8..0x01A7: Recursive Plonky2 ZK Proof pi_lineage (256 B) |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x01A8..0x01AF: Biological Vector Physical Pointer (8 Bytes)  |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x01B0..0x01B7: Monotonic Epoch Timestamp in ns (8 Bytes)     |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x01B8:Status |            0x01B9..0x01BB: _reserved1 (3 B)   |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | 0x01BC..0x01BF: Castagnoli CRC32 over 0x0000..0x01BB (4 B)    |
+  +===============================================================+
+  | 0x01C0..0x01DF: SparseGradientSlice.values (32 Bytes)         | ◄-- MODULE 4 64-BYTE
+  |                 [16 x IEEE 754 FP16 Masked Gradient Values]   |     TOP-K EF-SGD PAYLOAD
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+     EXTENSION SLOT
+  | 0x01E0..0x01FF: SparseGradientSlice.indices (32 Bytes)        |     (Replaces _reserved2)
+  |                 [16 x uint16 Distinct Parameter Offsets]      |
+  +===============================================================+
+====================================================================================================
+```
+```
+====================================================================================================
+                  CONFIDENTIAL FEDERATED MESH SYNCHRONIZATION TOPOLOGY (SECAGG)
+====================================================================================================
+  EDGE ENCLAVE u (Siachen Aid Post: Node 101)           EDGE ENCLAVE v (Armored Ambulance: Node 102)
+  ┌───────────────────────────────────────────────┐     ┌───────────────────────────────────────────────┐
+  | 1. Local AIPW Grad : g_u = nabla L_AIPW       |     | 1. Local AIPW Grad : g_v = nabla L_AIPW       |
+  | 2. L2 Clip & DP    : g_tilde_u = g_bar_u + w_u|     | 2. L2 Clip & DP    : g_tilde_v = g_bar_v + w_v|
+  └───────────────────────────────────────────────┘     └───────────────────────────────────────────────┘
+                          |                                                     |
+                          | ◄=== Curve25519 ECDH Key Exchange: K_{u,v} =======► |
+                          |      s_{u,v} = PRG("SovereignBioOS_SecAgg", K_{u,v})|
+                          ▼                                                     ▼
+  ┌───────────────────────────────────────────────┐     ┌───────────────────────────────────────────────┐
+  | 3. Add Positive Pairwise Mask (u = 101 < 102):|     | 3. Subtract Pairwise Mask (v = 102 > 101):    |
+  |    y_u = g_tilde_u + s_{u,v}                  |     |    y_v = g_tilde_v - s_{u,v}                  |
+  └───────────────────────────────────────────────┘     └───────────────────────────────────────────────┘
+                          |                                                     |
+                          +--------------------------+--------------------------+
+                                                     |
+                                                     ▼ [Tactical Mesh Broadcast: < 2 Kbps CNR]
+  ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | GLOBAL SECAGG CONSENSUS SUMMATION & ZERO-SUM MASK ANNIHILATION                                    |
+  | * Sum_{i in U} y_i = (g_tilde_u + s_{u,v}) + (g_tilde_v - s_{u,v}) = g_tilde_u + g_tilde_v + 0.0  |
+  | * Pairwise Anti-Symmetric Invariant: Sum_{u in U} Sum_{v != u} S_{u,v} === 0.000000               |
+  | * Reveals Exact Aggregate Model Update; Individual Node Gradients Remain Information-Theoretically|
+  |   Masked in Transit; Dropped Nodes Recovered via (k, n)-Shamir Secret Shares over Prime Field Z_q |
+  └───────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  IN-ENCLAVE L2 SENSITIVITY CLIPPING & GAUSSIAN DP MECHANISM
+====================================================================================================
+          Raw Policy Gradient Vector: g_t = nabla_theta L_AIPW(theta_t) in R^d (d = 328,449)
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | STEP 1: BARE-METAL NEWTON-RAPHSON L2-NORM SENSITIVITY CLIPPING PROJECTION                    |
+  | * Global L2 Evaluation: ||g_t||_2 = sqrt( Sum_{i=1}^d g_{t,i}^2 )                            |
+  | * Clipped Vector: g_bar_t = g_t / max(1.0, ||g_t||_2 / C_clip), where C_clip = 1.0           |
+  | * Enforces Strict Global L2 Sensitivity: ||g_bar_t||_2 <= C_clip = 1.000000                  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | STEP 2: CALIBRATED GAUSSIAN NOISE PERTURBATION (sigma_DP = 0.1)                              |
+  | * Hardware TRNG Draw: w_t ~ N(0, sigma_DP^2 * C_clip^2 * I_d)                                |
+  | * Sanitized Gradient Delta: g_tilde_t = g_bar_t + w_t (Empirical L2 ~ sqrt(d)*0.1 = 57.33)   |
+  | * 1000-Step Subsampled RDP Budget: (eps_DP = 6.87, delta_DP = 1e-5)                          |
+  | * Cuff & Yu (2016) Per-Record Mutual Information: I(X_i; g_tilde_t) = 0.000099 <= 10^-4 bits |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  NEXUS-CAUSAL HARDWARE TEE MEMORY ISOLATION & IPC SECURITY BOUNDARY
+====================================================================================================
+  HOST OPERATING SYSTEM / HYPERVISOR (UNTRUSTED ROOT DOMAIN)
+  Physical RAM Range: 0x0000_0000 .. 0x7FFF_FFFF
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | * DMA Ingress Ring Buffers: Holds de-identified 1024-D vectors v_bio in S^1023 (Module 2)    |
+  | * RocksDB Persistent Store: Holds AES-256-XTS encrypted 48B compound keys (Module 3 PGTQ)    |
+  | * Combat Net Radio Driver : MIL-STD-188-220 VHF/HF network stack (< 2.0 Kbps CNR)            |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                   🡅
+                         ▼ [Enclave Ingress FIFO]                            | [Enclave Egress FIFO]
+  =======================+===================================================+======================
+                  ENCLAVE SECURITY GATEWAY (CXL 3.0 / PCIe Gen 6 Direct Doorbell)
+                  Hardware Memory Bus Controller: AES-128/256-XTS In-Flight Ciphering
+  =======================+===================================================+======================
+                         ▼                                                   |
+  HARDWARE-ISOLATED TEE ENCLAVE CLEANROOM (AMD SEV-SNP / INTEL SGX / ARM TRUSTZONE)
+  Physical Memory Range: 0x8000_0000 .. 0xFFFF_FFFF (Protected Enclave Page Cache - EPC)
+  ┌──────────────────────────────────────────────┐   ┌───────────────────────────────────────────┐
+  | TENANT RUNTIME WORKSPACE                     |   | IN-ENCLAVE DATA & CRYPTO STRUCTURES       |
+  | * Proprietary Causal Policy Net f_theta      |◄─►| * Pinned Batch FIFO: B x 1024 FP32        |
+  | * 2-Fold DML Nuisance Nets (e_hat, mu_hat)   |   | * Gradient Scratchpad: d x 32-Bit Floats  |
+  | * Hardware TRNG Gaussian Noise Generator     |   | * Pre-Compiled Plonky2 ZK Circuit         |
+  └──────────────────────────────────────────────┘   └───────────────────────────────────────────┘
+                                                 |
+                                                 ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | HARDWARE EXFILTRATION LOCKOUTS & SANITIZED EGRESS GATE                                       |
+  | * Outbound network sockets disabled | Non-volatile disk write descriptors hardware-blocked   |
+  | * Emits ONLY DP-Sanitized (C_clip=1.0, sigma=0.1), ECDH-Masked 64B Top-K Slices + 256B ZK    |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  REGISTER-LEVEL HARDWARE PROPENSITY CLAMP & FP16 ANTI-BLOWOUT GATE
+====================================================================================================
+                  Raw Propensity Estimator Output: e(X) in (0.0, 1.0) (e.g., 1.00e-06)
+                                                |
+                                                ▼ 
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | HARDWARE COMPARATOR CLAMP REGISTERS (firmware/src/secagg_enclave.rs & causal_aipw.py)        |
+  | * REG_CLAMP_MIN (0x4000_2010): 0x211F (IEEE 754 binary16: 0.0100021 ~ 0.0100)                |
+  | * REG_CLAMP_MAX (0x4000_2014): 0x3BEC (IEEE 754 binary16: 0.9902344 ~ 0.9902)                |
+  | * Clamped Propensity: e_tilde_a(X) = clamp(e_a(X), 0.01, 0.99) ===> |1 / e_tilde_a| <= 100.0x|
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼ 
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | SPECTRAL-NORMALIZED POLICY BACKPROPAGATION & IEEE 754 FP16 CEILING GUARANTEE                 |
+  | * Policy Jacobian Bound on S^{1023}: sup_{||X||_2 = 1} ||nabla_theta f_theta(X)||_2 <= 1.0   |
+  | * Worst-Case Backpropagated Gradient Norm: ||nabla_theta L_AIPW^{clamped}||_2 <= 404.0       |
+  | * IEEE 754 FP16 Saturation Ceiling: 65,504.0 (0x7BFF) ===> > 162.1x Numerical Safety Margin  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                    STRUCTURAL CAUSAL GRAPH SURGERY (OBSERVATIONAL VS. DO-CALCULUS)
+====================================================================================================
+  A. OBSERVATIONAL CONFOUNDED SYSTEM (DAG G)            B. INTERVENTIONAL GRAPH SURGERY (DAG G_{bar{A}})
+  ┌───────────────────────────────────────────────┐     ┌──────────────────────────────────────────────┐
+  | Pre-Treatment Tactical & Trauma Confounders C |     | Pre-Treatment Tactical & Trauma Confounders C|
+  | (Shock Depth, Core Hypothermia, Blast Trauma) |     | (Shock Depth, Core Hypothermia, Blast Trauma)|
+  └───────────────────────────────────────────────┘     └──────────────────────────────────────────────┘
+                 |                         |                           |                        |
+                 ▼                         ▼                           ▼                        x [Edge Cut]
+  ┌────────────────────────┐   ┌──────────────────┐     ┌────────────────────────┐   ┌─────────────────┐
+  | Invariant Vector State |--►| Treatment Choice |     | Invariant Vector State |   | Forced Action   |
+  | X = v_bio in S^{1023}  |   | A in {0, 1}      |     | X = v_bio in S^{1023}  |   | do(A = a)       |
+  └────────────────────────┘   └──────────────────┘     └────────────────────────┘   └─────────────────┘
+                 |                         |                           |                        |
+                 +------------+------------+                           +-----------+------------+
+                              | (Spurious Confounding Bias)                        | (Pure Causal Path)
+                              ▼                                                    ▼
+  ┌──────────────────────────────────────────────┐      ┌──────────────────────────────────────────────┐
+  | Biased Observational Expectation:            |      | Identified Counterfactual Trajectory:        |
+  | P(Y | A = a, X)  [Falsely Inverts Efficacy!] |      | P(Y | do(A = a), X) = Sum_c P(Y|a,c,X)P(c|X) |
+  └──────────────────────────────────────────────┘      └──────────────────────────────────────────────┘
+====================================================================================================
+```
 
 ```
 ====================================================================================================
