@@ -21,50 +21,35 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                  MODULE 4: SIX-STAGE IN-ENCLAVE CAUSAL & SECAGG EXECUTION PIPELINE
+                    MODULE 4: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
 ====================================================================================================
-  [INGRESS A: Module 2 Vector Stream]                   [INGRESS B: Module 3 RocksDB PGTQ]
-  v_bio in S^{1023} (||v_bio||_2 = 1.0)                 Reconciled Day-45 Biopsy / Outcome y_soft
-                   \                                                   /
-                    +------------------------+------------------------+
-                                             |
-                                             ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | HARDWARE-ISOLATED TRUSTED EXECUTION ENVIRONMENT (AMD SEV-SNP / INTEL SGX / ARM TRUSTZONE)    |
-  |                                                                                              |
-  |  [STAGE 1: 2-FOLD NEYMAN-ORTHOGONAL DOUBLE MACHINE LEARNING (DML) CROSS-FITTING]             |
-  |  * Splits batch B into orthogonal halves B_1 & B_2; fits Nuisance Nets (e_hat, mu_hat) on B1 |
-  |  * Applies Hardware Register Clamp on B_2: e_tilde = clamp(e_hat, 0.01, 0.99) (0x211F/0x3BEC)|
-  |  * Evaluates detached AIPW pseudo-outcomes: Y_hat^{AIPW} = mu_a + (I(A=a)/e_tilde)*(Y - mu_a)|
-  |                                             |                                                |
-  |                                             ▼                                                |
-  |  [STAGE 2: SPECTRAL-NORMALIZED COUNTERFACTUAL POLICY OPTIMIZATION]                           |
-  |  * Forward pass f_theta(v_bio) -> Y_hat (Lipschitz-1 Spectral Norm + 1/sqrt(D) LayerNorm)    |
-  |  * Backward pass g_t = nabla_theta L_{AIPW}(theta) bounded to ||g_t||_2 <= 404.0 << 65,504.0 |
-  |                                             |                                                |
-  |                                             ▼                                                |
-  |  [STAGE 3: IN-ENCLAVE LOCAL (eps_DP, delta_DP)-DIFFERENTIAL PRIVACY SANITIZER]               |
-  |  * Newton-Raphson L2 Sensitivity Clip: g_bar_t = g_t / max(1.0, ||g_t||_2 / C_clip) (C = 1.0)|
-  |  * Calibrated Gaussian Perturbation: g_tilde_t = g_bar_t + N(0, (0.1 * 1.0)^2 I_d)           |
-  |                                             |                                                |
-  |                                             ▼                                                |
-  |  [STAGE 4: 256-BYTE PLONKY2 RECURSIVE ZK LINEAGE ATTESTATION (crypto/src/zk_lineage.rs)]     |
-  |  * Emits pi_lineage attesting TPM 2.0 PCRs, Poseidon Merkle root, and ||g_bar||_2 <= 1.0     |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                             |
-                                             ▼ Sanitized Gradient Delta: g_tilde
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | [STAGE 5: PAIRWISE MASKED SECAGG & 64-BYTE TOP-K EF-SGD WIRE PACKING (secagg_enclave.rs)]    |
-  | * Curve25519 ECDH anti-symmetric masks S_{u,v} = -S_{v,u}; packs K=16 FP16 + 16 uint16 slice |
-  | * Embeds 64B SparseGradientSlice at offset 0x01C0..0x01FF of 512B CvRdtSyncEnvelope ("SOVB") |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                             |
-                                             ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | [STAGE 6: ASYNCHRONOUS TACTICAL MESH BROADCAST & CVRDT MODEL CONVERGENCE (< 2 Kbps CNR)]     |
-  | * 2.048 s burst at 2.0 Kbps (3.41% RF duty cycle); pairwise masks cancel: Sum S_{u,v} = 0.0  |
-  | * Converges under bounded staleness tau_u(t) at rate O(1/sqrt(T)) with zero blocking locks   |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+  [SATELLITE ASSET 1: CAUSAL, FP16 & PRIVACY PROOFS]       [SATELLITE ASSET 2: PIPELINE & BUS SPECS]
+  docs/proofs/aipw_gradient_stability.md                   docs/architecture/causal_mlops_pipeline.md
+  * Proof 1: Doubly Robust Unbiasedness (E[Y_hat]=E[Y(a)]) * 2-Fold DML Cross-Fitting (Detached)
+  * Proof 2: Propensity Clamp (eps=0.01 => ||grad||<=404)  * Hardware Clamp Hex: 0x211F / 0x3BEC
+  * Proof 3: Renyi DP & Cuff-Yu (I <= 0.000099 <= 1e-4 b)  * 64B Top-K EF-SGD Slice (0x01C0..0x01FF)
+  * Proof 4: Non-Convex DP-SGD Convergence O(1/sqrt(T))    * 2.048 s Burst @ 2 Kbps (3.41% RF Duty)
+  * Proof 5: Zero-Sum ECDH SecAgg (Sum S_{u,v} = 0.00000)  * Async CvRDT Mesh Model Convergence
+  docs/proofs/causal_action_space.md
+  * Proof 6: Pearl's Do-Calculus Back-Door Identification
+                        \                                                 /
+                         \                                               /
+                          ▼                                            ▼ 
+  [SATELLITE ASSET 5] ---► +-------------------------------------------+ ◄--- [SATELLITE ASSET 3]
+  compliance/              |               MASTER CORE:                |      engine/python/
+  * India DPDP Act Sec 3/8 |               NEXUS-CAUSAL                |      causal_aipw.py
+  * US HIPAA § 164.514     |            MLOPS & FEDERATED              |      * DoublyRobustAIPWLoss
+  * IEC 62304 / IEEE 754   |                (MODULE 4)                 |      * CausalPolicyNetwork
+  * MIL-STD-882E / 188-220 +-------------------------------------------+      * InEnclaveDPSanitizer
+  * Common Criteria EAL5+                        |                            * TopKSparsifierWithEF
+                                                 |                            * ShamirSecAggEngine
+                                                 ▼                            * DML CrossFit Harness
+            [SATELLITE ASSET 4: BARE-METAL TEE DRIVER & SIL VERIFICATION SUITES]
+            * firmware/src/secagg_enclave.rs (#![no_std] Newton-Raphson L2 Clip & 64B Top-K Pack)
+            * crypto/src/zk_lineage.rs & firmware/src/cvrdt_ledger.rs (256B ZK + 512B Frame)
+            * engine/python/test_causal_aipw.py (5-Gate Python Causal, DP & SecAgg SIL Suite)
+            * tests/src/bin/test_module4.rs (3-Gate Bare-Metal Rust TEE & 512B Wire Benchmark)
+====================================================================================================
 ====================================================================================================
 ```
 ```
