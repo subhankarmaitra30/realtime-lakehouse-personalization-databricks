@@ -204,7 +204,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | (Shock Depth, Core Hypothermia, Blast Trauma) |     | (Shock Depth, Core Hypothermia, Blast Trauma)|
   └───────────────────────────────────────────────┘     └──────────────────────────────────────────────┘
                  |                         |                           |                        |
-                 ▼                         ▼                           ▼                        x [Edge Cut]
+                 ▼                         ▼                           ▼             [Edge Cut] x 
   ┌────────────────────────┐   ┌──────────────────┐     ┌────────────────────────┐   ┌─────────────────┐
   | Invariant Vector State |--►| Treatment Choice |     | Invariant Vector State |   | Forced Action   |
   | X = v_bio in S^{1023}  |   | A in {0, 1}      |     | X = v_bio in S^{1023}  |   | do(A = a)       |
@@ -212,7 +212,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                  |                         |                           |                        |
                  +------------+------------+                           +-----------+------------+
                               | (Spurious Confounding Bias)                        | (Pure Causal Path)
-                              ▼                                                    ▼
+                              ▼                                                    ▼   UNBIASED TRUTH
   ┌──────────────────────────────────────────────┐      ┌──────────────────────────────────────────────┐
   | Biased Observational Expectation:            |      | Identified Counterfactual Trajectory:        |
   | P(Y | A = a, X)  [Falsely Inverts Efficacy!] |      | P(Y | do(A = a), X) = Sum_c P(Y|a,c,X)P(c|X) |
