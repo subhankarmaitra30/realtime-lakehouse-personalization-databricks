@@ -36,14 +36,14 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   * Proof 8: 30-Bit 3D Morton Z-Curve (16.0x L2 Locality)
                         \                                                 /
                          \                                               /
-                          v                                             v
-  [SATELLITE ASSET 5] ---> +-------------------------------------------+ <--- [SATELLITE ASSET 3]
+                           ▼                                            ▼
+  [SATELLITE ASSET 5] ---► +-------------------------------------------+ ◄--- [SATELLITE ASSET 3]
   docs/architecture/       |               MASTER CORE:                |      Scanout HAL & Timing
   hud_slam_architecture.md |           AMBIENT HUD & 3D SLAM           |      * display_scanout.rs
   * Dual Ping-Pong Ring    |                (MODULE 5)                 |       (MMIO 0x4000_3000 &
   * 4-Clock CDC (~10^257y) +-------------------------------------------+        0x00BE_0000 Stride)
   compliance/                                    |                            * timing_budget_proof.md
-  * IEC 62304 Class C                            v                             (0.83 + 7.20 + 4.15
+  * IEC 62304 Class C                            ▼                             (0.83 + 7.20 + 4.15
   * MIL-STD-461G / 810H     [SATELLITE ASSET 4: AUTOMATED SIL SUITES]          + 0.42 = 12.60 ms)
                             * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint)
                             * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
@@ -71,7 +71,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
       PHYSICAL VIDEO INGRESS: Uncompressed 1080p60 12-Bit RGB via 4 kV Samtec FireFly Tap
                                                 |
-                                                v
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
   | HOST UNIFIED PINNED MEMORY ARENA (cudaHostAllocMapped | cudaHostAllocWriteCombined: 24.88MB) |
   | * PINNED_RING_0 (0x8000_0000..0x80BD_D7FF): LOCKED_BY_COMPUTE_STREAM (Processing Frame N)    |
@@ -199,7 +199,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
                   DIFFERENTIABLE BEER-LAMBERT VOLUME RAYMARCHING & ISOSURFACE PIPELINE
 ====================================================================================================
-      Virtual Camera Origin: o in R^3  --->  Viewing Ray: r(s) = o + s*d,  s in [s_near, s_far]
+      Virtual Camera Origin: o in R^3  ---►  Viewing Ray: r(s) = o + s*d,  s in [s_near, s_far]
                                                          |
                                                          ▼
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
