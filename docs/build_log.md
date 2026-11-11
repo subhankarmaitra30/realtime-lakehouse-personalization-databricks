@@ -21,6 +21,54 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+                  MODULE 4: SIX-STAGE IN-ENCLAVE CAUSAL & SECAGG EXECUTION PIPELINE
+====================================================================================================
+  [INGRESS A: Module 2 Vector Stream]                   [INGRESS B: Module 3 RocksDB PGTQ]
+  v_bio in S^{1023} (||v_bio||_2 = 1.0)                 Reconciled Day-45 Biopsy / Outcome y_soft
+                   \                                                   /
+                    +------------------------+------------------------+
+                                             |
+                                             ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | HARDWARE-ISOLATED TRUSTED EXECUTION ENVIRONMENT (AMD SEV-SNP / INTEL SGX / ARM TRUSTZONE)    |
+  |                                                                                              |
+  |  [STAGE 1: 2-FOLD NEYMAN-ORTHOGONAL DOUBLE MACHINE LEARNING (DML) CROSS-FITTING]             |
+  |  * Splits batch B into orthogonal halves B_1 & B_2; fits Nuisance Nets (e_hat, mu_hat) on B1 |
+  |  * Applies Hardware Register Clamp on B_2: e_tilde = clamp(e_hat, 0.01, 0.99) (0x211F/0x3BEC)|
+  |  * Evaluates detached AIPW pseudo-outcomes: Y_hat^{AIPW} = mu_a + (I(A=a)/e_tilde)*(Y - mu_a)|
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 2: SPECTRAL-NORMALIZED COUNTERFACTUAL POLICY OPTIMIZATION]                           |
+  |  * Forward pass f_theta(v_bio) -> Y_hat (Lipschitz-1 Spectral Norm + 1/sqrt(D) LayerNorm)    |
+  |  * Backward pass g_t = nabla_theta L_{AIPW}(theta) bounded to ||g_t||_2 <= 404.0 << 65,504.0 |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 3: IN-ENCLAVE LOCAL (eps_DP, delta_DP)-DIFFERENTIAL PRIVACY SANITIZER]               |
+  |  * Newton-Raphson L2 Sensitivity Clip: g_bar_t = g_t / max(1.0, ||g_t||_2 / C_clip) (C = 1.0)|
+  |  * Calibrated Gaussian Perturbation: g_tilde_t = g_bar_t + N(0, (0.1 * 1.0)^2 I_d)           |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 4: 256-BYTE PLONKY2 RECURSIVE ZK LINEAGE ATTESTATION (crypto/src/zk_lineage.rs)]     |
+  |  * Emits pi_lineage attesting TPM 2.0 PCRs, Poseidon Merkle root, and ||g_bar||_2 <= 1.0     |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                             |
+                                             ▼ Sanitized Gradient Delta: g_tilde
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | [STAGE 5: PAIRWISE MASKED SECAGG & 64-BYTE TOP-K EF-SGD WIRE PACKING (secagg_enclave.rs)]    |
+  | * Curve25519 ECDH anti-symmetric masks S_{u,v} = -S_{v,u}; packs K=16 FP16 + 16 uint16 slice |
+  | * Embeds 64B SparseGradientSlice at offset 0x01C0..0x01FF of 512B CvRdtSyncEnvelope ("SOVB") |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                             |
+                                             ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | [STAGE 6: ASYNCHRONOUS TACTICAL MESH BROADCAST & CVRDT MODEL CONVERGENCE (< 2 Kbps CNR)]     |
+  | * 2.048 s burst at 2.0 Kbps (3.41% RF duty cycle); pairwise masks cancel: Sum S_{u,v} = 0.0  |
+  | * Converges under bounded staleness tau_u(t) at rate O(1/sqrt(T)) with zero blocking locks   |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
               MODULE 4 EXECUTABLE SOFTWARE-IN-THE-LOOP (SIL) & BARE-METAL TEE ARCHITECTURE
 ====================================================================================================
   [PYTHON CAUSAL & DP ENGINE: engine/python/causal_aipw.py]
