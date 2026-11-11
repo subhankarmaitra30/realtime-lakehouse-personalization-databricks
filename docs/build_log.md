@@ -85,10 +85,12 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                   CONFIDENTIAL FEDERATED MESH SYNCHRONIZATION TOPOLOGY (SECAGG)
 ====================================================================================================
   EDGE ENCLAVE u (Siachen Aid Post: Node 101)           EDGE ENCLAVE v (Armored Ambulance: Node 102)
-  ┌───────────────────────────────────────────────┐     ┌───────────────────────────────────────────────┐
-  | 1. Local AIPW Grad : g_u = nabla L_AIPW       |     | 1. Local AIPW Grad : g_v = nabla L_AIPW       |
-  | 2. L2 Clip & DP    : g_tilde_u = g_bar_u + w_u|     | 2. L2 Clip & DP    : g_tilde_v = g_bar_v + w_v|
-  └───────────────────────────────────────────────┘     └───────────────────────────────────────────────┘
+  ┌───────────────────────────────────────────────┐    ┌───────────────────────────────────────────────┐
+  |   Model Parameters: theta_u                   |    |    Model Parameters: theta_v                  |
+  |   L2 Sensitivity Clip: ||g|| <= 1.0           |    |     L2 Sensitivity Clip: ||g|| <= 1.0         |
+  | 1. Local AIPW Grad : g_u = nabla L_AIPW       |    | 1. Local AIPW Grad : g_v = nabla L_AIPW       | 
+  | 2. L2 Clip & DP    : g_tilde_u = g_bar_u + w_u|    | 2. L2 Clip & DP    : g_tilde_v = g_bar_v + w_v| 
+  └───────────────────────────────────────────────┘    └───────────────────────────────────────────────┘
                           |                                                     |
                           | ◄=== Curve25519 ECDH Key Exchange: K_{u,v} =======► |
                           |      s_{u,v} = PRG("SovereignBioOS_SecAgg", K_{u,v})|
