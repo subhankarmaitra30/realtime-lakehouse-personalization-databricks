@@ -187,13 +187,13 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
                  +-----------------+
                   \      |      / 
                    \     |     /   Elevational Beam Profile H_elev(y): 
-       Beam Waist   \   |    /    Gaussian Slice Thickness sigma_z = 1.20 mm 
+        Beam Waist   \   |    /    Gaussian Slice Thickness sigma_z = 1.20 mm 
                      |---|---|     (at Nominal 7.50 MHz Linear Array Carrier)  
-                     /    |    \ 
-                    /     |     \   Van Cittert-Zernike Speckle Decay: 
-                   /  Acoustic   \  rho(Delta_z, theta) 
-                  /  Scattering   \   == exp(-Delta_z^2 / (2*sigma_z^2))                     
-                 /                 \    * cos(theta(t)) 
+                    /    |    \  
+                   /     |     \   Van Cittert-Zernike Speckle Decay:  
+                  /  Acoustic   \  rho(Delta_z, theta)  
+                 /  Scattering   \   == exp(-Delta_z^2 / (2*sigma_z^2))                      
+                /                 \    * cos(theta(t))  
 
 ====================================================================================
 ```
