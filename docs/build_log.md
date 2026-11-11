@@ -21,97 +21,211 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                    MODULE 4: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+                    MODULE 5: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
 ====================================================================================================
-  [SATELLITE ASSET 1: CAUSAL, FP16 & PRIVACY PROOFS]       [SATELLITE ASSET 2: PIPELINE & BUS SPECS]
-  docs/proofs/aipw_gradient_stability.md                   docs/architecture/causal_mlops_pipeline.md
-  * Proof 1: Doubly Robust Unbiasedness (E[Y_hat]=E[Y(a)]) * 2-Fold DML Cross-Fitting (Detached)
-  * Proof 2: Propensity Clamp (eps=0.01 => ||grad||<=404)  * Hardware Clamp Hex: 0x211F / 0x3BEC
-  * Proof 3: Renyi DP & Cuff-Yu (I <= 0.000099 <= 1e-4 b)  * 64B Top-K EF-SGD Slice (0x01C0..0x01FF)
-  * Proof 4: Non-Convex DP-SGD Convergence O(1/sqrt(T))    * 2.048 s Burst @ 2 Kbps (3.41% RF Duty)
-  * Proof 5: Zero-Sum ECDH SecAgg (Sum S_{u,v} = 0.00000)  * Async CvRDT Mesh Model Convergence
-  docs/proofs/causal_action_space.md
-  * Proof 6: Pearl's Do-Calculus Back-Door Identification
+  [SATELLITE ASSET 1: LATENCY, OPTICAL & SLAM PROOFS]      [SATELLITE ASSET 2: BARE-METAL CUDA C++20]
+  docs/proofs/hud_slam_latency_proof.md                    engine/cuda/hud_compositor.cu
+  * Proof 1: Critical Path (t_total = 12.60 <= 16.67 ms)   * Fused Alpha Clamp (0.0 <= alpha <= 0.65)
+  * Proof 2: Direct-Silicon OS Bypass (t_OS_jitter = 0 ms) * NaN/Inf Scrubbing (T_photon >= 35.0%)
+  * Proof 3: Class C Photon Floor (T >= 35.0%, 879.6 Td)   engine/cuda/slam_raymarching.cu
+  * Proof 4: Thermal Throttling WCET (t_WCET = 14.36 ms)   * 30-Bit Morton Atomic Voxel Splatting
+  docs/proofs/slam_raymarching_derivation.md               * 64-Step Beer-Lambert March & Adjoint
+  * Proof 5: Sensorless 6-DoF SE(3) (LK + Speckle Decay)   engine/cuda/test_cuda_m5_sil.cpp
+  * Proof 6: Lateral Pitch R_x(theta) & Adjoint dC/dV_i    * C++20 Host-Emulated CUDA SIL Benchmark
+  * Proof 7: 512^3 FP16 Voxel Bounds (256 MiB, 16.11 GB/s)
+  * Proof 8: 30-Bit 3D Morton Z-Curve (16.0x L2 Locality)
                         \                                                 /
                          \                                               /
-                          ▼                                            ▼ 
-  [SATELLITE ASSET 5] ---► +-------------------------------------------+ ◄--- [SATELLITE ASSET 3]
-  compliance/              |               MASTER CORE:                |      engine/python/
-  * India DPDP Act Sec 3/8 |               NEXUS-CAUSAL                |      causal_aipw.py
-  * US HIPAA § 164.514     |            MLOPS & FEDERATED              |      * DoublyRobustAIPWLoss
-  * IEC 62304 / IEEE 754   |                (MODULE 4)                 |      * CausalPolicyNetwork
-  * MIL-STD-882E / 188-220 +-------------------------------------------+      * InEnclaveDPSanitizer
-  * Common Criteria EAL5+                        |                            * TopKSparsifierWithEF
-                                                 |                            * ShamirSecAggEngine
-                                                 ▼                            * DML CrossFit Harness
-            [SATELLITE ASSET 4: BARE-METAL TEE DRIVER & SIL VERIFICATION SUITES]
-            * firmware/src/secagg_enclave.rs (#![no_std] Newton-Raphson L2 Clip & 64B Top-K Pack)
-            * crypto/src/zk_lineage.rs & firmware/src/cvrdt_ledger.rs (256B ZK + 512B Frame)
-            * engine/python/test_causal_aipw.py (5-Gate Python Causal, DP & SecAgg SIL Suite)
-            * tests/src/bin/test_module4.rs (3-Gate Bare-Metal Rust TEE & 512B Wire Benchmark)
-====================================================================================================
+                          v                                             v
+  [SATELLITE ASSET 5] ---> +-------------------------------------------+ <--- [SATELLITE ASSET 3]
+  docs/architecture/       |               MASTER CORE:                |      Scanout HAL & Timing
+  hud_slam_architecture.md |           AMBIENT HUD & 3D SLAM           |      * display_scanout.rs
+  * Dual Ping-Pong Ring    |                (MODULE 5)                 |       (MMIO 0x4000_3000 &
+  * 4-Clock CDC (~10^257y) +-------------------------------------------+        0x00BE_0000 Stride)
+  compliance/                                    |                            * timing_budget_proof.md
+  * IEC 62304 Class C                            v                             (0.83 + 7.20 + 4.15
+  * MIL-STD-461G / 810H     [SATELLITE ASSET 4: AUTOMATED SIL SUITES]          + 0.42 = 12.60 ms)
+                            * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint)
+                            * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
 ====================================================================================================
 ```
 ```
 ====================================================================================================
-              MODULE 4 EXECUTABLE SOFTWARE-IN-THE-LOOP (SIL) & BARE-METAL TEE ARCHITECTURE
+                  CONVENTIONAL SURGICAL AUGMENTATION & STANDALONE AI FAILURE
 ====================================================================================================
-  [PYTHON CAUSAL & DP ENGINE: engine/python/causal_aipw.py]
-  * CausalPolicyNetwork          : Spectral Norm Lipschitz-1 + 1/sqrt(D) LayerNorm (||grad|| <= 404)
-  * DoublyRobustAIPWLoss         : Propensity Clamp eps = 0.01 (Max 100x) + Detached Pseudo-Outcomes
-  * DoubleMachineLearningHarness : 2-Fold Orthogonal Split (B_1 Nuisance Fit -> B_2 Policy Step)
-  * InEnclaveDPSanitizer         : Global L2 Clip (C_clip = 1.0) + Gaussian Noise (sigma_DP = 0.1)
-  * TopKSparsifierWithEF         : K = 16 FP16 + 16 int16 Error-Feedback Sparsification (64 Bytes)
-  * ShamirSecAggEngine           : Curve25519 ECDH Anti-Symmetric Masks + (k,n) Shamir Recovery
+  [Optical Camera] -► [OS Window Manager] -► [33 to 50 ms]  -► [Opaque AI Mask] -► [Surgical Crisis]
+   (HDMI / SDI)        (DWM / X11 / Wayland   Non-Determ.       (alpha -> 1.0       (Bleeders Hidden
+                        3-Copy Swapchain)     VOR Lag            White-Out Fault)    & Tool Overshoot)
+
+====================================================================================================
+                  THE SOVEREIGN BIO-OS DIRECT-SILICON REAL-TIME HUD PIPELINE
+====================================================================================================
+  [Samtec 4 kV]    -► [Pinned Ping-Pong]  -► [Int8 TensorRT] -► [CUDA Register] -► [Direct Scanout]
+   Optical Tap         Ring 0 / Ring 1        & 6-DoF SLAM       Clamp <= 0.65      0x4000_3000
+   (Zero Leakage)      (0.83 ms Zero-Copy)    (7.20 + 4.15 ms)   (>= 35% Photons)   (t_total = 12.6ms)
+====================================================================================================
+```
+```
+====================================================================================================
+              DUAL PAGE-LOCKED RING-BUFFER & MULTI-STREAM ASYNCHRONOUS CUDA TOPOLOGY
+====================================================================================================
+      PHYSICAL VIDEO INGRESS: Uncompressed 1080p60 12-Bit RGB via 4 kV Samtec FireFly Tap
                                                 |
-                                                ▼(Verified by 5-Gate Suite: test_causal_aipw.py)
-  ==================================================================================================
-  [BARE-METAL #![no_std] RUST TEE DRIVER: firmware/src/secagg_enclave.rs (aarch64-unknown-none)]
-  * clamp_propensity_fp16_reg    : Hardware Binary16 Clamp [0x211F (0.0100), 0x3BEC (0.9902)]
-  * clip_gradient_l2             : 5-Iter Newton-Raphson f32 Square Root -> ||g_bar||_2 <= 1.000000
-  * apply_secagg_mask            : Directional Pairwise Masking (u < v: +s_{u,v} | u > v: -s_{v,u})
-  * pack_topk_slice_with_ef      : 1024-Bit Bitmap Deduplication -> 64B SparseGradientSlice
-                                                |
-                                                ▼ (Verified by 3-Gate Bench: test_module4.rs)
-  [512-BYTE CVRDT WIRE ENVELOPE INTEGRATION: firmware/src/cvrdt_ledger.rs + crypto/src/zk_lineage.rs]
-  * Bytes 0x00A8..0x01A7 (256B)  : Recursive Plonky2 ZK-SNARK Proof (pi_lineage, dp_clip <= 1000)
-  * Bytes 0x01C0..0x01FF (64B)   : SparseGradientSlice ([255..240]) | Frame CRC32: 0x89499B8C
+                                                v
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | HOST UNIFIED PINNED MEMORY ARENA (cudaHostAllocMapped | cudaHostAllocWriteCombined: 24.88MB) |
+  | * PINNED_RING_0 (0x8000_0000..0x80BD_D7FF): LOCKED_BY_COMPUTE_STREAM (Processing Frame N)    |
+  | * PINNED_RING_1 (0x80BE_0000..0x817B_D7FF): WRITING_BY_DMA_STREAM    (Ingesting Frame N+1)   |
+  | * Hardware Stride: 0x00BE_0000 (64KB-Aligned) | Atomic Swap via MMIO 0x4000_3004 on V-Sync   |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                   |                                                         |
+                   ▼ [CUDA Stream 1: DMA Engine]                             ▼ [CUDA Stream 2: Compute]
+  ┌─────────────────────────────────────────────┐  ┌────────────────────────────────────────────┐
+  | STAGE 1: ZERO-COPY PINNED DMA INGRESS       |   | STAGE 2: INT8 TENSORRT VISION-SSM INFERENCE|
+  | * 12.4416 MB over PCIe Gen 6 @ 15.0 GB/s    |   | * 128 Patch Tokens + 16 Mamba States       |
+  | * Latency: t_DMA = 0.83 ms (829.4 us)       |   | * 4.20 TOPs @ 58.33 TOPs/s -> t = 7.20 ms  |
+  | * Records: Event_DMA_Ingress_Complete       |   +--------------------------------------------+
+  +---------------------------------------------+                                 |
+                   |                                                              ▼
+                   | (cudaStreamWaitEvent)          ┌────────────────────────────────────────────┐
+                   +------------------------------► | STAGE 3: 6-DOF SLAM & VOLUME RAYMARCHING   |
+                                                    | * 512^3 FP16 Morton Grid (2.0736M Rays)    |
+                                                    | * 64 Steps x 15 FLOPs = 1.991 GFLOPs       |
+                                                    | * 480 GFLOPs/s Shader -> t_Ray = 4.15 ms   |
+                                                    +--------------------------------------------+
+                                                                                  |
+                                                                                  ▼
+                                                    ┌────────────────────────────────────────────┐
+                                                    | STAGE 4: BARE-METAL CUDA ALPHA COMPOSITOR  |
+                                                    | * Payload: 39.3984 MB @ 102.4 GB/s + 35 us |
+                                                    | * Clamp alpha <= 0.65 -> t_Blend = 0.42 ms |
+                                                    +--------------------------------------------+
+                                                                                  |
+                                                                                  ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | STAGE 5: DIRECT DISPLAY SERIALIZER SCANOUT (MMIO 0x4000_3000 -> 148.5 MHz Pixel Clock)       |
+  | * Total Critical Path: 0.83 + 7.20 + 4.15 + 0.42 + 0.00 = 12.60 ms <= 16.67 ms (+4.07 ms)    |
+  | * Zero OS Window Manager Intermediary: N_OS = 0 ===> t_OS_jitter = 0.00 ms                   |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ====================================================================================================
 ```
 ```
 ====================================================================================================
-        512-BYTE CVRDT + MODULE 4 TOP-K SPARSE GRADIENT WIRE ENVELOPE (MIL-STD-188-220 CNR)
+                  HARDWARE ALPHA COMPOSITING & RETINAL PHOTON TRANSMISSION FLOOR
 ====================================================================================================
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x0000: Protocol Magic = 0x534F5642 ("SOVB") (4 Bytes)        |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x0004: Originating Hardware Node ID (4 Bytes)                |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x0008..0x0027: Anonymous Token Key T_ID / T_PROV (32 Bytes)  |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x0028..0x0067: Vector Clock Canonically Sorted Keys (64 B)   |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x0068..0x00A7: Vector Clock Monotonic Ticks (64 Bytes)       |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x00A8..0x01A7: Recursive Plonky2 ZK Proof pi_lineage (256 B) |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x01A8..0x01AF: Biological Vector Physical Pointer (8 Bytes)  |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x01B0..0x01B7: Monotonic Epoch Timestamp in ns (8 Bytes)     |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x01B8:Status |            0x01B9..0x01BB: _reserved1 (3 B)   |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  | 0x01BC..0x01BF: Castagnoli CRC32 over 0x0000..0x01BB (4 B)    |
-  +===============================================================+
-  | 0x01C0..0x01DF: SparseGradientSlice.values (32 Bytes)         | ◄-- MODULE 4 64-BYTE
-  |                 [16 x IEEE 754 FP16 Masked Gradient Values]   |     TOP-K EF-SGD PAYLOAD
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+     EXTENSION SLOT
-  | 0x01E0..0x01FF: SparseGradientSlice.indices (32 Bytes)        |     (Replaces _reserved2)
-  |                 [16 x uint16 Distinct Parameter Offsets]      |
-  +===============================================================+
+  INCOMING RAW ANATOMICAL VIDEO: I_Source(x, y, lambda)   DIAGNOSTIC AI HEATMAP: I_AI(x, y, lambda)
+  +---------------------------------------------------+   +----------------------------------------+
+  | * True Physical Photons from Surgical Field       |   | *Generated by NPU / 3D SLAM Raymarcher |
+  | * Active Arterial Bleeders, Scalpels, Margins     |   | *Requested Opacity:alpha_req in [0,inf)|
+  +---------------------------------------------------+   +----------------------------------------+
+                            |                                                 |
+                            +------------------------+------------------------+
+                                                     |
+                                                     ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | BARE-METAL FUSED CUDA COMPOSITOR & MMIO REGISTER LOCK (engine/cuda/hud_compositor.cu)          |
+  | * Hardware MMIO Register Lock: ALPHA_CLAMP_REG (0x4000_3008) = 0x3F26_6666 (0.6500 FP32)       |
+  | * Fault Scrubbing: alpha_clean = (isnan(alpha_req) || alpha_req < 0) ? 0.0f : alpha_req        |
+  | * Clamped Opacity: alpha_clamped(x, y) = min(alpha_clean(x, y), 0.65f)                         |
+  | * Linear Blend:    I_HUD(x, y) = alpha_clamped * I_AI(x, y) + (1.0 - alpha_clamped) * I_Source |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     |
+                                                     ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | GUARANTEED PHYSICAL RETINAL ILLUMINATION FLOOR (PHOTON_FLOOR_REG 0x4000_3010 = 0x3EB3_3333)    |
+  | * Infimum Photon Transmission: T_photon(x, y) = 1.0 - alpha_clamped(x, y) >= 0.3500 (35.0%)    |
+  | * Photopic Retinal Illuminance: E_retina = (0.35 * 200 cd/m^2) * (4*pi mm^2) >= 879.6 Trolands |
+  | * Active Bleeders & Scalpels Remain Unoccluded Under 100% AI White-Out (alpha=50.0) or NaN     |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ====================================================================================================
+```
+```
+====================================================================================================
+                  SENSORLESS 6-DOF SPATIAL ODOMETRY & VOLUMETRIC SLAM TOPOLOGY
+====================================================================================================
+            Incoming Consecutive Ultrasound / Video Frame Pair: [I(x, y, t), I(x, y, t + dt)]
+                                                    |
+                         +--------------------------+--------------------------+
+                         |                                                     |
+                         ▼ [2D In-Plane Manifold]                              ▼  [Out-of-Plane Manifold]
+  ┌───────────────────────────────────────────────┐   ┌────────────────────────────────────────────────┐
+  | DENSE AFFINE LUCAS-KANADE OPTICAL FLOW        |   | ACOUSTIC SPECKLE DECORRELATION DECAY MODEL     |
+  | * Brightness Constancy: nabla I . u + I_t = 0 |   | * Van Cittert-Zernike Beam Waist: sigma_z=1.2mm|
+  | * Structural Saliency: lambda_min(G) >= eps   |   | * Correlation: rho(dz,th) = exp(-dz^2/2s^2)cos |
+  | * Solves In-Plane: Delta_x, Delta_y, Delta_phi|   | * Clamped Inversion Solves: Delta_z, theta, psi|
+  └───────────────────────────────────────────────┘   └────────────────────────────────────────────────┘ 
+                         |                                                     |
+                         +--------------------------+--------------------------+
+                                                    |
+                                                    ▼ 
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | LIE ALGEBRA TWIST RECONSTRUCTION & RODRIGUES MATRIX EXPONENTIAL MAP: \hat{\xi}(t) in se(3) -> SE(3)|
+  | * Twist Vector: \xi(t) = [Delta_x, Delta_y, Delta_z, theta, psi, phi]^T in R^6                     |
+  | * Homogeneous Pose Matrix: T_edge(t) = exp(\hat{\xi}(t)) in SE(3)                                  |
+  | * Lateral-Axis Pitch Projection R_x(theta): [X, Y, Z, 1]^T = T_edge(t) * [x, y, 0, 1]^T            |
+  └────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                    |
+                                                    ▼ 
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | 30-BIT MORTON Z-CURVE 512^3 FP16 VOXEL SPLATTER & DIFFERENTIABLE BEER-LAMBERT RAYMARCHER           |
+  | * Lock-Free L2 Cache Atomic Integration: atomicAdd(&d_grid[morton3D(vx,vy,vz)], I_echo * 0.10f)    |
+  | * 64-Step Riemann Raymarching (1.991 GFLOPs, t_Raymarch = 4.15 ms) + Adjoint Gradient dC / dV_i    |
+  | * Watertight Isosurface Extraction at tau_tissue = 0.45 with Central-Difference Phong Normals      |
+  └────────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  ULTRASOUND TRANSDUCER DIFFRACTION BEAM-WAIST & SPECKLE GEOMETRY
+====================================================================================================
+                         Elevational Slice-Thickness Axis (z)
+                                          🡅
+                                          |
+                                 +-----------------+
+                                 | Transducer Pod  |
+                                 | Piezo Aperture  |
+                                 +-----------------+
+                                   \      |      /
+                                    \     |     /   Elevational Beam Profile H_elev(y):
+                         Beam Waist   \    |    /    Gaussian Slice Thickness sigma_z = 1.20 mm
+                                      |---|---|     (at Nominal 7.50 MHz Linear Array Carrier)
+                                     /    |    \
+                                    /     |     \   Van Cittert-Zernike Speckle Decay:
+                                   /  Acoustic   \  rho(Delta_z, theta) = exp(-Delta_z^2 / (2*sigma_z^2))
+                                  /  Scattering   \                       * cos(theta(t))
+====================================================================================================
+```
+```
+====================================================================================================
+                  DIFFERENTIABLE BEER-LAMBERT VOLUME RAYMARCHING & ISOSURFACE PIPELINE
+====================================================================================================
+      Virtual Camera Origin: o in R^3  --->  Viewing Ray: r(s) = o + s*d,  s in [s_near, s_far]
+                                                         |
+                                                         ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | 64-STEP DISCRETE RIEMANN INTEGRATION ACROSS 512^3 FP16 MORTON VOXEL FRUSTUM (delta_s = 0.50mm) |
+  | * Step Sample Coordinate: r(s_k) = o + s_k * d  (Trilinear 8-Corner Morton Cache Lookup V_k)   |
+  | * Scattering Coefficient: sigma_k = kappa * V_k(Tissue Attenuation Constant kappa = 2.50 mm^-1)|
+  | * Discrete Step Opacity : alpha_k = 1.0 - exp(-kappa * V_k * delta_s)                          |
+  | * Optical Transmittance : T_k = Prod_{j=1}^{k-1} (1.0 - alpha_j)  (Early Ray Exit: T_k < 0.02) |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ (Forward Rendering & Isosurface Pass)                 ▼ (Backward Pass)
+  ┌──────────────────────────────────────────────────┐   ┌─────────────────────────────────────────┐
+  | WATERTIGHT PHONG ISOSURFACE (tau_tissue = 0.45)  |   | ANALYTICAL ADJOINT DENSITY GRADIENT     |
+  | * Surface Hit: V(X, Y, Z) >= 0.45                |   | * Exact Closed-Form Derivative:         |
+  | * Central-Diff Normal: n = -grad(V) / ||grad(V)|||   |   dC_discrete / dV_i =                  |
+  | * Emits Heatmap I_AI(x,y) & Opacity alpha(x,y)   |   |   kappa * ds * [c_i*T_i*(1-a_i) - C_>i] |
+  └──────────────────────────────────────────────────┘   └─────────────────────────────────────────┘
+====================================================================================================
+```
+```
+       30-BIT 3D MORTON Z-CURVE INTERLEAVING vs. 128-BYTE GPU L2 CACHE LINE GEOMETRY
+  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
+  | Linear Row-Major Indexing : 128-Byte Cache Line holds 64 x 1 x 1 strip -> 4 voxels in 4^3  |
+  | 30-Bit Morton Z-Order     : 128-Byte Cache Line holds 4 x 4 x 4 sub-cube -> 64 voxels!     |
+  | Spatial Cache Line Hit Efficiency: eta_cache = 64 / 4 = 16.0x L2 Cache Locality Gain       |
+  └────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
