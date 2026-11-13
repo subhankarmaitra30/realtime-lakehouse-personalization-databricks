@@ -21,32 +21,41 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                    MODULE 5: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+                  THREE-TIER SPATIAL-TEMPORAL VECTORIZATION-AT-BIRTH ENGINE
 ====================================================================================================
-  [SATELLITE ASSET 1: LATENCY, OPTICAL & SLAM PROOFS]      [SATELLITE ASSET 2: BARE-METAL CUDA C++20]
-  docs/proofs/hud_slam_latency_proof.md                    engine/cuda/hud_compositor.cu
-  * Proof 1: Critical Path (t_total = 12.60 <= 16.67 ms)   * Fused Alpha Clamp (0.0 <= alpha <= 0.65)
-  * Proof 2: Direct-Silicon OS Bypass (t_OS_jitter = 0 ms) * NaN/Inf Scrubbing (T_photon >= 35.0%)
-  * Proof 3: Class C Photon Floor (T >= 35.0%, 879.6 Td)   engine/cuda/slam_raymarching.cu
-  * Proof 4: Thermal Throttling WCET (t_WCET = 14.36 ms)   * 30-Bit Morton Atomic Voxel Splatting
-  docs/proofs/slam_raymarching_derivation.md               * 64-Step Beer-Lambert March & Adjoint
-  * Proof 5: Sensorless 6-DoF SE(3) (LK + Speckle Decay)   engine/cuda/test_cuda_m5_sil.cpp
-  * Proof 6: Lateral Pitch R_x(theta) & Adjoint dC/dV_i    * C++20 Host-Emulated CUDA SIL Benchmark
-  * Proof 7: 512^3 FP16 Voxel Bounds (256 MiB, 16.11 GB/s)
-  * Proof 8: 30-Bit 3D Morton Z-Curve (16.0x L2 Locality)
-                        \                                                 /
-                         \                                               /
-                           ▼                                            ▼
-  [SATELLITE ASSET 5] ---► +-------------------------------------------+ ◄--- [SATELLITE ASSET 3]
-  docs/architecture/       |               MASTER CORE:                |      Scanout HAL & Timing
-  hud_slam_architecture.md |           AMBIENT HUD & 3D SLAM           |      * display_scanout.rs
-  * Dual Ping-Pong Ring    |                (MODULE 5)                 |       (MMIO 0x4000_3000 &
-  * 4-Clock CDC (~10^257y) +-------------------------------------------+        0x00BE_0000 Stride)
-  compliance/                                    |                            * timing_budget_proof.md
-  * IEC 62304 Class C                            ▼                             (0.83 + 7.20 + 4.15
-  * MIL-STD-461G / 810H     [SATELLITE ASSET 4: AUTOMATED SIL SUITES]          + 0.42 = 12.60 ms)
-                            * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint)
-                            * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
+  [ RAW PHYSICAL INGRESS STREAM: X in R^{T x H x W x C} (Module 1 Pinned Buffers A, B, C) ]
+    Instantaneous Frame Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions (t_lifetime <= 16.67 ms)
+                                               │
+                                               ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ TIER 1: MULTI-BACKBONE SE(3)-EQUIVARIANT STEERABLE SPATIAL ENCODER (f_theta)               │
+  │ * Steerable 3D Spherical Harmonic Kernels (l = 0, 1, 2 -> 9 Harmonics x 32 Radial RBFs)   │
+  │ * 4-Shell Pre-Cached Stencil (r^2 in {0,1,2,3}) + SO(3) Casimir/Frobenius Norm Gate        │
+  │   (Type-0 Scalar: f_0 | Type-1 Dipole: ||v_{l=1}||_2 | Type-2 Quadrupole: ||T_{l=2}||_F)   │
+  │ * Parallel Dual-Path Fabric: Local Edge (ConvNeXt) + Global Structure (Geodesic Swin/ViT)  │
+  │ * Annihilates 6,220,288 Spatial Dims/Frame -> Emits S(t) in R^512 in t_Tier1 <= 2.14 ms    │
+  └───────────────────┬────────────────────────────────────────────────────┬───────────────────┘
+                      │ (Immediate Trigger at T = 3.00 ms)                 │
+                      ▼                                                    ▼
+  ┌────────────────────────────────────────────┐   ┌───────────────────────────────────────────┐
+  │ HARDWARE VOLATILE FLASH-SCRUB GATE         │   │ TIER 2: CAUSAL SELECTIVE MAMBA SSM        │
+  │ (firmware/src/hal_rx.rs)                   │   │ (engine/cuda/mamba_selective_scan.cu)     │
+  │ * memset(0x00) over 12,441,600 Bytes       │   │ * Exact ZOH Discretization (expm1f Guard) │
+  │ * 64B-Stride ARM64 dc civac + dsb sy       │   │ * Strict O(L) Scan across L = 7,200 Frames│
+  │ * Sentinel Readback in <= 0.42 ms          │   │ * Fixed 32.768 KB Register SRAM (512x16x4)│
+  └────────────────────────────────────────────┘   └───────────────────────┬───────────────────┘
+                                                                           │ [h_T in R^512]
+                                                                           ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & HYPERSPHERE PROJECTION HEAD (g_phi)     │
+  │ * Stochastic Reparameterization: z = mu_theta(h_T) + sigma_theta(h_T) * eps, eps ~ N(0, I) │
+  │ * KL Rate Pruning (beta = 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)        │
+  │ * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 <= 0.42 ms)│
+  └───────────────────────────────────────────┬────────────────────────────────────────────────┘
+                                              │
+                                              ▼
+  [ 1024-D ANONYMOUS BIOLOGICAL VECTOR: v_bio in S^{1023} subset R^{1024} (||v_bio||_2 = 1.0) ]
+    Cumulative Null Space Erased: 44,789,758,976 Dims (43,740,000:1 | I(S_PHI; v_bio) = 0.0 bits)
 ====================================================================================================
 ```
 ```
