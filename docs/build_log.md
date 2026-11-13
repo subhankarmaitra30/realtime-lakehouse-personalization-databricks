@@ -21,41 +21,262 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-                  THREE-TIER SPATIAL-TEMPORAL VECTORIZATION-AT-BIRTH ENGINE
+            MODULE 6 CLOSED-LOOP NEURAL C2, 1 kHz RUST QP & 250 MHz FPGA WATCHDOG GRAPH
 ====================================================================================================
-  [ RAW PHYSICAL INGRESS STREAM: X in R^{T x H x W x C} (Module 1 Pinned Buffers A, B, C) ]
-    Instantaneous Frame Slice: 1920 x 1080 x 3 = 6,220,800 Dimensions (t_lifetime <= 16.67 ms)
-                                               │
-                                               ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ TIER 1: MULTI-BACKBONE SE(3)-EQUIVARIANT STEERABLE SPATIAL ENCODER (f_theta)               │
-  │ * Steerable 3D Spherical Harmonic Kernels (l = 0, 1, 2 -> 9 Harmonics x 32 Radial RBFs)   │
-  │ * 4-Shell Pre-Cached Stencil (r^2 in {0,1,2,3}) + SO(3) Casimir/Frobenius Norm Gate        │
-  │   (Type-0 Scalar: f_0 | Type-1 Dipole: ||v_{l=1}||_2 | Type-2 Quadrupole: ||T_{l=2}||_F)   │
-  │ * Parallel Dual-Path Fabric: Local Edge (ConvNeXt) + Global Structure (Geodesic Swin/ViT)  │
-  │ * Annihilates 6,220,288 Spatial Dims/Frame -> Emits S(t) in R^512 in t_Tier1 <= 2.14 ms    │
-  └───────────────────┬────────────────────────────────────────────────────┬───────────────────┘
-                      │ (Immediate Trigger at T = 3.00 ms)                 │
-                      ▼                                                    ▼
-  ┌────────────────────────────────────────────┐   ┌───────────────────────────────────────────┐
-  │ HARDWARE VOLATILE FLASH-SCRUB GATE         │   │ TIER 2: CAUSAL SELECTIVE MAMBA SSM        │
-  │ (firmware/src/hal_rx.rs)                   │   │ (engine/cuda/mamba_selective_scan.cu)     │
-  │ * memset(0x00) over 12,441,600 Bytes       │   │ * Exact ZOH Discretization (expm1f Guard) │
-  │ * 64B-Stride ARM64 dc civac + dsb sy       │   │ * Strict O(L) Scan across L = 7,200 Frames│
-  │ * Sentinel Readback in <= 0.42 ms          │   │ * Fixed 32.768 KB Register SRAM (512x16x4)│
-  └────────────────────────────────────────────┘   └───────────────────────┬───────────────────┘
-                                                                           │ [h_T in R^512]
-                                                                           ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ TIER 3: VARIATIONAL INFORMATION BOTTLENECK (VIB) & HYPERSPHERE PROJECTION HEAD (g_phi)     │
-  │ * Stochastic Reparameterization: z = mu_theta(h_T) + sigma_theta(h_T) * eps, eps ~ N(0, I) │
-  │ * KL Rate Pruning (beta = 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)        │
-  │ * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 <= 0.42 ms)│
-  └───────────────────────────────────────────┬────────────────────────────────────────────────┘
-                                              │
+  [PYTHON CAUSAL C2 & PPO ENGINE: engine/python/ppo_drift_regularizer.py]
+  * MultiObjectiveClinicalUtility : Convex 4-Part Clinical Reward U(Y) in [0, 1]
+  * NonEuclideanActionTransformer : 32 Bezier Splines + Radial Jerk-Ball (||tau'''||_2 <= 2.0 m/s^3)
+                                    + Zero-Order Hold (ZOH) 100 ms Temporal Attention Latching
+  * EdgeDriftRegularizedPPOLoss   : Kantorovich-Rubinstein 1-Wasserstein Gate (D_W > 15.0 => Freeze)
+                                                |
+                                                ▼ (Emits 64B BezierSplineCommand u_AI @ 100 Hz)
+  ==================================================================================================
+  [BARE-METAL #![no_std] 1 kHz SAFETY KERNEL: firmware/src/safety_watchdog.rs (aarch64-unknown-none)]
+  * solve_1khz_cbf_qp             : Active-Set HOCBF-CLF Convex QP (gamma_1=10, gamma_2=15, p=1000)
+                                    Executes in 0.00042 ms <= 0.18 ms (1000 Hz / 1.0 ms Loop)
+  * ISO 10218-1/2 Box Clamps      : ||q_dot||_inf <= 50.0 mm/s | ||q_ddot|| <= 0.5 m/s^2 | ||u|| <= 10 Nm
+  * trigger_hardware_estop        : Volatile Write *mut 0x5000_1004 = 0x0000_0000 + dmb sy / dsb sy
+                                                |
+                                                ▼ (AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000)
+  ==================================================================================================
+  [SYNTHESIZABLE 250 MHz FPGA WATCHDOG: hardware/rtl/avatar_pwm_watchdog.sv (T_clk = 4.0 ns)]
+  * Trigger 1 (Boundary Breach)   : dist_sensor_um <= 32'd1000 (1.00 mm Stand-Off Breach)
+  * Trigger 2 (Deadman Timeout)   : heartbeat_counter_reg >= 32'd500_000 (2000 us NPU Stall)
+  * Trigger 3 (MMIO E-Stop Write) : Same-Cycle Combinational axi_comb_disarm (0x5000_1004 == 0x00)
+  * Hardware Interlock Output     : pwm_gate_out[5:0] <= 6'b000000 in 4.0 ns -> 0.60 ms Zero-Torque
+====================================================================================================
+```
+```
+ ====================================================================================================
+            EDGE SELF-EVOLVING PPO & 1-WASSERSTEIN DISTRIBUTIONAL DRIFT FREEZE GATE
+====================================================================================================
+  Certified Baseline Distribution: P_base on S^1023     Live Combat Telemetry Batch: P_drift on S^1023
+                       |                                                       |
+                       +---------------------------+---------------------------+
+                                                   |
+                                                   ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | KANTOROVICH-RUBINSTEIN 1-WASSERSTEIN METRIC EVALUATOR ON S^1023                                |
+  | * Dual Transport Norm: D_W(P_base, P_drift) = sup_{||f||_Lip <= 1} (E_base[f] - E_drift[f])    |
+  | * Critical Drift Threshold: K_drift = 15.0 | Exponential Decay Rate: beta_drift = 0.50         |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ [Nominal Drift: D_W <= 15.0]                          ▼ [Extreme Shock: D_W > 15.0]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | DAMPED CAUSAL PPO + KL TRUST-REGION UPDATE  |   | ASYMPTOTIC & THRESHOLD PARAMETER FREEZE    |
+  | * Weight: w_drift = exp(-beta_drift * D_W)  |   | * Indicator Gate: I(D_W <= 15.0) === 0.0   |
+  | * Optimizes Clipped Do-Calculus Advantage   |   | * Policy Gradient: ||grad L_Edge||_2 = 0.0 |
+  |   with KL Anchor D_KL(pi_cert || pi_theta)  |   | * Weight Delta   : ||Delta theta||_2 = 0.0 |
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+```
+```
+====================================================================================================
+        DIRECT-SILICON MMIO WATCHDOG (0x5000_1000) & SUB-MILLISECOND ZERO-TORQUE TIMELINE
+====================================================================================================
+  [TRIGGER A: BOUNDARY BREACH]     [TRIGGER B: HEARTBEAT TIMEOUT]    [TRIGGER C: SW E-STOP WRITE]
+  DIST_SENSOR_REG (0x5000_100C)    HEARTBEAT_TIMER (0x5000_1008)     MOTOR_ENABLE_REG (0x5000_1004)
+  d_raw <= 1000 um (1.00 mm)       No Kick > 2000 us (500,000 Cyc)   *mut 0x5000_1004 = 0x0000_0000
+               |                                 |                                 |
+               +---------------------------------+---------------------------------+
+                                                 |
+                                                 ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | T = 0.000004 ms (4.0 ns = 1 Clock Cycle @ 250.0 MHz): FPGA GATE-DRIVE SEVERANCE                |
+  | * Combinational & Sticky Latch (estop_latched_reg <= 1'b1) in avatar_pwm_watchdog.sv           |
+  | * Forces all 6 Brushless Servo MOSFET High-Side Gates to Logic Zero: pwm_gate_out <= 6'b000000 |
+  | * Engages Low-Side Freewheeling Crowbar Shunt Across Motor Phase Windings                      |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                 |
+                                                 ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | T = 0.000004 ms to 0.600004 ms (5 * tau_decay = 5 * 120 us = 0.60 ms): RL WINDING DECAY        |
+  | * Phase Inductance L_m = 1.20 mH | Winding + Crowbar Shunt Resistance R_m = 10.0 Ohm           |
+  | * Exponential Current Collapse: i_phase(t) = I_0 * exp(-t / 120 us)                            |
+  | * At t = 0.60 ms (< 1.00 ms Ceiling): i_phase(0.60 ms) = 0.0067 * I_0 (< 1% Residual Energy)   |
+  | * Manipulator Transitions to Passive Back-Drivable Zero-Torque State (tau_kinetic = 0.00 Nm)   |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+              TIER 3: BARE-METAL 1 kHz NAGUMO-HOCBF ACTIVE-SET QP SAFETY FILTER
+====================================================================================================
+  Nominal AI Trajectory Input: u_AI(t) in R^6        Real-Time 3D SLAM / Ultrasonic Clearance:
+  (From Tier-2 Action Transformer at 100 Hz)         d_raw(q) = ||p_tip(q) - p_vessel(t)||_2
+                       |                                                 |
+                       +------------------------+------------------------+
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | RELATIVE-DEGREE-2 HIGH-ORDER CONTROL BARRIER FUNCTION (HOCBF) EVALUATOR (1000 Hz / 1.0 ms)   |
+  | * Stand-Off Safety Margin : delta_safe = 1.00 mm (1000 um)                                   |
+  | * Zero-Order Barrier State: psi_0(x) = h(x) = d_raw(q) - delta_safe >= 0                     |
+  | * First-Order Lie State   : psi_1(x) = h_dot(x) + gamma_1 * psi_0(x)  (gamma_1 = 10.0 s^-1)  |
+  | * Second-Order Barrier    : psi_2(x, u) = h_ddot(x, u) + 25.0*h_dot + 150.0*h >= 0           |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | STRICTLY CONVEX ACTIVE-SET QUADRATIC PROGRAMMING (QP) SOLVER (t_QP <= 0.18 ms | 420 ns Ver.) |
+  | * Objective : min_{(u, delta)} 1/2 ||u - u_AI(t)||_2^2 + p_slack * delta^2  (p_slack = 1000) |
+  | * Subject to: 1. L_f^2 h(x) + L_g L_f h(x) u + 25.0 L_f h(x) + 150.0 h(x) >= 0 (Hard Safety) |
+  |               2. L_f V(x) + L_g V(x) u + c_clf V(x) <= delta                   (Soft Goal)   |
+  |               3. ||q_dot||_inf <= 50.0 mm/s | ||q_ddot||_inf <= 0.50 m/s^2 | ||u|| <= 10 Nm  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ [h(x) > 0: Certified Safe]                            ▼ [h(x) <= 0 or > 2ms]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | CERTIFIED SAFE SERVO COMMAND: u*(t)         |   | DIRECT-SILICON HARDWARE E-STOP INTERLOCK   |
+  | * Minimally Modifies u_AI(t) Only When      |   | * Volatile MMIO Write: *0x5000_1004 = 0x00 |
+  |   Approaching Anatomical Boundary           |   | * 4.0 ns FPGA Gate Cut -> 0.60 ms 0-Torque |
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  TIER 2: NON-EUCLIDEAN ACTION-SPACE CROSS-ATTENTION & JERK BALL
+====================================================================================================
+  Biological State Token: v_m in R^{1024}               Safe Kinematic Basis: K_safe in R^{32 x 24}
+                   |                                                     |
+                   ▼ [Query Projection W_Q]                              ▼ [Key/Value Projections]
+         Q = v_m * W_Q in R^{1 x 256}                          K = vec(K_safe) * W_K in R^{32 x 256}
+                   |                                           V_raw = vec(K_safe) * W_V in R^{32x4x6}
+                   |                                                     |
+                   |                                                     ▼ [Radial Jerk-Ball Gate]
+                   |                                           V_cert = P_{jerk <= 2.0}(V_raw)
+                   |                                                     |
+                   +--------------------------+--------------------------+
+                                              |
                                               ▼
-  [ 1024-D ANONYMOUS BIOLOGICAL VECTOR: v_bio in S^{1023} subset R^{1024} (||v_bio||_2 = 1.0) ]
-    Cumulative Null Space Erased: 44,789,758,976 Dims (43,740,000:1 | I(S_PHI; v_bio) = 0.0 bits)
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | ZOH TEMPORALLY LATCHED CROSS-ATTENTION (Latched Static over T_spline = 100 ms Window)          |
+  | * Simplex Weights: alpha_i(v_m) = Softmax( (Q * K_i^T) / sqrt(256) )  (Sum_i alpha_i = 1.0)    |
+  | * Convex Hull Spline Synthesis: tau(t) = Sum_{i=1}^{32} alpha_i(v_m) * V_{cert,i}(t) in R^6    |
+  | * Guaranteed C^2 Smoothness & Jerk Ceiling: ||d^3 tau(t) / dt^3||_2 <= 2.0 m/s^3 (0.9016 Ver.) |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+                  MODULE 6: THREE-TIER CLOSED-LOOP KINETIC C2 ARCHITECTURE
+====================================================================================================
+        INVARIANT BIOLOGICAL STATE STREAM: v_m(t) in S^{1023} subset R^{1024} (||v_m||_2 = 1.0)
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 1: ASYNCHRONOUS CAUSAL AUTOREGRESSIVE POLICY MATRIX (In-Enclave Rust/PyTorch TEE)       |
+  | * Sub-Visual Micro-Kinetics Detection: Tracks impending arterial wall rupture & shock drift  |
+  | * Pearl's Do-Calculus Graph Surgery: pi*(a | v_m) = argmax_a E_{P(Y|do(A=a), v_m)}[ U(Y) ]   |
+  | * Back-Door Unconfounding over C: Decouples blast depth, hypothermia & shock severity        |
+  | * Multi-Objective Utility U(Y): MAP in [65,85] mmHg, Bleed <= 0.05 mL/min, SvO2 >= 70%       |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                   [ Selected Unconfounded Action: a* ]
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 2: REAL-TIME NON-EUCLIDEAN ACTION-SPACE TRANSFORMER (ppo_drift_regularizer.py)          |
+  | * Query Projection: Q = v_m * W_Q (256-D) | Safe Basis Library: K_safe in R^{32 x 4 x 6}     |
+  | * Radial Jerk-Ball Projection: ||V_i'''(t)||_2 = 6||P_3 - 3P_2 + 3P_1 - P_0||_2 <= 2.0 m/s^3 |
+  | * ZOH Temporally Latched Cross-Attention (T_spline = 100 ms): tau(t) = Sum_i alpha_i V_i(t)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ [CHANNEL A: COPILOT HUD]                              ▼ [CHANNEL B: AUTOPILOT]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | MANUAL MEDIC GUIDANCE MODE                  |   | UNMANNED / AUTONOMOUS SURGICAL POD MODE    |
+  | * Renders 3D Insertion & Clamping Vectors   |   | * Streams Commanded Acceleration u_AI(t)   |
+  |   via Module 5 Compositor in 12.60 ms       |   |   to Tier-3 1 kHz Bare-Metal Safety Filter |
+  | * Zero Direct Motor Actuation Authority     |   └────────────────────────────────────────────┘
+  └─────────────────────────────────────────────┘                                |
+                                                                                 ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 3: BARE-METAL 1 kHz NAGUMO-HOCBF QP FILTER & MMIO WATCHDOG (safety_watchdog.rs)         |
+  | * 1000 Hz Active-Set Convex QP (t_QP <= 0.18 ms): min 1/2||u - u_AI||^2 + p_slack * delta^2  |
+  | * Enforces h(t) >= 0 (delta_safe = 1.0 mm) & Velocity Ceiling ||q_dot||_inf <= 50.0 mm/s     |
+  | * In-Enclave PPO Adaptation with 1-Wasserstein Drift Freeze (D_W > 15.0 => ||d_theta|| = 0)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ [Trajectory Certified Safe]                           ▼ [Breach: h<=1mm or >2ms]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | 1 kHz MOTOR PWM SERVO CONTROLLERS           |   | DIRECT-SILICON ZERO-TORQUE E-STOP          |
+  | * Actuates 6-DoF Micro-Robotic Effector     |   | * Volatile Write: *mut 0x5000_1004 = 0x00  |
+  | * Sub-Millimeter Vessel Clamping & Suturing |   | * 4.0 ns Gate Cut -> 0.60 ms Zero-Torque   |
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
+            STATISTICAL GENERATIVE AI FAILURE (THE HALLUCINATION & OS JITTER TRAP)
+====================================================================================================
+  [Catastrophic Shock] --► [Confounded Assoc.] --► [Next-Token Guess] --► [50-200 ms OS Lag]--► [Fatal]
+   (Hemorrhagic Collapse)  (Correlates Clamp      (Withholds Life-      (Linux/ROS Thread     Vessel
+                            with High Mortality)   Saving Procedure)     Preemption Stall)    Tear
+
+====================================================================================================
+                  THE SOVEREIGN BIO-OS DETERMINISTIC KINETIC C2 HIGHWAY
+====================================================================================================
+  [1024-D State v_m]  --► [Pearl's Micro-Do] --► [C^2 Bezier Action] --► [1 kHz Nagumo-CBF] --► [4.0 ns]
+   (in S^{1023} from       Calculus Policy        Transformer           Active-Set QP         MMIO Cut
+    Module 2)              (Unconfounded a*)      (Jerk <= 2.0 m/s^3)   (h(t) >= 0, <=50mm/s) 0x5000_1004
+====================================================================================================
+```
+```
+====================================================================================================
+                    MODULE 6: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
+====================================================================================================
+  [SATELLITE ASSET 1: CAUSAL & ROBOTIC SAFETY PROOFS]      [SATELLITE ASSET 2: NEURAL C2 & PPO]
+  docs/proofs/causal_action_space.md                       engine/python/ppo_drift_regularizer.py
+  * Proof 1: Pearl's Micro-Do-Calculus Unconfounding       * NonEuclideanActionTransformer
+  * Proof 2: Causal Policy Gradient (grad J = E[grad*Q^do])  - Cross-Attention over 32 Bezier Splines
+  * Proof 3: C^2 Bezier Manifold (Jerk <= 2.0 m/s^3)         - Radial Jerk-Ball (<= 2.0 m/s^3)
+  docs/proofs/cbf_robotic_safety.md                        * EdgeDriftRegularizedPPOLoss
+  * Proof 4: Nagumo-HOCBF Invariance (h(t) >= h(0)e^{-gt})   - 1-Wasserstein Kantorovich Gate
+  * Proof 5: 1 kHz Convex Active-Set QP (t_QP <= 0.18 ms)    - Shock Anomaly Freeze (||d_theta|| = 0)
+  * Proof 6: 1-Wasserstein Drift Freeze (lim ||d_th|| = 0)
+                        \                                                 /
+                         \                                               /
+                          ▼                                            ▼
+  [SATELLITE ASSET 5] ---> +-------------------------------------------+ <--- [SATELLITE ASSET 3]
+  docs/architecture/       |               MASTER CORE:                |      Bare-Metal Rust & RTL
+  nexus_avatar_c2.md       |               NEXUS-AVATAR                |      * safety_watchdog.rs
+  * Copilot vs. Autopilot  |             KINETIC C2 ENGINE             |        (1 kHz QP <= 0.18 ms,
+  * MMIO 0x5000_1004 Cut   |                (MODULE 6)                 |         <= 50 mm/s Ceiling)
+  compliance/              +-------------------------------------------+      * avatar_pwm_watchdog.sv
+  * MIL-STD-882E (Cat I)                         |                              (250 MHz AXI4-Lite @
+  * ISO 10218-1/2 & Cl. C                        ▼                               0x5000_1000, 4.0 ns)
+            [SATELLITE ASSET 4: MULTI-TIER SIL VERIFICATION BENCHMARKS]
+            * hardware/bench/tb_avatar_pwm_watchdog.sv (4-Gate Icarus Verilog RTL Watchdog Bench)
+            * engine/python/test_avatar_c2.py (5-Gate Python Spline, PPO, QP, E-Stop & Do-Calculus)
+            * tests/src/bin/test_module6.rs (4-Gate Bare-Metal Rust 1 kHz QP & MMIO E-Stop Bench)
+====================================================================================================
+```
+
+```
+====================================================================================================
+              MODULE 5 MULTI-STREAM CUDA & DIRECT-SILICON SCANOUT EXECUTION GRAPH
+====================================================================================================
+  [CUDA STREAM 1: ZERO-COPY DMA INGRESS ENGINE]
+  * cudaMemcpyAsync(PINNED_RING_1 @ 0x80BE_0000, d_input, 12.4416 MB)  [t_DMA = 0.83 ms]
+  * cudaEventRecord(Event_DMA_Ingress_Complete)
+                                                |
+                                                ▼ (cudaStreamWaitEvent: Zero Host CPU Preemption)
+  ==================================================================================================
+  [CUDA STREAM 2: NPU VISION-SSM, 6-DOF MORTON SLAM & FUSED ALPHA COMPOSITOR]
+  * Stage 2: TensorRT Int8 Vision-SSM Backbone (4.20 TOPs @ 58.33 TOPs/s)       [t_Inf = 7.20 ms]
+  * Stage 3: engine/cuda/slam_raymarching.cu (512^3 FP16 Morton Grid, 64 Steps) [t_Ray = 4.15 ms]
+             - slam_voxel_splat_pixel_op (R_x(theta) Pitch + L2 atomicAdd)
+             - differentiable_raymarch_pixel_op (Beer-Lambert + Phong tau=0.45)
+             - compute_adjoint_density_gradient (Closed-Form dC_discrete / dV_i)
+  * Stage 4: engine/cuda/hud_compositor.cu (1920x1080 Linear Blend)             [t_Blend = 0.42 ms]
+             - Scrubs NaN/Inf -> 0.0f | Clamps alpha <= 0.65f (T_photon >= 35%)
+  * cudaEventRecord(Event_Compositing_Complete)
+                                                |
+                                                ▼ (Verified by test_cuda_m5_sil.cpp & test_hud_slam.py)
+  ==================================================================================================
+  [DIRECT-SILICON DISPLAY SCANOUT HAL: firmware/src/display_scanout.rs (MMIO Base: 0x4000_3000)]
+  * assert_retinal_photon_floor : Verifies 0x4000_3008 (0x3F26_6666) & 0x4000_3010 (0x3EB3_3333)
+  * wait_for_hardware_vsync     : Polls VSYNC_STATUS_REG (0x4000_3000) with zero OS jitter
+  * execute_atomic_ring_swap    : Flips 0x4000_3004 (Ring 0 <-> Ring 1) + dmb sy / dsb sy [0.00 ms]
 ====================================================================================================
 ```
 ```
