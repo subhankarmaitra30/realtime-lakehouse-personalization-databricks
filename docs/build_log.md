@@ -208,16 +208,16 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
             STATISTICAL GENERATIVE AI FAILURE (THE HALLUCINATION & OS JITTER TRAP)
 ====================================================================================================
-  [Catastrophic Shock] --► [Confounded Assoc.] --► [Next-Token Guess] --► [50-200 ms OS Lag]--► [Fatal]
-   (Hemorrhagic Collapse)  (Correlates Clamp      (Withholds Life-      (Linux/ROS Thread     Vessel
+[Catastrophic Shock] --► [Confounded Assoc.] --► [Next-Token Guess] --► [50-200 ms OS Lag]--► [Fatal]
+ (Hemorrhagic Collapse)  (Correlates Clamp      (Withholds Life-      (Linux/ROS Thread     Vessel
                             with High Mortality)   Saving Procedure)     Preemption Stall)    Tear
 
 ====================================================================================================
                   THE SOVEREIGN BIO-OS DETERMINISTIC KINETIC C2 HIGHWAY
 ====================================================================================================
-  [1024-D State v_m]  --► [Pearl's Micro-Do] --► [C^2 Bezier Action] --► [1 kHz Nagumo-CBF] --► [4.0 ns]
-   (in S^{1023} from       Calculus Policy        Transformer           Active-Set QP         MMIO Cut
-    Module 2)              (Unconfounded a*)      (Jerk <= 2.0 m/s^3)   (h(t) >= 0, <=50mm/s) 0x5000_1004
+[1024-D State v_m]  --► [Pearl's Micro-Do] --► [C^2 Bezier Action] --► [1 kHz Nagumo-CBF] --► [4.0 ns]
+(in S^{1023} from       Calculus Policy        Transformer           Active-Set QP         MMIO Cut
+ Module 2)              (Unconfounded a*)      (Jerk <= 2.0 m/s^3)   (h(t) >= 0, <=50mm/s) 0x5000_1004
 ====================================================================================================
 ```
 ```
