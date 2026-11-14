@@ -181,7 +181,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * ZOH Temporally Latched Cross-Attention (T_spline = 100 ms): tau(t) = Sum_i alpha_i V_i(t)  |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                          |                                                       |
-                         ▼ [CHANNEL A: COPILOT HUD]                              ▼ [CHANNEL B: AUTOPILOT]
+                         ▼ [CHANNEL A: COPILOT HUD]      [CHANNEL B: AUTOPILOT]  ▼ 
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
   | MANUAL MEDIC GUIDANCE MODE                  |   | UNMANNED / AUTONOMOUS SURGICAL POD MODE    |
   | * Renders 3D Insertion & Clamping Vectors   |   | * Streams Commanded Acceleration u_AI(t)   |
@@ -196,12 +196,16 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * In-Enclave PPO Adaptation with 1-Wasserstein Drift Freeze (D_W > 15.0 => ||d_theta|| = 0)  |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                          |                                                       |
-                         ▼ [Trajectory Certified Safe]                           ▼ [Breach: h<=1mm or >2ms]
+          [Trajectory Certified Safe]                      [CRITICAL SAFETY BREACH:
+          Cycle Time: t_loop = 1.0 ms                      Heartbeat Stall (Delta_t > 2000 us)
+                         |                                 Margin Breach (h(x) <= 1.0 mm ) ]
+                         ▼                                                       ▼ 
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
   | 1 kHz MOTOR PWM SERVO CONTROLLERS           |   | DIRECT-SILICON ZERO-TORQUE E-STOP          |
   | * Actuates 6-DoF Micro-Robotic Effector     |   | * Volatile Write: *mut 0x5000_1004 = 0x00  |
   | * Sub-Millimeter Vessel Clamping & Suturing |   | * 4.0 ns Gate Cut -> 0.60 ms Zero-Torque   |
   └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+
 ====================================================================================================
 ```
 ```
