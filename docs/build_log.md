@@ -123,13 +123,19 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   |               2. L_f V(x) + L_g V(x) u + c_clf V(x) <= delta                   (Soft Goal)   |
   |               3. ||q_dot||_inf <= 50.0 mm/s | ||q_ddot||_inf <= 0.50 m/s^2 | ||u|| <= 10 Nm  |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                       |
-                         ▼ [h(x) > 0: Certified Safe]                            ▼ [h(x) <= 0 or > 2ms]
+                         |                                              |
+         [QP Feasible & State Valid]                  [CRITICAL INTERVENTION BREACH ]
+          h(x) > 0: Certified Safe                     Heartbeat Timeout: Del_t > 2.0 ms
+                         |                             Margin Breach: h(x) <= 1.0 mm        
+                         ▼                                              ▼
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
   | CERTIFIED SAFE SERVO COMMAND: u*(t)         |   | DIRECT-SILICON HARDWARE E-STOP INTERLOCK   |
   | * Minimally Modifies u_AI(t) Only When      |   | * Volatile MMIO Write: *0x5000_1004 = 0x00 |
-  |   Approaching Anatomical Boundary           |   | * 4.0 ns FPGA Gate Cut -> 0.60 ms 0-Torque |
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+  |   Approaching Anatomical Boundary           |   | * 4.0 ns FPGA Gate Cut -> 0.60 ms 0-Torque | 
+  | * Control Loop: t_loop = 1.0 ms             |   | * Gate-Driver PWM Terminated in < 1.0 ms   | 
+  └─────────────────────────────────────────────┘   | *  ARM64 Memory Barrier: asm!("dmb sy")    |
+                                                    | All Actuator Enters Mechanical Zero-Torque |
+                                                    └────────────────────────────────────────────┘
 ====================================================================================================
 ```
 ```
