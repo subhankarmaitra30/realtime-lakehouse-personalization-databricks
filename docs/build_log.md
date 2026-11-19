@@ -20,46 +20,31 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-====================================================================================================================
-                              MODULE 5: MASTER STAR-SCHEMA ASSET & WORKFLOW TOPOLOGY
-====================================================================================================================
-
-                   [SATELLITE ASSET 1: MATHEMATICAL, OPTICAL & SLAM PROOFS]
-                      docs/proofs/hud_slam_latency_proof.md
-                    * Proof 1: Critical Path Latency Budget (t_total = 12.60 ms <= 16.67 ms)
-                    * Proof 2: Direct-Silicon OS Window Manager Bypass (t_OS_jitter = 0.00 ms)
-                    * Proof 3: IEC 62304 Class C Photon Floor (T_photon >= 35.0%, 879.6 Td)
-                    * Proof 4: Thermal Throttling Worst-Case Execution (t_WCET = 14.36 ms)
-                      docs/proofs/slam_raymarching_derivation.md
-                    * Proof 5: Sensorless 6-DoF SE(3) Odometry (Lucas-Kanade + Clamped Speckle)
-                    * Proof 6: Lateral-Axis Pitch Projection R_x(theta) & Adjoint Grad dC/dV_i
-                    * Proof 7: 512^3 FP16 Voxel Bounds (256.0 MiB / 268.44 MB, 16.11 GB/s)
-                    * Proof 8: 30-Bit 3D Morton Z-Curve Indexing (16.0x L2 Cache Locality)
-                                                              |
-                                                              ▼
-[SATELLITE ASSET 5: COMPLIANCE & ARCHITECTURE]  +--------------------+  [SATELLITE ASSET 2: BARE-METAL CUDA KERNELS]
- docs/architecture/hud_slam_architecture.md     |                    |  engine/cuda/hud_compositor.cu
- * Dual Page-Locked Ping-Pong Ring (Ring 0/1)   |    MASTER CORE:    |  * Fused Alpha Clamp (0.0 <= alpha <= 0.65)
- * 4-Clock Domain Crossing (CDC MTBF ~10^257y)  |   AMBIENT HUD &    |  * NaN/Overflow Scrubbing (T_photon >= 35.0%)
- compliance/defense_medical_standards.md        |      3D SLAM       |  engine/cuda/slam_raymarching.cu
- * IEC 62304 Class C / IEC 60601-1-11       ---►|     (MODULE 5)     |<-* 30-Bit Morton Atomic Voxel Splatting
- * MIL-STD-461G / MIL-STD-810H / IEEE 754-2019  |                    |  * 64-Step Beer-Lambert Raymarch & Adjoint
-                                                +--------------------+  engine/cuda/test_cuda_m5_sil.cpp
-                                                          |             * C++20 Host-Emulated CUDA SIL Benchmark
-                                                          ▼
-                   [SATELLITE ASSET 3: BARE-METAL SCANOUT HAL & TIMING BUDGETS]
-                    * firmware/src/display_scanout.rs (#![no_std] MMIO 0x4000_3000, V-Sync Flip)
-                    * hardware/timing_budget_proof.md
-                      - Stage 1: Pinned DMA Ingress (t_DMA = 0.83 ms @ 15.0 GB/s QoS Slice)
-                      - Stage 2: Int8 TensorRT Vision-SSM Inference (t_Inference = 7.20 ms)
-                      - Stage 3: 6-DoF SLAM Volume Raymarching (t_Raymarch = 4.15 ms)
-                      - Stage 4: Fused CUDA Alpha Compositor (t_AlphaBlend = 0.42 ms)
-                                                              |
-                                                              ▼
-                   [SATELLITE ASSET 4: AUTOMATED SIL VERIFICATION SUITES]
-                    * engine/python/test_hud_slam.py (8-Gate Timing, Photon, SLAM & Adjoint SIL)
-                    * tests/src/bin/test_module5.rs (3-Gate Bare-Metal Rust MMIO & Ring Bench)
-====================================================================================================================
+====================================================================================================
+           MODULE 6 CLOSED-LOOP NEURAL C2, 1 kHz RUST QP & 250 MHz FPGA WATCHDOG GRAPH
+====================================================================================================
+  [PYTHON CAUSAL C2 & PPO ENGINE: engine/python/ppo_drift_regularizer.py] 
+  * MultiObjectiveClinicalUtility  : Convex 4-Part Clinical Reward U(Y) in [0, 1] + Back-Door Q^do
+  * NonEuclideanActionTransformer  : 32 Bezier Splines + Radial Jerk-Ball (||tau'''||_2 <= 2.0 m/s^3)
+                                     + Zero-Order Hold (ZOH) 100 ms Temporal Attention Latching
+  * EdgeDriftRegularizedPPOLoss    : Kantorovich-Rubinstein 1-Wasserstein Gate (D_W > 15.0 => Freeze)
+                                               |
+                                               ▼ (Emits 128B BezierSplineCommand u_AI @ 100 Hz)
+====================================================================================================
+  [BARE-METAL #![no_std] 1 kHz SAFETY KERNEL: firmware/src/safety_watchdog.rs (aarch64-unknown-none)]
+  * ActiveSetQpSolver::solve_1d_qp : Active-Set HOCBF-CLF Convex QP (gamma_1=10, gamma_2=15, p=1000)
+  * check_safety_and_actuate       : Executes in 0.00020 ms <= 0.18 ms (1000 Hz / 1.0 ms Loop)
+  * check_velocity_cbf_and_actuate: ||q_dot||_inf <= 50.0 mm/s | ||q_ddot|| <= 0.5 m/s^2 | ||u|| <= 10 Nm
+  * trigger_hardware_estop         : Volatile Write *mut 0x5000_1004 = 0x0000_0000 + dmb sy / dsb sy
+                                               |
+                                               ▼ (AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000)
+====================================================================================================
+  [SYNTHESIZABLE 250 MHz FPGA WATCHDOG: hardware/rtl/avatar_pwm_watchdog.sv (T_clk = 4.0 ns)]
+  * Trigger 1 (Boundary Breach)    : distance_sensor_um <= 16'd1000 (1.00 mm Stand-Off Breach)
+  * Trigger 2 (Deadman Timeout)    : countdown_timer == 32'd0 (500,000 Cycles = 2000 us NPU Stall)
+  * Trigger 3 (MMIO E-Stop Write)  : Same-Cycle Combinational direct_mmio_disarm (0x5000_1004 == 0x00)
+  * Hardware Interlock Output      : pwm_gate_enable_n <= 1'b1 in 4.0 ns -> 0.60 ms Zero-Torque
+====================================================================================================
 ```
 ```
  ====================================================================================================
