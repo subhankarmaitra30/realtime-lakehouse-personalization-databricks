@@ -20,30 +20,11 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-====================================================================================================
-      DIRECT-SILICON MMIO WATCHDOG (0x5000_1000) & SUB-MILLISECOND ZERO-TORQUE TIMELINE
-====================================================================================================
-  [TRIGGER A: BOUNDARY BREACH]     [TRIGGER B: HEARTBEAT TIMEOUT]    [TRIGGER C: SW E-STOP WRITE]
-  DIST_SENSOR_REG (0x5000_100C)    HEARTBEAT_KICK (0x5000_1008)      MOTOR_ENABLE_REG (0x5000_1004)
-  distance_sensor_um <= 1000 um    countdown_timer == 0 (>2000 us)   *mut 0x5000_1004 = 0x0000_0000
-                 \                                |                                /
-                  ▼                               ▼                               ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ T = 0.000004 ms (4.0 ns = 1 Clock Cycle @ 250.0 MHz): FPGA GATE-DRIVE SEVERANCE                │
-  │ * Combinational Interlock (hardware_interlock_tripped / direct_mmio_disarm) in RTL             │
-  │ * Asserts Active-Low Gate Cutoff: pwm_gate_enable_n <= 1'b1 & zero_torque_active <= 1'b1       │
-  │ * Latches reg_motor_enable <= 32'h0000_0000 & Engages Freewheeling Crowbar Shunt               │
-  └───────────────────────────────────────────────┬────────────────────────────────────────────────┘
-                                                  │
-                                                  ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ T = 0.000004 ms to 0.600004 ms (5 * tau_decay = 5 * 120 us = 0.60 ms): RL WINDING DECAY        │
-  │ * Phase Inductance L_m = 1.20 mH | Winding + Crowbar Shunt Resistance R_m = 10.0 Ohm           │
-  │ * Exponential Current Collapse: i_phase(t) = I_0 * exp(-t / 120 us)                            │
-  │ * At t = 0.60 ms (< 1.00 ms Ceiling): i_phase(0.60 ms) = 0.0067 * I_0 (< 1% Residual Energy)   │
-  │ * Manipulator Transitions to Passive Back-Drivable Zero-Torque State (tau_kinetic = 0.00 Nm)   │
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-====================================================================================================
+  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ STAGE 5: DIRECT DISPLAY SERIALIZER SCANOUT (MMIO 0x4000_3000 -> 148.5 MHz Pixel Clock)     │
+  │ * Total Critical Path: 0.83 + 7.20 + 4.15 + 0.42 + 0.00 = 12.60 ms <= 16.67 ms (+4.07 ms)  │
+  │ * Zero OS Window Manager Intermediary: N_OS = 0 ===> t_OS_jitter = 0.00 ms                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
