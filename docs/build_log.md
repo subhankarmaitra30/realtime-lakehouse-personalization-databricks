@@ -21,6 +21,32 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
+      DIRECT-SILICON MMIO WATCHDOG (0x5000_1000) & SUB-MILLISECOND ZERO-TORQUE TIMELINE
+====================================================================================================
+  [TRIGGER A: BOUNDARY BREACH]     [TRIGGER B: HEARTBEAT TIMEOUT]    [TRIGGER C: SW E-STOP WRITE]
+  DIST_SENSOR_REG (0x5000_100C)    HEARTBEAT_KICK (0x5000_1008)      MOTOR_ENABLE_REG (0x5000_1004)
+  distance_sensor_um <= 1000 um    countdown_timer == 0 (>2000 us)   *mut 0x5000_1004 = 0x0000_0000
+                 \                                |                                /
+                  ▼                               ▼                               ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ T = 0.000004 ms (4.0 ns = 1 Clock Cycle @ 250.0 MHz): FPGA GATE-DRIVE SEVERANCE                │
+  │ * Combinational Interlock (hardware_interlock_tripped / direct_mmio_disarm) in RTL             │
+  │ * Asserts Active-Low Gate Cutoff: pwm_gate_enable_n <= 1'b1 & zero_torque_active <= 1'b1       │
+  │ * Latches reg_motor_enable <= 32'h0000_0000 & Engages Freewheeling Crowbar Shunt               │
+  └───────────────────────────────────────────────┬────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ T = 0.000004 ms to 0.600004 ms (5 * tau_decay = 5 * 120 us = 0.60 ms): RL WINDING DECAY        │
+  │ * Phase Inductance L_m = 1.20 mH | Winding + Crowbar Shunt Resistance R_m = 10.0 Ohm           │
+  │ * Exponential Current Collapse: i_phase(t) = I_0 * exp(-t / 120 us)                            │
+  │ * At t = 0.60 ms (< 1.00 ms Ceiling): i_phase(0.60 ms) = 0.0067 * I_0 (< 1% Residual Energy)   │
+  │ * Manipulator Transitions to Passive Back-Drivable Zero-Torque State (tau_kinetic = 0.00 Nm)   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+```
+```
+====================================================================================================
            MODULE 6 CLOSED-LOOP NEURAL C2, 1 kHz RUST QP & 250 MHz FPGA WATCHDOG GRAPH
 ====================================================================================================
   [PYTHON CAUSAL C2 & PPO ENGINE: engine/python/ppo_drift_regularizer.py] 
