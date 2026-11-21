@@ -54,7 +54,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * Physical Motor PWM Bus Hard-Grounded      |   | * Kicks 0x5000_1008 Heartbeat every 1.0 ms |
   └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
                                                                                  |
-                                                       [AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000]
+                                                   [AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000]    
                                                                                  ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
   | SYNTHESIZABLE 250 MHZ FPGA PWM WATCHDOG & CROWBAR STAGE (hardware/rtl/avatar_pwm_watchdog.sv)|
