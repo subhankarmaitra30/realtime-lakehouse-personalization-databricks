@@ -20,38 +20,67 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
-  ┌────────────────────────────────────────────────────────────────────────────────────────────┐
-  │ STAGE 5: DIRECT DISPLAY SERIALIZER SCANOUT (MMIO 0x4000_3000 -> 148.5 MHz Pixel Clock)     │
-  │ * Total Critical Path: 0.83 + 7.20 + 4.15 + 0.42 + 0.00 = 12.60 ms <= 16.67 ms (+4.07 ms)  │
-  │ * Zero OS Window Manager Intermediary: N_OS = 0 ===> t_OS_jitter = 0.00 ms                 │
-  └────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
+        NEXUS-AVATAR THREE-TIER CLOSED-LOOP KINETIC C2 & HARDWARE WATCHDOG ARCHITECTURE
+====================================================================================================
+  INGRESS: Module 2 Unit Hypersphere State v_m in S^{1023} (4 KB) + Pre-Treatment Confounders C (64B)
+                                                |
+                                                ▼ [10 Hz - 100 Hz Asynchronous Enclave Policy Loop]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 1: CAUSAL AUTOREGRESSIVE POLICY MATRIX (engine/python/ppo_drift_regularizer.py)         |
+  | * Evaluates Pearl's Back-Door Action-Value: Q^{do}(v_m, a) = Sum_c E[U(Y)|a,c,v_m] P(c|v_m)  |
+  | * 4-Part Clinical Utility U(Y): 0.40*Phi_MAP + 0.35*Phi_bleed + 0.15*Phi_SvO2 - 0.10*Phi_tr  |
+  | * Selects Unconfounded Optimal Intervention a* = argmax_a Q^{do}(v_m, a)                     |
+  | * In-Enclave PPO Plasticity Gate: 1-Wasserstein D_W > 15.0 ===> ||Delta_theta||_2 = 0.000000 |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼ [100 Hz Spline Epoch Update: T_spline = 100.0 ms]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 2: NON-EUCLIDEAN ACTION-SPACE TRANSFORMER & ZOH LATCH (ppo_drift_regularizer.py)        |
+  | * Projections: Q = v_m W_Q (1x256) | K = vec(K_safe) W_K (32x256) | V_raw = vec(K_safe) W_V  |
+  | * Radial Jerk-Ball Gate: V_i = P_{jerk <= 2.0}(V_raw,i) ===> ||V_i'''(t)||_2 <= 2.0 m/s^3    |
+  | * ZOH Latched Simplex: alpha_i = Softmax(Q K^T / 16) held static across T_spline = 100.0 ms  |
+  | * Emits 64-Byte Cache-Aligned BezierSplineCommand (#[repr(C, align(64))]) + C^2 Quintic Blend|
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                        |                                            |
+      [CHANNEL A: TPM Robot Auth == 0]                     [CHANNEL B: Robot Auth == 1]
+                        ▼                                            ▼
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | COPILOT AUGMENTED REALITY HUD MODE          |   | BARE-METAL 1 KHZ SAFETY KERNEL (Tier 3)    |
+  | * Routes 3D Clamping / Incision Spline to   |   | (firmware/src/safety_watchdog.rs)          |
+  |   Module 5 Compositor (MMIO 0x4000_3000)    |   | * Active-Set HOCBF-CLF Convex QP (420 ns)  |
+  | * Renders in 12.60 ms <= 16.67 ms (60 fps)  |   | * Stand-Off: h(x) = d_raw - 1.00 mm >= 0   |
+  | * Clamps Opacity <= 0.65 (>= 35% Photons)   |   | * Box Clamps: <= 50 mm/s, 0.5 m/s^2, 10 Nm |
+  | * Physical Motor PWM Bus Hard-Grounded      |   | * Kicks 0x5000_1008 Heartbeat every 1.0 ms |
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+                                                                                 |
+                                                       [AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000]
+                                                                                 ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | SYNTHESIZABLE 250 MHZ FPGA PWM WATCHDOG & CROWBAR STAGE (hardware/rtl/avatar_pwm_watchdog.sv)|
+  | * Trigger 1: dist_sensor_um (0x5000_100C) <= 1000 um (1.00 mm Anatomical Boundary Breach)    |
+  | * Trigger 2: heartbeat_counter_reg (0x5000_1008) >= 500,000 Cycles (2000.0 us NPU Hang)      |
+  | * Trigger 3: MOTOR_ENABLE_REG (0x5000_1004) Write 0x00 (Same-Cycle Combinational Disarm)     |
+  | * Cutoff Action: Severs pwm_gate_out[5:0] <= 6'b000000 in 4.0 ns + Sticky Lockout Latch      |
+  | * Crowbar Shunt: L_m = 1.20 mH, R_m = 10.0 Ohm ===> 5*tau = 0.60 ms < 1.00 ms Zero-Torque    |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
-====================================================================================================
-           MODULE 6 CLOSED-LOOP NEURAL C2, 1 kHz RUST QP & 250 MHz FPGA WATCHDOG GRAPH
-====================================================================================================
-  [PYTHON CAUSAL C2 & PPO ENGINE: engine/python/ppo_drift_regularizer.py] 
-  * MultiObjectiveClinicalUtility  : Convex 4-Part Clinical Reward U(Y) in [0, 1] + Back-Door Q^do
-  * NonEuclideanActionTransformer  : 32 Bezier Splines + Radial Jerk-Ball (||tau'''||_2 <= 2.0 m/s^3)
-                                     + Zero-Order Hold (ZOH) 100 ms Temporal Attention Latching
-  * EdgeDriftRegularizedPPOLoss    : Kantorovich-Rubinstein 1-Wasserstein Gate (D_W > 15.0 => Freeze)
+                       [ Tier-2 Synthesized C^2 Bezier Spline tau(t) ]
                                                |
-                                               ▼ (Emits 128B BezierSplineCommand u_AI @ 100 Hz)
-====================================================================================================
-  [BARE-METAL #![no_std] 1 kHz SAFETY KERNEL: firmware/src/safety_watchdog.rs (aarch64-unknown-none)]
-  * ActiveSetQpSolver::solve_1d_qp : Active-Set HOCBF-CLF Convex QP (gamma_1=10, gamma_2=15, p=1000)
-  * check_safety_and_actuate       : Executes in 0.00020 ms <= 0.18 ms (1000 Hz / 1.0 ms Loop)
-  * check_velocity_cbf_and_actuate: ||q_dot||_inf <= 50.0 mm/s | ||q_ddot|| <= 0.5 m/s^2 | ||u|| <= 10 Nm
-  * trigger_hardware_estop         : Volatile Write *mut 0x5000_1004 = 0x0000_0000 + dmb sy / dsb sy
-                                               |
-                                               ▼ (AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000)
-====================================================================================================
-  [SYNTHESIZABLE 250 MHz FPGA WATCHDOG: hardware/rtl/avatar_pwm_watchdog.sv (T_clk = 4.0 ns)]
-  * Trigger 1 (Boundary Breach)    : distance_sensor_um <= 16'd1000 (1.00 mm Stand-Off Breach)
-  * Trigger 2 (Deadman Timeout)    : countdown_timer == 32'd0 (500,000 Cycles = 2000 us NPU Stall)
-  * Trigger 3 (MMIO E-Stop Write)  : Same-Cycle Combinational direct_mmio_disarm (0x5000_1004 == 0x00)
-  * Hardware Interlock Output      : pwm_gate_enable_n <= 1'b1 in 4.0 ns -> 0.60 ms Zero-Torque
-====================================================================================================
+                        +----------------------+----------------------+
+                        |                                             |
+         [ROBOT_CHASSIS_PRESENT == 0]                  [ROBOT_CHASSIS_PRESENT == 1]
+         (Manned Clinic / Forward Aid Post)            (Authenticated Autonomous Surgical Pod)
+                        |                                             |
+                        ▼                                             ▼
+  ┌───────────────────────────────────────────┐ ┌───────────────────────────────────────────┐
+  | CHANNEL A: COPILOT HUD OVERLAY DRIVER     | | CHANNEL B: 1 KHZ AUTOPILOT SERVO DRIVER   |
+  | * Projects 3D spline into camera frustum  | | * Evaluates u_AI(t) = tau''(t) at 1000 Hz |
+  | * Writes AI heatmap to PINNED_RING_0/1    | | * Filters u_AI through solve_1khz_cbf_qp  |
+  | * Enforces alpha <= 0.65 (0x4000_3008)    | | * Enforces h(x) >= 0 & <= 50.0 mm/s       |
+  | * MOTOR_ENABLE_REG (0x5000_1004) == 0x00  | | * Monitored at 250 MHz by 0x5000_1000 RTL |
+  └───────────────────────────────────────────┘ └───────────────────────────────────────────┘
 ```
 ```
  ====================================================================================================
@@ -75,6 +104,40 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * Optimizes Clipped Do-Calculus Advantage   |   | * Policy Gradient: ||grad L_Edge||_2 = 0.0 |
   |   with KL Anchor D_KL(pi_cert || pi_theta)  |   | * Weight Delta   : ||Delta theta||_2 = 0.0 |
   └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+```
+```
+====================================================================================================
+            250 MHZ AXI4-LITE PWM WATCHDOG RTL LOGIC DIAGRAM (avatar_pwm_watchdog.sv)
+====================================================================================================
+  dist_sensor_um [31:0] ---► [ Comparator: <= 32'd1000 ] ---------► boundary_breach_wire --+
+                                                                                           |
+  250 MHz clk -------------► [ 32-Bit Counter: >= 32'd500_000 ] --► timeout_fault_wire ----+--► [OR]
+  (Reset by 0x5000_1008)     (2000.0 us Deadman Ceiling)                                   |     |
+                                                                                           |     ▼
+  AXI4-Lite Write 0x04 ----► [ s_axi_wstrb[0] & wdata[0]==0 ] ----► axi_comb_disarm -------+  +------+
+  (0x5000_1004 == 0x00)      (Same-Cycle 4.0 ns Combinational)                             |  |Sticky|
+                                                                                           |  |Latch |
+                                                                                           |  +------+
+                                                                                           |     |
+                                                                                           ▼     ▼
+  pwm_Sub_in [5:0] --------► [ 6-Bit AND Gate: motor_enable & !fault & !estop_latched ] -► pwm_gate_out[5:0]
+                             (Forces 6'b000000 in 1 Clock Cycle = 4.0 ns; Blocks Re-Arm!)
+====================================================================================================
+```
+```
++24V / +48V SERVO DC BUS
+         |
+     +───────+ High-Side MOSFET Gate (Driven by pwm_gate_out[k] -► Cut to 0V in 4.0 ns)
+     |  Q_H  | (Opens Immediately on E-Stop)
+     +───────+
+         |
+         +-------[ L_m = 1.20 mH ]-------[ R_winding = 2.0 Ohm ]-------+ (Brushless Motor Phase k)
+         |                                                             |
+     +───────+ Low-Side Crowbar Shunt MOSFET (Driven by !pwm_gate_out) |
+     |  Q_L  |---[ R_crowbar = 8.0 Ohm ]───────────────────────────────+
+     +───────+ (Closes on E-Stop: Total R_m = 2.0 + 8.0 = 10.0 Ohm -► tau_decay = L_m/R_m = 120 us)
+         |
+      GND_PWR  (5 * tau_decay = 0.600 ms < 1.000 ms -► Residual Current 0.67% -► 0.00 Nm Passive)
 ```
 ```
 ====================================================================================================
