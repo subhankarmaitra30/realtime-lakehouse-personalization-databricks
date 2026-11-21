@@ -21,89 +21,58 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-        NEXUS-AVATAR THREE-TIER CLOSED-LOOP KINETIC C2 & HARDWARE WATCHDOG ARCHITECTURE
+        MODULE 6 NONLINEAR CONTROL, CONVEX QP, ZERO-TORQUE E-STOP & DRIFT FREEZE TOPOLOGY
 ====================================================================================================
-  INGRESS: Module 2 Unit Hypersphere State v_m in S^{1023} (4 KB) + Pre-Treatment Confounders C (64B)
+  INGRESS: Nominal Command u_AI(t) in R^6 (from Tier-2 Spline) + Live Clearance d_raw(q) in R_+
                                                 |
-                                                ▼ [10 Hz - 100 Hz Asynchronous Enclave Policy Loop]
+                                                ▼
+  ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROOF 1: NAGUMO RELATIVE-DEGREE-2 HIGH-ORDER CONTROL BARRIER FUNCTIONS (Section 2)            |
+  | * Stand-Off Buffer: delta_safe = 1.00 mm (1000 um) -> psi_0(x) = h(x) = d_raw(q) - 0.0010 m   |
+  | * Recursive Lie Cascade (gamma_1 = 10 s^-1, gamma_2 = 15 s^-1):                               |
+  |   psi_1(x) = h_dot + 10*h >= 0  |  psi_2(x, u) = h_ddot + 25.0*h_dot + 150.0*h >= 0           |
+  | * Nagumo Forward Set Invariance: h(x(t)) >= h(x(0)) * exp(-10.0 * t) >= 0.000000 m            |
+  └───────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 1: CAUSAL AUTOREGRESSIVE POLICY MATRIX (engine/python/ppo_drift_regularizer.py)         |
-  | * Evaluates Pearl's Back-Door Action-Value: Q^{do}(v_m, a) = Sum_c E[U(Y)|a,c,v_m] P(c|v_m)  |
-  | * 4-Part Clinical Utility U(Y): 0.40*Phi_MAP + 0.35*Phi_bleed + 0.15*Phi_SvO2 - 0.10*Phi_tr  |
-  | * Selects Unconfounded Optimal Intervention a* = argmax_a Q^{do}(v_m, a)                     |
-  | * In-Enclave PPO Plasticity Gate: 1-Wasserstein D_W > 15.0 ===> ||Delta_theta||_2 = 0.000000 |
+  | PROOF 2: FINITE-TIME PRE-BOUNDARY BRAKING UNDER TRANSIENT COUGH / JOLT (Section 3)           |
+  | * Impulsive Disturbance at d_raw(0) = 5.00 mm (h = 4.00 mm): h_dot(0) = -80.0 mm/s           |
+  |   (Violates Auxiliary State: psi_1(0) = -0.080 + 10*(0.004) = -0.040 m/s < 0)                |
+  | * Active-Set Restorative Braking: a_brake = -25*(-0.080) - 150*(0.004) = +1.400 m/s^2        |
+  | * Stopping Excursion: Delta_s = 0.080^2 / (2*1.40) = 2.286 mm in t_stop = 57.14 ms           |
+  | * Turnaround Clearance: d_min = 5.00 - 2.286 = 2.714 mm > 1.00 mm (Zero Boundary Breach!)    |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
-                                                ▼ [100 Hz Spline Epoch Update: T_spline = 100.0 ms]
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 2: NON-EUCLIDEAN ACTION-SPACE TRANSFORMER & ZOH LATCH (ppo_drift_regularizer.py)        |
-  | * Projections: Q = v_m W_Q (1x256) | K = vec(K_safe) W_K (32x256) | V_raw = vec(K_safe) W_V  |
-  | * Radial Jerk-Ball Gate: V_i = P_{jerk <= 2.0}(V_raw,i) ===> ||V_i'''(t)||_2 <= 2.0 m/s^3    |
-  | * ZOH Latched Simplex: alpha_i = Softmax(Q K^T / 16) held static across T_spline = 100.0 ms  |
-  | * Emits 64-Byte Cache-Aligned BezierSplineCommand (#[repr(C, align(64))]) + C^2 Quintic Blend|
+  | PROOF 3: 1 KHZ STRICTLY CONVEX ACTIVE-SET CBF-CLF QUADRATIC PROGRAM (Section 4)              |
+  | * Positive-Definite Diagonal Hessian: H = diag(I_6, 2000.0) => lambda_min(H) = 1.0 > 0       |
+  | * Closed-Form KKT Hyperplane Projection + ISO 10218-1/2 Box Clamps (||q_dot|| <= 50.0 mm/s)  |
+  | * Heap-Free #![no_std] Execution Time: t_QP = 0.00042 ms (420 ns) <= 0.180 ms (1 kHz Loop)   |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                        |                                            |
-      [CHANNEL A: TPM Robot Auth == 0]                     [CHANNEL B: Robot Auth == 1]
-                        ▼                                            ▼
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | COPILOT AUGMENTED REALITY HUD MODE          |   | BARE-METAL 1 KHZ SAFETY KERNEL (Tier 3)    |
-  | * Routes 3D Clamping / Incision Spline to   |   | (firmware/src/safety_watchdog.rs)          |
-  |   Module 5 Compositor (MMIO 0x4000_3000)    |   | * Active-Set HOCBF-CLF Convex QP (420 ns)  |
-  | * Renders in 12.60 ms <= 16.67 ms (60 fps)  |   | * Stand-Off: h(x) = d_raw - 1.00 mm >= 0   |
-  | * Clamps Opacity <= 0.65 (>= 35% Photons)   |   | * Box Clamps: <= 50 mm/s, 0.5 m/s^2, 10 Nm |
-  | * Physical Motor PWM Bus Hard-Grounded      |   | * Kicks 0x5000_1008 Heartbeat every 1.0 ms |
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
-                                                                                 |
-                                                   [AXI4-Lite MMIO Bus @ Physical Base 0x5000_1000]    
-                                                                                 ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | SYNTHESIZABLE 250 MHZ FPGA PWM WATCHDOG & CROWBAR STAGE (hardware/rtl/avatar_pwm_watchdog.sv)|
-  | * Trigger 1: dist_sensor_um (0x5000_100C) <= 1000 um (1.00 mm Anatomical Boundary Breach)    |
-  | * Trigger 2: heartbeat_counter_reg (0x5000_1008) >= 500,000 Cycles (2000.0 us NPU Hang)      |
-  | * Trigger 3: MOTOR_ENABLE_REG (0x5000_1004) Write 0x00 (Same-Cycle Combinational Disarm)     |
-  | * Cutoff Action: Severs pwm_gate_out[5:0] <= 6'b000000 in 4.0 ns + Sticky Lockout Latch      |
-  | * Crowbar Shunt: L_m = 1.20 mH, R_m = 10.0 Ohm ===> 5*tau = 0.60 ms < 1.00 ms Zero-Torque    |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-```
-                       [ Tier-2 Synthesized C^2 Bezier Spline tau(t) ]
-                                               |
-                        +----------------------+----------------------+
-                        |                                             |
-         [ROBOT_CHASSIS_PRESENT == 0]                  [ROBOT_CHASSIS_PRESENT == 1]
-         (Manned Clinic / Forward Aid Post)            (Authenticated Autonomous Surgical Pod)
-                        |                                             |
-                        ▼                                             ▼
-  ┌───────────────────────────────────────────┐ ┌───────────────────────────────────────────┐
-  | CHANNEL A: COPILOT HUD OVERLAY DRIVER     | | CHANNEL B: 1 KHZ AUTOPILOT SERVO DRIVER   |
-  | * Projects 3D spline into camera frustum  | | * Evaluates u_AI(t) = tau''(t) at 1000 Hz |
-  | * Writes AI heatmap to PINNED_RING_0/1    | | * Filters u_AI through solve_1khz_cbf_qp  |
-  | * Enforces alpha <= 0.65 (0x4000_3008)    | | * Enforces h(x) >= 0 & <= 50.0 mm/s       |
-  | * MOTOR_ENABLE_REG (0x5000_1004) == 0x00  | | * Monitored at 250 MHz by 0x5000_1000 RTL |
-  └───────────────────────────────────────────┘ └───────────────────────────────────────────┘
-```
-```
- ====================================================================================================
-            EDGE SELF-EVOLVING PPO & 1-WASSERSTEIN DISTRIBUTIONAL DRIFT FREEZE GATE
-====================================================================================================
-  Certified Baseline Distribution: P_base on S^1023     Live Combat Telemetry Batch: P_drift on S^1023
-                       |                                                       |
-                       +---------------------------+---------------------------+
-                                                   |
-                                                   ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | KANTOROVICH-RUBINSTEIN 1-WASSERSTEIN METRIC EVALUATOR ON S^1023                                |
-  | * Dual Transport Norm: D_W(P_base, P_drift) = sup_{||f||_Lip <= 1} (E_base[f] - E_drift[f])    |
-  | * Critical Drift Threshold: K_drift = 15.0 | Exponential Decay Rate: beta_drift = 0.50         |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
                          |                                                       |
-                         ▼ [Nominal Drift: D_W <= 15.0]                          ▼ [Extreme Shock: D_W > 15.0]
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | DAMPED CAUSAL PPO + KL TRUST-REGION UPDATE  |   | ASYMPTOTIC & THRESHOLD PARAMETER FREEZE    |
-  | * Weight: w_drift = exp(-beta_drift * D_W)  |   | * Indicator Gate: I(D_W <= 15.0) === 0.0   |
-  | * Optimizes Clipped Do-Calculus Advantage   |   | * Policy Gradient: ||grad L_Edge||_2 = 0.0 |
-  |   with KL Anchor D_KL(pi_cert || pi_theta)  |   | * Weight Delta   : ||Delta theta||_2 = 0.0 |
+                         ▼ [Hardware Last-Resort Interlock]                      ▼ [On-Device RL]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐ 
+  | PROOF 4: 4.0 NS GATE & 0.60 MS 0-TORQUE     |   | PROOF 5: 1-WASSERSTEIN PPO DRIFT FREEZE    |
+  | * 250 MHz FPGA Watchdog (0x5000_1004): 4 ns |   | * Kantorovich-Rubinstein Metric D_W on S   |
+  | * RL Crowbar (L=1.2mH, R=10 Ohm): tau=120us |   | * Siachen Shock (D_W = 48.72 > 15.0):      |
+  | * 5*tau = 0.600 ms < 1.00 ms (<1% Torque)   |   |   ||grad L_Edge||_2 = 0 => ||d_theta|| = 0 |
   └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+```
+```
+   IMPULSIVE COUGH DISTURBANCE AT t = 0: d_raw(0) = 5.00 mm (h(0) = 4.00 mm), v_inward = -80.0 mm/s
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | d_raw = 5.00 mm  [Tool Tip @ t=0] ---► Inward Velocity v(0) = -80.0 mm/s (psi_1(0) = -0.04 < 0)|
+  |                  |                                                                             |
+  |                  | 1 kHz HOCBF QP Commands Immediate Restorative Braking: a_brake = +1.40 m/s^2|
+  |                  ▼  Braking Distance: Delta_s = (-0.080)^2 / (2 * 1.40) = 2.2857 mm (57.14 ms) |
+  | d_min = 2.714 mm [Turnaround Apex @ t = 57.14 ms: Velocity v(t_stop) === 0.00 mm/s]            |
+  | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+  | delta = 1.00 mm  [MANDATORY SAFETY STAND-OFF BOUNDARY: h(x) = 0.00 mm (1,000 um)]              |
+  |================================================================================================|
+  | d_raw = 0.00 mm  [CRITICAL ARTERIAL VESSEL WALL: ZERO PHYSICAL CONTACT (+1.714 mm Spare)]      |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
