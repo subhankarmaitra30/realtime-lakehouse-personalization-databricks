@@ -21,92 +21,54 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-        MODULE 6 NONLINEAR CONTROL, CONVEX QP, ZERO-TORQUE E-STOP & DRIFT FREEZE TOPOLOGY
+        MODULE 6 CAUSAL DO-CALCULUS & NON-EUCLIDEAN C^2 BEZIER ACTION SPACE TOPOLOGY
 ====================================================================================================
-  INGRESS: Nominal Command u_AI(t) in R^6 (from Tier-2 Spline) + Live Clearance d_raw(q) in R_+
-                                                |
-                                                ▼
-  ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 1: NAGUMO RELATIVE-DEGREE-2 HIGH-ORDER CONTROL BARRIER FUNCTIONS (Section 2)            |
-  | * Stand-Off Buffer: delta_safe = 1.00 mm (1000 um) -> psi_0(x) = h(x) = d_raw(q) - 0.0010 m   |
-  | * Recursive Lie Cascade (gamma_1 = 10 s^-1, gamma_2 = 15 s^-1):                               |
-  |   psi_1(x) = h_dot + 10*h >= 0  |  psi_2(x, u) = h_ddot + 25.0*h_dot + 150.0*h >= 0           |
-  | * Nagumo Forward Set Invariance: h(x(t)) >= h(x(0)) * exp(-10.0 * t) >= 0.000000 m            |
-  └───────────────────────────────────────────────────────────────────────────────────────────────┘
+  INGRESS: Invariant Biological State v_m in S^{1023} (||v_m||_2 = 1.0) + Pre-Treatment Shock C
                                                 |
                                                 ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 2: FINITE-TIME PRE-BOUNDARY BRAKING UNDER TRANSIENT COUGH / JOLT (Section 3)           |
-  | * Impulsive Disturbance at d_raw(0) = 5.00 mm (h = 4.00 mm): h_dot(0) = -80.0 mm/s           |
-  |   (Violates Auxiliary State: psi_1(0) = -0.080 + 10*(0.004) = -0.040 m/s < 0)                |
-  | * Active-Set Restorative Braking: a_brake = -25*(-0.080) - 150*(0.004) = +1.400 m/s^2        |
-  | * Stopping Excursion: Delta_s = 0.080^2 / (2*1.40) = 2.286 mm in t_stop = 57.14 ms           |
-  | * Turnaround Clearance: d_min = 5.00 - 2.286 = 2.714 mm > 1.00 mm (Zero Boundary Breach!)    |
+  | PROOF 1: PEARL'S DO-CALCULUS GRAPH SURGERY & SIMPSON'S PARADOX REVERSAL (Section 2)          |
+  | * Observational Confounding (DAG G): Severe Shock (C=1) -> Clamp (A=1) & High Mortality      |
+  |   Biased Expectation: E[U(Y) | A=1] = 0.6940 < E[U(Y) | A=0] = 0.7500 (Falsely Withholds!)   |
+  | * Interventional Graph Surgery (DAG G_{\overline{A}}): Deletes C -> A edge via do(A = a)     |
+  | * Rules 2 & 3 Back-Door Formula: Q^{do}(v_m, a) = Sum_{c in C} E[U(Y)|a,c,v_m] * P(c | v_m)  |
+  |   Unconfounded Value: Q^{do}(v_m, A=1) = 0.7640 >> Q^{do}(v_m, A=0) = 0.3300 (Commands a*=1) |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
                                                 ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 3: 1 KHZ STRICTLY CONVEX ACTIVE-SET CBF-CLF QUADRATIC PROGRAM (Section 4)              |
-  | * Positive-Definite Diagonal Hessian: H = diag(I_6, 2000.0) => lambda_min(H) = 1.0 > 0       |
-  | * Closed-Form KKT Hyperplane Projection + ISO 10218-1/2 Box Clamps (||q_dot|| <= 50.0 mm/s)  |
-  | * Heap-Free #![no_std] Execution Time: t_QP = 0.00042 ms (420 ns) <= 0.180 ms (1 kHz Loop)   |
+  | PROOF 2: 4-PART CLINICAL UTILITY U(Y) & CAUSAL POLICY GRADIENT THEOREM (Section 3)           |
+  | * Convex Clinical Surface: U(Y) = 0.40*Phi_MAP + 0.35*Phi_bleed + 0.15*Phi_SvO2 - 0.10*Phi_tr|
+  | * Leibniz / Log-Derivative Policy Gradient on S^{1023}:                                      |
+  |   grad_theta J_causal(theta) = E_{v_m, a ~ pi_theta}[ grad_theta ln pi_theta(a|v_m) * Q^{do}]|
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                       |
-                         ▼ [Hardware Last-Resort Interlock]                      ▼ [On-Device RL]
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐ 
-  | PROOF 4: 4.0 NS GATE & 0.60 MS 0-TORQUE     |   | PROOF 5: 1-WASSERSTEIN PPO DRIFT FREEZE    |
-  | * 250 MHz FPGA Watchdog (0x5000_1004): 4 ns |   | * Kantorovich-Rubinstein Metric D_W on S   |
-  | * RL Crowbar (L=1.2mH, R=10 Ohm): tau=120us |   | * Siachen Shock (D_W = 48.72 > 15.0):      |
-  | * 5*tau = 0.600 ms < 1.00 ms (<1% Torque)   |   |   ||grad L_Edge||_2 = 0 => ||d_theta|| = 0 |
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROOF 3: NON-EUCLIDEAN ACTION TRANSFORMER & ZOH-LATCHED C^2 BEZIER MANIFOLD (Section 4)      |
+  | * Basis Projection: Q = v_m W_Q (1x256) | K = vec(K_safe) W_K (32x256, W_K in R^{24x256})    |
+  | * Value Projection: V_raw = vec(K_safe) W_V (W_V in R^{24x24}) -> Reshaped to (32, 4, 6)     |
+  | * Radial Jerk-Ball Gate: V_i = P_{jerk <= 2.0}(V_raw,i) => ||V_i'''(t)||_2 <= 2.0 m/s^3      |
+  | * ZOH Latched Simplex (T_spline = 100 ms): d(alpha_i)/dt === 0 => No Product-Rule Spike!     |
+  | * Convex Hull Bound: ||tau'''(t)||_2 <= Sum_i alpha_i ||V_i'''||_2 <= 2.0 m/s^3 (0.9016 Ver.)|
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
-   IMPULSIVE COUGH DISTURBANCE AT t = 0: d_raw(0) = 5.00 mm (h(0) = 4.00 mm), v_inward = -80.0 mm/s
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | d_raw = 5.00 mm  [Tool Tip @ t=0] ---► Inward Velocity v(0) = -80.0 mm/s (psi_1(0) = -0.04 < 0)|
-  |                  |                                                                             |
-  |                  | 1 kHz HOCBF QP Commands Immediate Restorative Braking: a_brake = +1.40 m/s^2|
-  |                  ▼  Braking Distance: Delta_s = (-0.080)^2 / (2 * 1.40) = 2.2857 mm (57.14 ms) |
-  | d_min = 2.714 mm [Turnaround Apex @ t = 57.14 ms: Velocity v(t_stop) === 0.00 mm/s]            |
-  | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
-  | delta = 1.00 mm  [MANDATORY SAFETY STAND-OFF BOUNDARY: h(x) = 0.00 mm (1,000 um)]              |
-  |================================================================================================|
-  | d_raw = 0.00 mm  [CRITICAL ARTERIAL VESSEL WALL: ZERO PHYSICAL CONTACT (+1.714 mm Spare)]      |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-```
-====================================================================================================
-            250 MHZ AXI4-LITE PWM WATCHDOG RTL LOGIC DIAGRAM (avatar_pwm_watchdog.sv)
-====================================================================================================
-  dist_sensor_um [31:0] ---► [ Comparator: <= 32'd1000 ] ---------► boundary_breach_wire --+
-                                                                                           |
-  250 MHz clk -------------► [ 32-Bit Counter: >= 32'd500_000 ] --► timeout_fault_wire ----+--► [OR]
-  (Reset by 0x5000_1008)     (2000.0 us Deadman Ceiling)                                   |     |
-                                                                                           |     ▼
-  AXI4-Lite Write 0x04 ----► [ s_axi_wstrb[0] & wdata[0]==0 ] ----► axi_comb_disarm -------+  +------+
-  (0x5000_1004 == 0x00)      (Same-Cycle 4.0 ns Combinational)                             |  |Sticky|
-                                                                                           |  |Latch |
-                                                                                           |  +------+
-                                                                                           |     |
-                                                                                           ▼     ▼
-  pwm_Sub_in [5:0] --------► [ 6-Bit AND Gate: motor_enable & !fault & !estop_latched ] -► pwm_gate_out[5:0]
-                             (Forces 6'b000000 in 1 Clock Cycle = 4.0 ns; Blocks Re-Arm!)
-====================================================================================================
-```
-```
-+24V / +48V SERVO DC BUS
-         |
-     +───────+ High-Side MOSFET Gate (Driven by pwm_gate_out[k] -► Cut to 0V in 4.0 ns)
-     |  Q_H  | (Opens Immediately on E-Stop)
-     +───────+
-         |
-         +-------[ L_m = 1.20 mH ]-------[ R_winding = 2.0 Ohm ]-------+ (Brushless Motor Phase k)
-         |                                                             |
-     +───────+ Low-Side Crowbar Shunt MOSFET (Driven by !pwm_gate_out) |
-     |  Q_L  |---[ R_crowbar = 8.0 Ohm ]───────────────────────────────+
-     +───────+ (Closes on E-Stop: Total R_m = 2.0 + 8.0 = 10.0 Ohm -► tau_decay = L_m/R_m = 120 us)
-         |
-      GND_PWR  (5 * tau_decay = 0.600 ms < 1.000 ms -► Residual Current 0.67% -► 0.00 Nm Passive)
+A. OBSERVATIONAL CONFOUNDED DAG (G)               B. MANIPULATED INTERVENTIONAL DAG (G_{\overline{A}})
+  ┌─────────────────────────────────────────┐           ┌─────────────────────────────────────────┐
+  | Pre-Treatment Shock Confounders (C)     |           | Pre-Treatment Shock Confounders (C)     |
+  └─────────────────────────────────────────┘           └─────────────────────────────────────────┘
+        |                 |                 |                 |                 |       (Severed) x 
+        ▼                 |                 ▼                 ▼                 |                 
+  +───────────+           |           +───────────+     +───────────+           |           +───────────+
+  | State v_m |-----------+----------►| Action A  |     | State v_m |           |           | do(A = a) |
+  +───────────+           |           +───────────+     +───────────+           |           +───────────+
+        |                 |                 |                 |                 |                 |
+        +-----------------+-----------------+                 +-----------------+-----------------+
+                          |                                                     |
+                          ▼                                                     ▼
+              [ Confounded Outcome Y ]                              [ Unconfounded Outcome Y ]
+       P(Y | A=a, v_m) != P(Y | do(A=a), v_m)               P(Y | do(A=a), v_m) = Sum_c P(Y|a,c,v_m)P(c|v_m)
 ```
 ```
 ====================================================================================================
