@@ -19,33 +19,52 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 
 ✅ Phase 0 Completed
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
+
 ```
 ====================================================================================================
-        MODULE 5 REAL-TIME LATENCY, THERMAL WCET & RETINAL PHOTON FLOOR PROOF TOPOLOGY
+            MODULE 5 SENSORLESS 6-DOF SE(3) SLAM & DIFFERENTIABLE RAYMARCHING TOPOLOGY
 ====================================================================================================
-  INGRESS: Uncompressed 1080p60 12-Bit RGB Stream via 4 kV Samtec FireFly Optical Moat (12.4416 MB)
-                                                |
-                                                ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 1 & 2: DIRECT-SILICON OS BYPASS & 5-STAGE CRITICAL PATH (Sections 2 & 3)               |
-  | * Dual 64KB-Aligned Pinned Rings: 0x8000_0000 & 0x80BE_0000 (Stride 0x00BE_0000, N_OS = 0)   |
-  | * OS Window Manager Bypass (DWM / X11 / Wayland): Saves 33.34 to 50.00 ms -> t_jitter = 0 ms |
-  | * Stage 1 (Pinned DMA)   : 12.4416 MB / 15.0 GB/s QoS Slice              =  0.83 ms          |
-  | * Stage 2 (Int8 NPU SSM) : 4.20 TOPs / 58.33 TOPs/s Tensor Core          =  7.20 ms          |
-  | * Stage 3 (64-Step SLAM) : 1.991 GFLOPs / 480.0 GFLOPs/s Shader Core     =  4.15 ms          |
-  | * Stage 4 (CUDA Blend)   : 39.3984 MB / 102.4 GB/s LPDDR5 + 0.035 ms     =  0.42 ms          |
-  | * Stage 5 (MMIO Scanout) : Atomic V-Sync Flip @ 0x4000_3004 (148.5 MHz)  =  0.00 ms          |
-  | * Total Nominal Latency  : t_total = 12.60 ms <= 16.67 ms (+4.07 ms / 24.41% V-Sync Margin)  |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                       |
-                         ▼ [Thermodynamic Junction Derating]                     ▼ [Optical Safety]
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | PROOF 4: 100 C JUNCTION WCET (Section 5)    |   | PROOF 3: CLASS C PHOTON FLOOR (Section 4)  |
-  | * CMOS Alpha-Power Mobility: (T_j/T_0)^-1.5 |   | * MMIO 0x4000_3008 = 0x3F26_6666 (<= 0.65) |
-  | * 15% Clock Derate + 5% LPDDR5 Refresh      |   | * IEEE 754 NaN/Inf Scrub -> alpha = 0.00f  |
-  | * t_WCET = 0.87 + 8.28 + 4.77 + 0.44        |   | * Photon Floor: T_photon >= 35.0% (70 nit) |
-  |          = 14.36 ms <= 16.67 ms (+2.31 ms)  |   | * Retinal Illuminance: 879.646 >= 879.6 Td |
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
+        INCOMING CONSECUTIVE 2D ULTRASOUND / VIDEO SLICE PAIR: [I(x, y, t), I(x, y, t + dt)]
+                                                  |
+                       +--------------------------+--------------------------+
+                       |                                                     |
+                       ▼ [PROOF 1A: 2D In-Plane Manifold]                    ▼ [PROOF 1B: Out-of-Plane]
+  ┌─────────────────────────────────────────────┐   ┌──────────────────────────────────────────────┐
+  | WEIGHTED AFFINE LUCAS-KANADE OPTICAL FLOW   |   | VAN CITTERT-ZERNIKE SPECKLE DECORRELATION    |
+  | * Brightness Constancy: nabla I . u + I_t=0 |   | * Gaussian Beam Waist: sigma_z = 1.20 mm     |
+  | * Saliency Gate: lambda_min(G) >= eps > 0   |   | * Decay Law: rho = exp(-dz^2/2s^2)*cos(th)   |
+  | * Solves In-Plane: Delta_x, Delta_y, d_phi  |   | * Double-Ended Clamp [1e-4, 0.9999] -> dz,th |
+  └─────────────────────────────────────────────┘   └──────────────────────────────────────────────┘
+                       |                                                     |
+                       +--------------------------+--------------------------+
+                                                  |
+                                                  ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROOF 2: LIE ALGEBRA TWIST INTEGRATION & LATERAL-AXIS PITCH KINEMATICS R_x(theta) IN SE(3)     |
+  | * Twist Vector: \xi(t) = [Delta_x, Delta_y, Delta_z, theta, psi, phi]^T -> T_edge =exp(hat{xi})|
+  | * Ultrasound Pitch around Lateral x-Axis: [X, Y, Z, 1]^T = T_edge(t) * [x, y, 0, 1]^T          |
+  | * Verified Benchmark: [100, 200, 0] @ theta=45 deg -> [X=110.00, Y=146.42, Z=139.42] mm        |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  |
+                                                  ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROOF 3, 4 & 5: 30-BIT MORTON 512^3 FP16 VOXEL SPLATTER & ADJOINT BEER-LAMBERT RAYMARCHER      |
+  | * Footprint: 512^3 x 2B = 256.0 MiB (268.44 MB = 1.64% RAM) | 60 fps Bus: 16.11 GB/s (7.86%)   |
+  | * 30-Bit Morton Z-Curve ([17,34,68] -> 0x00111111): 4x4x4 Sub-Cube in 128B Line (16.0x Gain)   |
+  | * Lock-Free L2 Atomic Splatting: 32-Way Warp Collision <= 80.0 ns (t_sync <= 0.08 ms/frame)    |
+  | * 64-Step Riemann March (1.991 GFLOPs, 4.15 ms) + Adjoint dC/dV_i (Err: 6.20e-10 vs. FD)       |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+```
+                         [ Piezoelectric Linear Array Aperture ]
+                        ┌─────────────────────────────────────┐ ---► Lateral Axis (x)
+                        |  o   o   o   o   o   o   o   o   o  |
+                        └─────────────────────────────────────┘
+                          |                 |                 \
+                          |                 | (y*cos(theta))   \  Tilted Slice Plane
+                          ▼                 ▼                   \ (Out-of-Plane Pitch theta
+                    Axial Depth (y)    Global Y-Axis             ▼ around Lateral x-Axis)
+                                                               Global Elevational Z = y*sin(theta)
 ```
 ```
 FRAME N+1 INGRESS (DMA Stream 1)                    FRAME N COMPUTE & SCANOUT (Stream 2 & Display)
