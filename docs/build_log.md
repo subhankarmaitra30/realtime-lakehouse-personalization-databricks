@@ -26,7 +26,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ====================================================================================================
   INGRESS: Reconciled PGTQ Trajectory (X in S^1023, Action A in {0,1}, Outcome Y in [-2.0, 2.0])
                                                 |
-                                                v
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
   | PROOF 1: DOUBLY ROBUST AIPW UNBIASEDNESS & NEYMAN-ORTHOGONAL 2-FOLD DML (Section 2)          |
   | * Estimator: Y_hat_a^{AIPW} = mu_a(X) + [I(A=a) / e_tilde_a(X)] * (Y - mu_a(X))              |
@@ -35,7 +35,7 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * Gateaux Neyman Orthogonality: d/dr E[psi(W; theta_0, eta* + r(eta - eta*))]|_{r=0} === 0   |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
-                                                v
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
   | PROOF 2: HARDWARE BINARY16 PROPENSITY CLAMP & <= 404.0 FP16 GRADIENT CEILING (Section 3)     |
   | * Hardware Comparator Registers: REG_CLAMP_MIN = 0x211F (0.0100), REG_CLAMP_MAX = 0x3BEC     |
@@ -44,15 +44,15 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   | * Worst-Case Backprop Gradient Norm: ||grad_theta L_AIPW^{clamped}||_2 <= 404.0 << 65,504.0  |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
-                                                v
+                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
   | PROOF 3: IN-ENCLAVE RENYI DP & CUFF-YU PER-RECORD MUTUAL INFORMATION BOUND (Section 4)       |
   | * Newton-Raphson L2 Clip: ||g_bar_t||_2 <= C_clip = 1.0 | Noise: sigma_DP = 0.1              |
   | * 1,000-Step Subsampled RDP (q = 32/10,000 = 0.0032): alpha* = 11.603 => eps_DP = 6.87       |
   | * Cuff & Yu (2016) Leakage Ceiling: I(X_i; g_tilde_t) = 0.000099 bits <= 1.00e-04 bits       |
-  └───────────────────────────────────────────────────────────────────────────────────────────────┘
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
                          |                                                       |
-                         v [Optimization Dynamics]                               v [Mesh Transit]
+                         ▼ [Optimization Dynamics]                               ▼ [Mesh Transit]
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
   | PROOF 4: NON-CONVEX O(1/sqrt(T)) CONVERGENCE|   | PROOF 5: PAIRWISE ZERO-SUM ECDH SECAGG     |
   | * Step Size: eta = 1 / (L * sqrt(T))        |   | * Curve25519 ECDH: K_{u,v} = K_{v,u}       |
