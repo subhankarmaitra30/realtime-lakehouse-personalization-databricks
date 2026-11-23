@@ -21,54 +21,48 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-        MODULE 6 CAUSAL DO-CALCULUS & NON-EUCLIDEAN C^2 BEZIER ACTION SPACE TOPOLOGY
+        SOVEREIGN BIO-OS FOUR-DOMAIN CLOCK HIERARCHY & END-TO-END TIMING CRITICAL PATH
 ====================================================================================================
-  INGRESS: Invariant Biological State v_m in S^{1023} (||v_m||_2 = 1.0) + Pre-Treatment Shock C
-                                                |
-                                                ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 1: PEARL'S DO-CALCULUS GRAPH SURGERY & SIMPSON'S PARADOX REVERSAL (Section 2)          |
-  | * Observational Confounding (DAG G): Severe Shock (C=1) -> Clamp (A=1) & High Mortality      |
-  |   Biased Expectation: E[U(Y) | A=1] = 0.6940 < E[U(Y) | A=0] = 0.7500 (Falsely Withholds!)   |
-  | * Interventional Graph Surgery (DAG G_{\overline{A}}): Deletes C -> A edge via do(A = a)     |
-  | * Rules 2 & 3 Back-Door Formula: Q^{do}(v_m, a) = Sum_{c in C} E[U(Y)|a,c,v_m] * P(c | v_m)  |
-  |   Unconfounded Value: Q^{do}(v_m, A=1) = 0.7640 >> Q^{do}(v_m, A=0) = 0.3300 (Commands a*=1) |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                                                ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 2: 4-PART CLINICAL UTILITY U(Y) & CAUSAL POLICY GRADIENT THEOREM (Section 3)           |
-  | * Convex Clinical Surface: U(Y) = 0.40*Phi_MAP + 0.35*Phi_bleed + 0.15*Phi_SvO2 - 0.10*Phi_tr|
-  | * Leibniz / Log-Derivative Policy Gradient on S^{1023}:                                      |
-  |   grad_theta J_causal(theta) = E_{v_m, a ~ pi_theta}[ grad_theta ln pi_theta(a|v_m) * Q^{do}]|
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                                                ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 3: NON-EUCLIDEAN ACTION TRANSFORMER & ZOH-LATCHED C^2 BEZIER MANIFOLD (Section 4)      |
-  | * Basis Projection: Q = v_m W_Q (1x256) | K = vec(K_safe) W_K (32x256, W_K in R^{24x256})    |
-  | * Value Projection: V_raw = vec(K_safe) W_V (W_V in R^{24x24}) -> Reshaped to (32, 4, 6)     |
-  | * Radial Jerk-Ball Gate: V_i = P_{jerk <= 2.0}(V_raw,i) => ||V_i'''(t)||_2 <= 2.0 m/s^3      |
-  | * ZOH Latched Simplex (T_spline = 100 ms): d(alpha_i)/dt === 0 => No Product-Rule Spike!     |
-  | * Convex Hull Bound: ||tau'''(t)||_2 <= Sum_i alpha_i ||V_i'''||_2 <= 2.0 m/s^3 (0.9016 Ver.)|
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+  [DOMAIN 1: OPTICAL SERDES RX]      [DOMAIN 2: FPGA DFE & AXI DMA]     [DOMAIN 3: NPU / GPU SHADER]
+  f_clk1 = 350.00 MHz (T1 = 2.857ns) f_clk2 = 250.00 MHz (T2 = 4.000ns) f_clk3 = 1.400 GHz (0.714ns)
+  ┌────────────────────────────────┐ ┌────────────────────────────────┐ ┌──────────────────────────┐
+  | * 16-Cyc CDR Align  :  45.71ns | | * 2FF Gray CDC    :   20.86 ns | | * Stage 1 DMA :  0.83 ms |
+  | * 4-Cyc Taylor DDS  :  11.43ns | | * Total DDC Delay :  294.60 ns | | * Stage 2 NPU :  7.20 ms |
+  | * 5-Stg CIC (R1=16) :  15.00ns | | * 64-Cyc Sieve    :  256.00 ns | | * Stage 3 SLAM:  4.15 ms |
+  | * 64-Tap FIR (R2=2) : 201.60ns | | * 4MB URAM Stall  : <=52.43 us | | * Stage 4 HUD :  0.42 ms |
+  └────────────────────────────────┘ └────────────────────────────────┘ └──────────────────────────┘
+                  |                                  |                                |
+                  +--- [CDC 1->2: Gray 2FF BRAM] ----+--- [CDC 2->3: PCIe6 / CXL] ----+
+                       (Max Skew <= 0.800 ns)             (Pinned Ring 0/1 Zero-Copy) |
+                                                                                      ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | [DOMAIN 4: DISPLAY PIXEL SERIALIZER & V-SYNC SCANOUT CONTROLLER (MMIO Base: 0x4000_3000)]      |
+  | * Pixel Clock: f_pix = 148.50 MHz (T_pix = 6.734 ns | CEA-861 2200 x 1125 @ 60.00 Hz = 16.67ms)|
+  | * Vertical Blanking Window (45 Lines x 2200 Pixels): t_vblank = 666.67 us (0.667 ms)           |
+  | * Atomic Ping-Pong Swap (0x4000_3004): Ring 0 (0x8000_0000) <-> Ring 1 (0x80BE_0000) [0.00 ms] |
+  | * Nominal Critical Path: 12.60 ms <= 16.67 ms (+4.07 ms) | 100 C WCET: 14.36 ms (+2.31 ms)     |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
-A. OBSERVATIONAL CONFOUNDED DAG (G)               B. MANIPULATED INTERVENTIONAL DAG (G_{\overline{A}})
-  ┌─────────────────────────────────────────┐           ┌─────────────────────────────────────────┐
-  | Pre-Treatment Shock Confounders (C)     |           | Pre-Treatment Shock Confounders (C)     |
-  └─────────────────────────────────────────┘           └─────────────────────────────────────────┘
-        |                 |                 |                 |                 |       (Severed) x 
-        ▼                 |                 ▼                 ▼                 |                 
-  +───────────+           |           +───────────+     +───────────+           |           +───────────+
-  | State v_m |-----------+----------►| Action A  |     | State v_m |           |           | do(A = a) |
-  +───────────+           |           +───────────+     +───────────+           |           +───────────+
-        |                 |                 |                 |                 |                 |
-        +-----------------+-----------------+                 +-----------------+-----------------+
-                          |                                                     |
-                          ▼                                                     ▼
-              [ Confounded Outcome Y ]                              [ Unconfounded Outcome Y ]
-       P(Y | A=a, v_m) != P(Y | do(A=a), v_m)               P(Y | do(A=a), v_m) = Sum_c P(Y|a,c,v_m)P(c|v_m)
+====================================================================================================
+        PIPELINED DUAL-RING 60 FPS TIMELINE (NOMINAL 12.60 MS vs. 100 C WCET 14.36 MS)
+====================================================================================================
+Time within Frame N Window : 0.00 ms    0.83 ms                8.03 ms         12.18 ms  12.60 ms     16.67 ms
+                             |            |                      |               |         |            |
+[CUDA STREAM 1: DMA INGRESS] |--0.83 ms-->| (Writes Frame N+1 into PINNED_RING_1 @ 0x80BE_0000)         |
+                             |  (12.44MB) | Event_DMA_Complete                                          |
+                             |            |                                                             |
+[CUDA STREAM 2: NPU & GPU]   |            |--------7.20 ms------►|----4.15 ms---►|-0.42 ms>|            |
+(Processes Frame N in Ring 0)|            | Int8 Vision-SSM NPU  | 64-Step SLAM  | Alpha   |            |
+(@ 0x8000_0000)              |            | (4.20 TOPs @ 58.3T)  | (1.991 GFLOPs)| <=0.65  |            |
+                             |            |                      |               |         |--4.07 ms--►|
+                             |            |                      |               |         |  Spare     |
+[100 C JUNCTION WCET PATH]   |--0.87 ms--►|--------8.28 ms-------|----4.77 ms----|-0.44 ms>|-►| 14.36ms |
+                             |  (x 1.05)  |       (x 1.15)       |   (x 1.15)    | (x 1.05)   |--2.31ms>|
+                                                                                                        ^  
+                                                           [ V-Blank Window (666.7 us): Atomic MMIO Flip ]  
+                                                           [ *mut 0x4000_3004 = Ring_0 <-> Ring_1 (0 ms) ]  
+====================================================================================================
 ```
 ```
 ====================================================================================================
