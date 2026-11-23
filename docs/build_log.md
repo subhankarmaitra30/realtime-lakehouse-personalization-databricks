@@ -22,49 +22,79 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-            MODULE 5 SENSORLESS 6-DOF SE(3) SLAM & DIFFERENTIABLE RAYMARCHING TOPOLOGY
+            NEXUS-CAUSAL SIX-STAGE IN-ENCLAVE DML, DP & 64B TOP-K WIRE PIPELINE
 ====================================================================================================
-        INCOMING CONSECUTIVE 2D ULTRASOUND / VIDEO SLICE PAIR: [I(x, y, t), I(x, y, t + dt)]
-                                                  |
-                       +--------------------------+--------------------------+
-                       |                                                     |
-                       ▼ [PROOF 1A: 2D In-Plane Manifold]                    ▼ [PROOF 1B: Out-of-Plane]
-  ┌─────────────────────────────────────────────┐   ┌──────────────────────────────────────────────┐
-  | WEIGHTED AFFINE LUCAS-KANADE OPTICAL FLOW   |   | VAN CITTERT-ZERNIKE SPECKLE DECORRELATION    |
-  | * Brightness Constancy: nabla I . u + I_t=0 |   | * Gaussian Beam Waist: sigma_z = 1.20 mm     |
-  | * Saliency Gate: lambda_min(G) >= eps > 0   |   | * Decay Law: rho = exp(-dz^2/2s^2)*cos(th)   |
-  | * Solves In-Plane: Delta_x, Delta_y, d_phi  |   | * Double-Ended Clamp [1e-4, 0.9999] -> dz,th |
-  └─────────────────────────────────────────────┘   └──────────────────────────────────────────────┘
-                       |                                                     |
-                       +--------------------------+--------------------------+
-                                                  |
-                                                  ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 2: LIE ALGEBRA TWIST INTEGRATION & LATERAL-AXIS PITCH KINEMATICS R_x(theta) IN SE(3)     |
-  | * Twist Vector: \xi(t) = [Delta_x, Delta_y, Delta_z, theta, psi, phi]^T -> T_edge =exp(hat{xi})|
-  | * Ultrasound Pitch around Lateral x-Axis: [X, Y, Z, 1]^T = T_edge(t) * [x, y, 0, 1]^T          |
-  | * Verified Benchmark: [100, 200, 0] @ theta=45 deg -> [X=110.00, Y=146.42, Z=139.42] mm        |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                  |
-                                                  ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 3, 4 & 5: 30-BIT MORTON 512^3 FP16 VOXEL SPLATTER & ADJOINT BEER-LAMBERT RAYMARCHER      |
-  | * Footprint: 512^3 x 2B = 256.0 MiB (268.44 MB = 1.64% RAM) | 60 fps Bus: 16.11 GB/s (7.86%)   |
-  | * 30-Bit Morton Z-Curve ([17,34,68] -> 0x00111111): 4x4x4 Sub-Cube in 128B Line (16.0x Gain)   |
-  | * Lock-Free L2 Atomic Splatting: 32-Way Warp Collision <= 80.0 ns (t_sync <= 0.08 ms/frame)    |
-  | * 64-Step Riemann March (1.991 GFLOPs, 4.15 ms) + Adjoint dC/dV_i (Err: 6.20e-10 vs. FD)       |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+  UNTRUSTED HOST DOMAIN (0x0000_0000..0x7FFF_FFFF)
+  * Module 2 Pinned Vector Stream : v_bio in S^{1023} (||v_bio||_2 = 1.0, 4 KB / patient)
+  * Module 3 RocksDB PGTQ Store   : Reconciled Day-45 Outcome y_soft in [-2.0, 2.0] (State 0x03)
+                                                |
+                   [ CXL 3.0 / PCIe Gen 6 Enclave Ingress FIFO (AES-256-XTS Bus Cipher) ]
+                                                ▼ 
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROTECTED HARDWARE TEE ENCLAVE PAGE CACHE (EPC: 0x8000_0000..0xFFFF_FFFF)                    |
+  |                                                                                              |
+  |  [STAGE 1: 2-FOLD NEYMAN-ORTHOGONAL DOUBLE MACHINE LEARNING (DML) CROSS-FITTING]             |
+  |  * Splits batch B=32 into disjoint folds B_1 [0..15] & B_2 [16..31]                          |
+  |  * Fits Propensity Net e_hat(X; phi_e) & Outcome Nets mu_1, mu_0(X; phi_mu) on Fold B_1      |
+  |  * Applies Hardware Binary16 Clamp on Fold B_2: REG_CLAMP_MIN=0x211F, REG_CLAMP_MAX=0x3BEC   |
+  |  * Evaluates graph-detached pseudo-outcomes Y_hat^{AIPW} on B_2 under torch.no_grad()        |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 2: SPECTRAL-NORMALIZED COUNTERFACTUAL POLICY STEP (engine/python/causal_aipw.py)]    |
+  |  * Forward pass f_theta(v_bio) with Lipschitz-1 Spectral Norm + 1/sqrt(D) LayerNorm          |
+  |  * Backward pass g_t = nabla_theta L_AIPW^{clamped}(theta) bounded to ||g_t||_2 <= 404.0     |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 3: IN-ENCLAVE LOCAL (eps_DP=6.87, delta_DP=1e-5) SANITIZER (secagg_enclave.rs)]      |
+  |  * 5-Iter Newton-Raphson L2 Clip: g_bar_t = g_t / max(1.0, ||g_t||_2 / 1.0) (||g_bar|| <= 1) |
+  |  * Hardware TRNG Gaussian Perturbation: g_tilde_t = g_bar_t + N(0, (0.1 * 1.0)^2 I_d)        |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 4: 256B GOLDILOCKS PLONKY2 LINEAGE PROOF & ECDH PAIRWISE MASKING]                    |
+  |  * Binds 256B pi_lineage (PCR_0||7||14 + Merkle Root + dp_clip <= 1000)                      |
+  |  * Adds anti-symmetric Curve25519 mask: +s_{u,v} (if u < v) or -s_{v,u} (if u > v)           |
+  |                                             |                                                |
+  |                                             ▼                                                |
+  |  [STAGE 5: BITMAP-GUARDED 64-BYTE TOP-K EF-SGD PACKING (pack_topk_slice_with_ef)]            |
+  |  * Accumulates r_t = e_{t-1} + y_u; selects K=16 unique indices via 1024-bit bitmap          |
+  |  * Packs 16 x FP16 values (32B) + 16 x uint16 indices (32B) into 64B SparseGradientSlice     |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                   [ Enclave Egress FIFO: Embeds 64B Slice at 0x01C0..0x01FF of 512B "SOVB" ]
+                                                ▼ 
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | [STAGE 6: MIL-STD-188-220 TACTICAL RADIO BURST & ASYNC CVRDT MESH AGGREGATION (< 2.0 Kbps)]  |
+  | * Transmits 512B frame in 2.048 s at 250 B/s (3.413% < 3.5% RF Duty Cycle -> LPI/LPD Safe)   |
+  | * Pairwise masks cancel globally (Sum S_{u,v} = 0.0); converges at O(1/sqrt(T))              |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
-                         [ Piezoelectric Linear Array Aperture ]
-                        ┌─────────────────────────────────────┐ ---► Lateral Axis (x)
-                        |  o   o   o   o   o   o   o   o   o  |
-                        └─────────────────────────────────────┘
-                          |                 |                 \
-                          |                 | (y*cos(theta))   \  Tilted Slice Plane
-                          ▼                 ▼                   \ (Out-of-Plane Pitch theta
-                    Axial Depth (y)    Global Y-Axis             ▼ around Lateral x-Axis)
-                                                               Global Elevational Z = y*sin(theta)
+INCOMING BATCH B (32 Trajectories)
+    |
+    ===+===► FOLD B_1 (Indices 0..15): NUISANCE PARAMETER UPDATE
+         |     * Updates Propensity Net e_hat(X_1; phi_e) via BCE(A_1)
+         |     * Updates Outcome Nets mu_1, mu_0(X_1; phi_mu) via Masked MSE
+         |       (Guarded by treated_mask.any() & control_mask.any())
+         |
+         +===► FOLD B_2 (Indices 16..31): GRAPH-DETACHED POLICY STEP
+                * Under torch.no_grad(): Evaluates e_2, mu_{1,2}, mu_{0,2}
+                * Applies .detach() to sever autograd edges to (phi_e, phi_mu)
+                * Clamps e_tilde_2 = clamp(e_2, 0.01, 0.99)
+                * Minimizes L_AIPW(theta) = E_{B_2}[(f_theta(X_2) - Y_hat_2)^2]
+```
+```
+====================================================================================================
+      64-BYTE SPARSE GRADIENT SLICE LAYOUT (EMBEDDED AT OFFSET 0x01C0..0x01FF OF 512B "SOVB")
+====================================================================================================
+  Envelope Offset 0x01C0..0x01DF (32 Bytes): values: [u16; 16]
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+-----+--------+
+  | FP16_0 | FP16_1 | FP16_2 | FP16_3 | FP16_4 | FP16_5 | FP16_6 | FP16_7 | FP16_8 | ... |FP16_15 |
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+-----+--------+
+  Envelope Offset 0x01E0..0x01FF (32 Bytes): indices: [u16; 16]
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+-----+--------+
+  | IDX_0  | IDX_1  | IDX_2  | IDX_3  | IDX_4  | IDX_5  | IDX_6  | IDX_7  | IDX_8  | ... | IDX_15 |
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+-----+--------+
+====================================================================================================
 ```
 ```
 FRAME N+1 INGRESS (DMA Stream 1)                    FRAME N COMPUTE & SCANOUT (Stream 2 & Display)
