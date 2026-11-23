@@ -21,48 +21,42 @@ It ensures reproducibility, proper project organization, and seamless synchroniz
 Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 ```
 ====================================================================================================
-        SOVEREIGN BIO-OS FOUR-DOMAIN CLOCK HIERARCHY & END-TO-END TIMING CRITICAL PATH
+        MODULE 5 REAL-TIME LATENCY, THERMAL WCET & RETINAL PHOTON FLOOR PROOF TOPOLOGY
 ====================================================================================================
-  [DOMAIN 1: OPTICAL SERDES RX]      [DOMAIN 2: FPGA DFE & AXI DMA]     [DOMAIN 3: NPU / GPU SHADER]
-  f_clk1 = 350.00 MHz (T1 = 2.857ns) f_clk2 = 250.00 MHz (T2 = 4.000ns) f_clk3 = 1.400 GHz (0.714ns)
-  ┌────────────────────────────────┐ ┌────────────────────────────────┐ ┌──────────────────────────┐
-  | * 16-Cyc CDR Align  :  45.71ns | | * 2FF Gray CDC    :   20.86 ns | | * Stage 1 DMA :  0.83 ms |
-  | * 4-Cyc Taylor DDS  :  11.43ns | | * Total DDC Delay :  294.60 ns | | * Stage 2 NPU :  7.20 ms |
-  | * 5-Stg CIC (R1=16) :  15.00ns | | * 64-Cyc Sieve    :  256.00 ns | | * Stage 3 SLAM:  4.15 ms |
-  | * 64-Tap FIR (R2=2) : 201.60ns | | * 4MB URAM Stall  : <=52.43 us | | * Stage 4 HUD :  0.42 ms |
-  └────────────────────────────────┘ └────────────────────────────────┘ └──────────────────────────┘
-                  |                                  |                                |
-                  +--- [CDC 1->2: Gray 2FF BRAM] ----+--- [CDC 2->3: PCIe6 / CXL] ----+
-                       (Max Skew <= 0.800 ns)             (Pinned Ring 0/1 Zero-Copy) |
-                                                                                      ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | [DOMAIN 4: DISPLAY PIXEL SERIALIZER & V-SYNC SCANOUT CONTROLLER (MMIO Base: 0x4000_3000)]      |
-  | * Pixel Clock: f_pix = 148.50 MHz (T_pix = 6.734 ns | CEA-861 2200 x 1125 @ 60.00 Hz = 16.67ms)|
-  | * Vertical Blanking Window (45 Lines x 2200 Pixels): t_vblank = 666.67 us (0.667 ms)           |
-  | * Atomic Ping-Pong Swap (0x4000_3004): Ring 0 (0x8000_0000) <-> Ring 1 (0x80BE_0000) [0.00 ms] |
-  | * Nominal Critical Path: 12.60 ms <= 16.67 ms (+4.07 ms) | 100 C WCET: 14.36 ms (+2.31 ms)     |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+  INGRESS: Uncompressed 1080p60 12-Bit RGB Stream via 4 kV Samtec FireFly Optical Moat (12.4416 MB)
+                                                |
+                                                ▼
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | PROOF 1 & 2: DIRECT-SILICON OS BYPASS & 5-STAGE CRITICAL PATH (Sections 2 & 3)               |
+  | * Dual 64KB-Aligned Pinned Rings: 0x8000_0000 & 0x80BE_0000 (Stride 0x00BE_0000, N_OS = 0)   |
+  | * OS Window Manager Bypass (DWM / X11 / Wayland): Saves 33.34 to 50.00 ms -> t_jitter = 0 ms |
+  | * Stage 1 (Pinned DMA)   : 12.4416 MB / 15.0 GB/s QoS Slice              =  0.83 ms          |
+  | * Stage 2 (Int8 NPU SSM) : 4.20 TOPs / 58.33 TOPs/s Tensor Core          =  7.20 ms          |
+  | * Stage 3 (64-Step SLAM) : 1.991 GFLOPs / 480.0 GFLOPs/s Shader Core     =  4.15 ms          |
+  | * Stage 4 (CUDA Blend)   : 39.3984 MB / 102.4 GB/s LPDDR5 + 0.035 ms     =  0.42 ms          |
+  | * Stage 5 (MMIO Scanout) : Atomic V-Sync Flip @ 0x4000_3004 (148.5 MHz)  =  0.00 ms          |
+  | * Total Nominal Latency  : t_total = 12.60 ms <= 16.67 ms (+4.07 ms / 24.41% V-Sync Margin)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       |
+                         ▼ [Thermodynamic Junction Derating]                     ▼ [Optical Safety]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | PROOF 4: 100 C JUNCTION WCET (Section 5)    |   | PROOF 3: CLASS C PHOTON FLOOR (Section 4)  |
+  | * CMOS Alpha-Power Mobility: (T_j/T_0)^-1.5 |   | * MMIO 0x4000_3008 = 0x3F26_6666 (<= 0.65) |
+  | * 15% Clock Derate + 5% LPDDR5 Refresh      |   | * IEEE 754 NaN/Inf Scrub -> alpha = 0.00f  |
+  | * t_WCET = 0.87 + 8.28 + 4.77 + 0.44        |   | * Photon Floor: T_photon >= 35.0% (70 nit) |
+  |          = 14.36 ms <= 16.67 ms (+2.31 ms)  |   | * Retinal Illuminance: 879.646 >= 879.6 Td |
+  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
 ```
 ```
-====================================================================================================
-        PIPELINED DUAL-RING 60 FPS TIMELINE (NOMINAL 12.60 MS vs. 100 C WCET 14.36 MS)
-====================================================================================================
-Time within Frame N Window : 0.00 ms    0.83 ms                8.03 ms         12.18 ms  12.60 ms     16.67 ms
-                             |            |                      |               |         |            |
-[CUDA STREAM 1: DMA INGRESS] |--0.83 ms-->| (Writes Frame N+1 into PINNED_RING_1 @ 0x80BE_0000)         |
-                             |  (12.44MB) | Event_DMA_Complete                                          |
-                             |            |                                                             |
-[CUDA STREAM 2: NPU & GPU]   |            |--------7.20 ms------►|----4.15 ms---►|-0.42 ms>|            |
-(Processes Frame N in Ring 0)|            | Int8 Vision-SSM NPU  | 64-Step SLAM  | Alpha   |            |
-(@ 0x8000_0000)              |            | (4.20 TOPs @ 58.3T)  | (1.991 GFLOPs)| <=0.65  |            |
-                             |            |                      |               |         |--4.07 ms--►|
-                             |            |                      |               |         |  Spare     |
-[100 C JUNCTION WCET PATH]   |--0.87 ms--►|--------8.28 ms-------|----4.77 ms----|-0.44 ms>|-►| 14.36ms |
-                             |  (x 1.05)  |       (x 1.15)       |   (x 1.15)    | (x 1.05)   |--2.31ms>|
-                                                                                                        🡅  
-                                                           [ V-Blank Window (666.7 us): Atomic MMIO Flip ]  
-                                                           [ *mut 0x4000_3004 = Ring_0 <-> Ring_1 (0 ms) ]  
-====================================================================================================
+FRAME N+1 INGRESS (DMA Stream 1)                    FRAME N COMPUTE & SCANOUT (Stream 2 & Display)
+  ┌───────────────────────────────────────────┐       ┌───────────────────────────────────────────┐
+  | PINNED_RING_1 (0x80BE_0000..0x817B_D7FF)  |       | PINNED_RING_0 (0x8000_0000..0x80BD_D7FF)  |
+  | * Receives Frame N+1 via PCIe Gen 6 DMA   | ◄===► | * GPU composites HUD in-place (12.60 ms)  |
+  | * 64KB-Aligned Stride: 0x00BE_0000        |  XOR  | * Display Serializer scans out @ 148.5MHz |
+  └───────────────────────────────────────────┘  Flip └───────────────────────────────────────────┘
+                                                  🡅
+                        [ Atomic MMIO Write: *mut 0x4000_3004 = active_ring ^ 1 ]
+                        [ Fenced by ARM64 "dmb sy" + "dsb sy" on V-Blank Edge   ]
 ```
 ```
 ====================================================================================================
