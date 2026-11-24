@@ -22,40 +22,36 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-              MODULE 3 AUTONOMOUS 3-STATE HARDWARE TEE & PCR SEALING TOPOLOGY
+        MODULE 3 ZERO-TRUST CRYPTOGRAPHIC & RIEMANNIAN GEODESIC PROOF ARCHITECTURE
 ====================================================================================================
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | STATE 0: STATUS_ONLINE_QUORUM (Active Mesh Connectivity: Reachable Quorum Enclaves >= k)     |
-  | * Step 1: Elligator2 maps x -> P = H_1(x) in G*; immediately wipes x via memset(0) <= 16.67ms|
-  | * Step 2: Draws 512-bit wide-reduced r in Z_q*, blinds Y = r * P, queries k quorum nodes     |
-  | * Step 3: Verifies k Chaum-Pedersen NIZK-DLEQ proofs pi_DLEQ^(i); interpolates S' = r*s*P    |
-  | * Step 4: Unblinds N = r^{-1} * S' = s * P; derives T_ID = H_2(DST, P, N) in {0, 1}^{256}    |
-  | * Commits record to RocksDB PGTQ & 512B CvRDT ledger with status GlobalReconciled (0x02)     |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                       🡅
-    [ Heartbeat Timeout > 2000 ms / Quorum < k ]            [ All Sealed Blobs Reconciled & Merged ]
-                         ▼                                                       |
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | STATE 1: STATUS_OFFLINE_PENDING (Tactical Air-Gap / Electronic Warfare Blackout Mode)        |
-  | * Step 1: Reads discrete TPM 2.0 SPI registers: PCR_state = SHA256(PCR_0 || PCR_7 || PCR_14) |
-  | * Step 2: Extracts Seed_Eph = HKDF-Extract(Salt = PCR_state, IKM = DeviceUniqueHWSecret)     |
-  | * Step 3: Emits provisional local token: T_PROV = HMAC-SHA256(Seed_Eph, ScanSeq || NodeID)   |
-  | * Step 4: Computes P = H_1(x), blinds Y_offline = r_offline * P, seals (T_PROV, Y_offline,   |
-  |           r_offline) into SealedOfflineCommitment under PCR_state, and wipes plaintext x     |
-  |           via memset(0x00) + dc civac within <= 16.67 ms (Zero Plaintext PHI Retention!)     |
-  | * Logs v_bio under T_PROV with status OfflinePending (0x01); increments V_local[NodeID] += 1 |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                   [ Tactical Radio Link Restored (< 2.0 Kbps MIL-STD-188-220) ]
-                                                ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | STATE 2: STATUS_CVRDT_RECONCILIATION (Asynchronous Delayed TOPRF & Semilattice LUB Merge)    |
-  | * Step 1: Verifies live TPM 2.0 PCR_state == sealing tag; unseals (Y_offline, r_offline)     |
-  | * Step 2: Dispatches pre-blinded Y_offline to k reachable quorum nodes; verifies pi_DLEQ^(i) |
-  | * Step 3: Recovers P = r_offline^{-1} * Y_offline and N = r_offline^{-1} * S' (Zero x needed)|
-  | * Step 4: Derives canonical T_ID = H_2(DST, P, N); executes atomic key swap T_PROV |-> T_ID  |
-  | * Step 5: Broadcasts 512B CvRdtSyncEnvelope ("SOVB") & executes LUB merge S_loc |_| S_rem    |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+  INGRESS CLEARTEXT IDENTIFIER (x in {0,1}*)              DECENTRALIZED QUORUM ENCLAVES (i in 1..n)
+  (Volatility Ceiling: <= 16.67 ms in Enclave SRAM)       (Shamir Shares s_i = f(i) mod q, f(0) = s)
+  ┌───────────────────────────────────────────────┐       ┌────────────────────────────────────────┐
+  | 1. Elligator2 Hash-to-Group: P = H_1(x) in G  |       | 3. Partial Evaluation: S_i = s_i * Y   |
+  | 2. 512-Bit Wide Scalar r in Z_q* -> Y = r * P | ====► | 4. Chaum-Pedersen DLEQ: pi_DLEQ^(i)    |
+  | * Immediately Zeroizes x via memset(0x00)     |       |    Proves log_G(PK_i) == log_Y(S_i)    |
+  └───────────────────────────────────────────────┘       └────────────────────────────────────────┘
+                         ^                                                     |
+                         |    [ Unlinkable Query: I(X; Y) === 0.000000 bits ]  |
+                         +--------------------------+--------------------------+
+                                                    |
+                                                    ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | CLIENT ENCLAVE UNBLINDING, LAGRANGE INTERPOLATION & ZERO-PLAINTEXT TOKEN DERIVATION (toprf.rs) |
+  | * Verifies k proofs pi_DLEQ^(i): z_i*G == R_{i,1} + c_i*PK_i  AND  z_i*Y == R_{i,2} + c_i*S_i  |
+  | * Exponent Lagrange Interpolation: S' = Sum_{i in Q} lambda_i * S_i = r * s * H_1(x)           |
+  | * Modular Inverse Unblinding: N = r^{-1} * S' = s * H_1(x)  (Recovers P = r^{-1} * Y)          |
+  | * Global Deterministic Token: T_ID = H_2("SovereignBioOS_H2_Token_Expansion", P, N) in {0,1}256|
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                     |
+                         ▼ [512B CvRdtSyncEnvelope ("SOVB")]                   ▼ [RocksDB PGTQ 48B]
+  ┌───────────────────────────────────────────────┐       ┌────────────────────────────────────────┐
+  | RECURSIVE 256B ZK-SNARK & CVRDT SEMILATTICE   |       | S^1023 RIEMANNIAN GEODESIC CALCULUS    |
+  | * Goldilocks Field: p = 2^64 - 2^32 + 1       |       | * Geodesic Arc: d_g(u,v) = arccos(u.v) |
+  | * Attests TPM PCRs + Merkle Root + DP <= 1.0  |       | * Shock Alert : Delta_t > 0.50 rad/hr  |
+  | * Sorted-Key LUB Merge: Commutative, Assoc,   |       | * Levi-Civita : Gamma_{v1->v2}(w)      |
+  |   Idempotent (Strong Eventual Consistency)    |       |   Preserves ||w||_2 & <Gamma(w),v2>=0  |
+  └───────────────────────────────────────────────┘       └────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
