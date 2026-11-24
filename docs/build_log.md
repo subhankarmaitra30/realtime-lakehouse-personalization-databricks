@@ -22,47 +22,29 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-              NEXUS-VECTOR THREE-TIER STREAMING ARCHITECTURE & MEMORY HIERARCHY
+              EXACT SE(3) LIE GROUP COMMUTATIVITY & SO(3) CASIMIR NORM GATE TOPOLOGY
 ====================================================================================================
-  INGRESS ARENA: MODULE 1 ZERO-COPY PINNED BUFFERS (Volatile Lifetime <= 16.67 ms)
-  * Buffer A (Ping-Pong Ring 0/1) : 0x8000_0000 / 0x80BE_0000 (1920x1080x3 12-bit in 16B = 12.44 MB)
-  * Buffer B (Coherent L2 SRAM)   : 0x8200_0000..0x823F_FFFF  (32-Ch 10 kHz Vitals + FHIR/DICOM)
-  * Buffer C (Versal UltraRAM)    : 64 x URAM288 (4.0 MiB)    (256-Ch 78.125 MSPS Q1.15 I/Q, 80 GB/s)
-                                                |
-                                                ▼ [T = 0.83 ms: Zero-Copy GPU Virtual Pointer Map]
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 1: STEERABLE 3D HARMONIC & DUAL-PATH SPATIAL ENCODER (engine/cuda/se3_steerable_kernel) |
-  | * Constant Memory Cache : c_radial_centers[32] (128 B) + c_radial_weights[96] (384 B)        |
-  | * Register RBF Pre-Eval : 4 Euclidean Stencil Shells r^2 in {0,1,2,3} (6.75x expf Speedup)   |
-  | * 9 Real Harmonics      : l=0 (1 Scalar), l=1 (3 Dipole Vecs), l=2 (5 Quadrupole Tensors)    |
-  | * SO(3) Casimir Gate    : Contracts (f_0, ||v_1||_2, ||T_2||_F) -> Emits S(t) in R^{512}     |
-  | * Execution Latency     : t_Tier1 = 2.14 ms (1.57 GFLOPs/frame, 72x Faster than 3D CNN Aug)  |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                   |                                                         |
-                   ▼ [T = 3.00 ms: Immediate Hardware Trigger]               ▼ [S(t) in R^{512}]
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | VOLATILE ARENA FLASH-SCRUB GATE (hal_rx.rs) |   | TIER 2: CAUSAL SELECTIVE MAMBA ZOH SCAN    |
-  | * Overwrites 12,441,600 B with 0x00         |   | (engine/cuda/mamba_selective_scan.cu)      |
-  | * 194,400 x ARM64 "dc civac" (64B Stride)   |   | * Hurwitz Matrix: A_{d,s} = -exp(A_log) < 0|
-  | * "dsb sy" + Volatile Sentinel Readback     |   | * Cancellation-Guarded expm1f ZOH Step     |
-  | * Completed by T = 3.42 ms (<< 16.67 ms)    |   | * Static SM Register SRAM: 512x16x4B = 32KB|
-  └─────────────────────────────────────────────┘   | * Latency: t_Tier2 = 0.85 ms (0.70 us/step)|
-                                                    └────────────────────────────────────────────┘
-                                                                               |
-                                                                               ▼ [h_T in R^{512}]
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | TIER 3: VARIATIONAL INFORMATION BOTTLENECK & S^1023 PROJECTION HEAD (engine/python/se3_mamba)|
-  | * Diagonal Gaussian Bottleneck: mu_theta(h_T), logvar_theta(h_T) clamped to [-10.0, +10.0]   |
-  | * KL Information Pruning (beta = 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)   |
-  | * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 = 0.42 ms)   |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                                |
-                                                ▼ [Emits v_m in S^{1023} across 6 Modalities]
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | COMBINATORIAL 6-MODAL 15-PAIR INFONCE LATTICE & B=1 TRIAGE ENGINE (multimodal_infonce.py)    |
-  | * Evaluates C(6,2) = 15 Symmetric Pairs (tau = 0.07) with 50% Zero-GEMM Transpose Reuse      |
-  | * Auto-Masks Disconnected / SNR < 3.0 dB Channels; Anchors B=1 Triage via Q=256 FIFO Queue   |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+      Raw Biophysical Wavefield: f(x) in L^2(R^3, R^{C_in}) (From Module 1 Buffers A, B, C)
+                   |                                                       |
+                   | [6-DoF Probe Tilt / Vehicle Jitter g = (R, t)]        | [Steerable Conv3D F_Theta]
+                   ▼                                                       ▼
+      Transformed Input Field:                                Equivariant Irrep Feature Field:
+      [pi_in(g) f](x) = rho_in(R) f(R^{-1}(x - t))            [F_Theta(f)](x) = f_0 (+) v_1 (+) T_2
+                   |                                                       |
+                   | [Steerable Conv3D F_Theta]                            | [Wigner-D Steering rho_out(g)]
+                   ▼                                                       ▼
+      [F_Theta(pi_in(g) f)](x) ==========================================► [rho_out(g) F_Theta(f)](x)
+                   |                  EXACT HAAR MEASURE IDENTITY          |
+                   +---------------------------+---------------------------+
+                                               |
+                                               ▼
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  | SO(3)-INVARIANT QUADRATIC CASIMIR & FROBENIUS IRREP CONTRACTION GATE (se3_steerable_kernel.cu) |
+  | * Type-0 Monopole Scalar (l=0, Dim 1)   : f_0(R^{-1}(x-t))        [Strict Scalar Invariance]   |
+  | * Type-1 Dipole Vector   (l=1, Dim 3)   : ||D^1(R) v_1||_2 === ||v_1||_2  ( since R^T R = I_3 )|
+  | * Type-2 Quadrupole      (l=2, Dim 5)   : ||D^2(R) T_2||_F === ||T_2||_F  ( since D^2 in SO(5))|
+  | * Spatial Global Pooling over x in R^3  : S(t) in R^{512} ===► Zero Extrinsic Pose Sensitivity |
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
