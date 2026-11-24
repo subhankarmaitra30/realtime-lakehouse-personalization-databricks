@@ -22,75 +22,72 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                  SURJECTIVE DIMENSIONAL COLLAPSE & PRE-IMAGE EQUIVALENCE TOPOLOGY
+                  NEXUS-INGEST MULTIMODAL BOARD-LEVEL & MEMORY ROUTING TOPOLOGY
 ====================================================================================================
-  HIGH-DIMENSIONAL RAW INGRESS MANIFOLD (X)             INVARIANT LATENT HYPERSPHERE (V = S^1023)
-  Dim(X) = 7,200 x 1920 x 1080 x 3 = 44,789,760,000     Dim_ambient(V) = 1,024 (Intrinsic: 1,023)
-  ┌───────────────────────────────────────────────┐     ┌──────────────────────────────────────────┐
-  | * 120-s Uncompressed 1080p60 Video (89.58 GB) |     | * Canonical Token: v_bio in S^{1023}     |
-  | * Extrinsic Facial Contours & Biometrics      | ==► | * Unit Norm Constraint: ||v_bio||_2 = 1  |
-  | * Burned-In UI Chrome & PHI Subspace (S_PHI)  |     | * Pure Pathophysiological Kinetics Only  |
-  └───────────────────────────────────────────────┘     └──────────────────────────────────────────┘
-                          |                                                   ^
-                          |   [ Factorized Streaming Surjection T_birth ]     |
-                          |   T_birth(X) = (psi_temporal o g_spatial^{x T})(X)|
-                          +-------------------------+-------------------------+
-                                                    |
-                                                    ▼
+  NODE H: FLOATING HOST TAP DOMAIN (GND_HOST)           NODE E: ACCELERATOR DOMAIN (GND_EDGE)
+  ┌───────────────────────────────────────────┐         ┌──────────────────────────────────────────┐
+  | PIPELINE A: VIDEO INTERPOSER              |         | VERSAL GTY/GTM SERDES & DPI LOGIC        |
+  | * HDMI 2.1 / DP 2.1 / 24G-SDI / eDP       |         | * Stage-A DSP Real-Time OCR UI Gate      |
+  | * Local EDID/HDCP 2.3 MCU (<450 mW Aux)   | ======► | * Zeroes Burned-In PHI Bounding Boxes    |
+  |                                           |   4 kV  | * QoS DMA Slice (15.0 GB/s, t = 0.83 ms) |
+  | PIPELINE B: NETWORK & VITALS SPLITTER     |  Samtec | * Stateless Rx-Only TCP/IP + FHIR/DICOM  |
+  | * 50/50 Optical Tap -> SFP28/QSFP28       | FireFly |                                          |
+  | * Mechanical Omission of Tx Laser Pins    | Optical | VERSAL DSP58 POLYPHASE DFE (350/250 MHz) |
+  |                                           |  Moat   | * 8-Lane SSR (312.5 MHz) -> M=32 DDC     |
+  | PIPELINE C: 256-CH ZIF RF INTERPOSER      | (8.0mm) | * 294.60 ns Group Delay (+15.05 dB SQNR) |
+  | * High-Z JFET Buffer (Z>1MOhm, C<1.5pF)   |         | * 256.0 ns RLS-MVDR + Kurtosis Sieve     |
+  | * 256 x 14-Bit 2.50 GSPS ADCs (8.96 Tbps) |         | * 4.0 MB UltraRAM Ring FIFO (80.0 GB/s)  |
+  └───────────────────────────────────────────┘        └──────────────────────────────────────────┘
+                                                                             |
+                                 [CXL 3.0 / PCIe Gen 6 x16 Scatter-Gather DMA Engine @ 0x4000_1000]
+                                 (64B Cache-Aligned DmaDescriptor | Castagnoli CRC32C: 0x82F6_3B78)
+                                                                             |
+                                                                             ▼
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | ANNIHILATED ALGEBRAIC KERNEL (NULL SPACE): Ker(J_{T_birth})                                    |
-  | * Tier-1 Per-Frame Spatial Nullity : 7,200 x (6,220,800 - 512) = 44,786,073,600 Dimensions     |
-  | * Tier-2/3 Temporal-VIB Nullity    : (7,200 x 512) - 1,024     =      3,685,376 Dimensions     |
-  | * Total Destroyed Ambient Nullity  : >= 44,789,758,976 Dims (Intrinsic S^1023: 44,789,758,977) |
-  | * Arithmetic Compression Ratio     : 43,740,000.0 : 1 (99.9999977% Erased at Ingress)          |
-  | * Pre-Image Fiber Cardinality      : |F_{v_0}| = |T_birth^{-1}(v_0)| = 2^{\aleph_0} = c        |
-  | * Diffusion Prior Intersection     : Dim(M_natural n F_{v_0}) >= 10^6 - 1,024 = 998,976 Dims   |
-  | * Personal Identifier Mutual Info  : I(S_PHI; v_bio) = H(S_PHI) - H(S_PHI | v_bio) === 0.0000b |
+  | UNIFIED HOST & FPGA PHYSICAL MEMORY ARENA + STAGE-B BARE-METAL FLASH-SCRUB GATE (hal_rx.rs)    |
+  | * Buffer A (Ring 0): 0x8000_0000..0x80BD_D7FF (12.4416 MB) | Stride: 0x00BE_0000 (64KB-Aligned)|
+  | * Buffer A (Ring 1): 0x80BE_0000..0x817B_D7FF (12.4416 MB) | V-Sync Ping-Pong Swap @ 0x40003004|
+  | * Buffer B (Vitals): 0x8200_0000..0x823F_FFFF (4.0000 MB)  | Cache-Coherent L2 SRAM FIFO       |
+  | * Buffer C (RF I/Q): On-Die UltraRAM Arena   (4.0000 MiB) | 64 URAM288 Blocks (52.43 us Stall) |
+  | * Stage-B Zeroize  : memset(0x00) + 64B-Stride ARM64 dc civac + dsb sy + Sentinel <= 0.42 ms   |
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
-====================================================================================================
+```
+```
+HOST TRANSDUCER ELEMENT (ch in 1..256) ===+===► [Zero-Length 50 Ohm Pass-Through] ===> HOST CONSOLE AFE
+  (R_source = 50 Ohm, f_0 = 7.50 MHz)       |     (Insertion Loss: 0.000014 dB)          (R_host = 50 Ohm)
+                                            |
+                                            ▼ (High-Z Shunt Tap: R_in >= 1.0 MOhm, C_in <= 1.50 pF)
+                                  ┌───────────────────┐
+                                  | Low-Noise JFET    | (Input Voltage Noise: e_n <= 0.85 nV/sqrt(Hz))
+                                  | Unity-Gain Buffer | (Bandwidth: 100 kHz to 65.0 MHz, THD < -96 dBc)
+                                  └───────────────────┘
+                                            |
+                                            ▼
+                                  ┌───────────────────┐  
+                                  | 50 MHz 7th-Order  | ---► [14-Bit 2.50 GSPS ADC] ---► [Samtec FireFly]
+                                  | Anti-Alias LPF    |      (JESD204C Subclass 1)       (850 nm VCSEL)
+                                  └───────────────────┘
 ```
 ```
 ====================================================================================================
-                  512-BYTE PACKED BINARY CVRDT TELEMETRY ENVELOPE ("SOVB" WIRE MAP)
+            TWO-STAGE VOLATILE PHI FLASH-SCRUBBING STATE MACHINE (t_lifetime <= 16.67 ms)
 ====================================================================================================
-  Offset 0x0000..0x0003 (4B)   : Magic Header = 0x534F5642 ("SOVB" Little-Endian)
-  Offset 0x0004..0x0007 (4B)   : Originating Hardware Silicon Node ID (u32)
-  Offset 0x0008..0x0027 (32B)  : Anonymous Patient Token Key (T_ID or T_PROV: [u8; 32])
-  Offset 0x0028..0x0067 (64B)  : Canonically Sorted Vector Clock Node Keys ([u32; 16] Ascending)
-  Offset 0x0068..0x00A7 (64B)  : Corresponding Monotonic Logical Clock Ticks ([u32; 16])
-  Offset 0x00A8..0x01A7 (256B) : Succinct Recursive Plonky2 ZK-SNARK Proof (pi_lineage: [u8; 256])
-  Offset 0x01A8..0x01AF (8B)   : Physical SRAM / NVMe Pointer to v_bio in S^{1023} (u64)
-  Offset 0x01B0..0x01B7 (8B)   : Monotonic Hardware Nanosecond Timestamp (u64)
-  Offset 0x01B8         (1B)   : RecordStatus (0x01 = OfflinePending, 0x02 = GlobalReconciled)
-  Offset 0x01B9..0x01BB (3B)   : Explicit 32-Bit Word Alignment Padding ([u8; 3] = 0x000000)
-  Offset 0x01BC..0x01BF (4B)   : Castagnoli CRC32 Checksum (0x82F63B78 over 0x0000..0x01BB)
-  Offset 0x01C0..0x01FF (64B)  : Module 4 Top-K SparseGradientSlice Piggyback Slot ([u8; 64])
+  [T = 0.00 ms to 0.83 ms] ---► STAGE A: IN-FLIGHT FPGA DSP OCR & DPI BOUNDING-BOX GATE
+                                * Line-rate sliding window scans 1920x1080 raster during DMA stream
+                                * Masks peripheral UI chrome (Patient Name, MRN, Hospital Banner)
+                                * Overwrites non-anatomical PHI coordinates with 0x0000 in flight
+                                * Emits de-identified anatomical ROI into PINNED_RING_0 (0x80000000)
+                                                          |
+  [T = 0.83 ms to 2.97 ms] ---► MODULE 2 TIER-1 SE(3) SPATIAL EXTRACTION (t_Tier1 = 2.14 ms)
+                                * Reads PINNED_RING_0 -> Extracts invariant feature S(t) in R^{512}
+                                                          |
+  [T = 3.00 ms to 3.42 ms] ---► STAGE B: BARE-METAL FULL-ARENA HARDWARE ZEROIZATION (hal_rx.rs)
+                                * Step 1: core::ptr::write_bytes(0x8000_0000, 0x00, 12_441_600)
+                                * Step 2: 64B-Stride Cache Clean/Invalidate (194,400 x "dc civac")
+                                * Step 3: Full-System Data Synchronization Barrier ("dsb sy")
+                                * Step 4: Volatile Sentinel Readback Verification (Sum == 0x00)
+                                * Total Scrub Time: 0.42 ms Silicon (1.412 ms Host SIL) << 16.67 ms
 ====================================================================================================
-```
-```
-====================================================================================================
-          EMBEDDED ROCKSDB PGTQ 3-COLUMN-FAMILY & 4-STATE TRANSACTIONAL LIFECYCLE
-====================================================================================================
-  [CF 1: cf_pending_alignment (Volatile RAM MemTable)]
-  * STATE 1: PendingCrossAlignment (0x01)
-  * Sliding-window hardware time-sync matrix aligns Buffer A (16.67ms), B (1.0ms), C (294.6ns)
-                                                |
-                         [ commit_to_suspense(): WriteBatch Flush to NVMe ]
-                                                ▼
-  [CF 2: cf_ground_truth_suspense (AES-256-XTS Encrypted SSTables, ZSTD Level-2 Compacted)]
-  * STATE 2: PendingGroundTruth (0x02)
-  * Indexed by 48-Byte Lexicographic PgtqCompoundKey: T_ID (32B) || Modality (4B) || Mask (4B) || ns (8B)
-  * Stores 64-Byte Cache-Line-Aligned PgtqSuspenseValue (#[repr(C, align(64))])
-          |                                                         |
-          ▼ [reconcile_biopsy_confirmation() < 90d]                 ▼ [evaluate_ttl_expiration() >= 90d]
-  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | [CF 3: cf_reconciled_lineage (Compacted)]   |   | SELF-SUPERVISED INFONCE CONTRASTIVE POOL   |
-  | * STATE 3: GroundTruthAcquired (0x03)       |   | * STATE 4: TtlExpiredUnsupervised (0x04)   |
-  | * NLP listener strips LIS PHI; extracts     |   | * Triggered at exact 90-day nanosecond TTL:|
-  |   soft label y_soft & variance sigma^2      |   |   TTL_90_DAYS_NS = 7,776,000,000,000,000 ns|
-  | * Binds 32B zk_lineage_digest (or T_omics)  |   | * Routes unlabelled v_bio to Module 2      |
-  | * Feeds Module 4 In-Enclave AIPW Retraining |   |   15-pair InfoNCE manifold refinement      |
-  └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
 ```
 ```
 FRAME N+1 INGRESS (DMA Stream 1)                    FRAME N COMPUTE & SCANOUT (Stream 2 & Display)
