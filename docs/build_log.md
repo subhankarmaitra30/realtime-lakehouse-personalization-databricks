@@ -22,24 +22,30 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-        OPTICAL MOAT SERIALIZATION & 8-LANE SUPER-SAMPLE RATE (SSR = 8) COMMUTATION TOPOLOGY
+              TWO-PORT GALVANIC ISOLATION BOUNDARY & SIMPLEX PROOF TOPOLOGY
 ====================================================================================================
-  NODE H: FLOATING TRANSDUCER TAP DOMAIN                NODE E: AMD VERSAL PREMIUM VP1802 DFE FABRIC
-  ┌───────────────────────────────────────────┐         ┌───────────────────────────────────────────┐
-  | 256-Ch High-Z JFET Buffer (Z_in > 1 MOhm) |         | JESD204C 64b/66b GTY/GTM Transceiver Quad |
-  | 256 x 14-Bit @ 2.50 GSPS ADCs (8.960 Tbps)| ====►   | Subclass 1 SYSREF Deterministic Phase Lock|
-  | * Lab Trunk : 10 x 16-Lane FireFly(160 Ln)| 4 kV    | 1:8 Polyphase Commutator (L_SSR = 8):     |
-  | * Field Pod : Pre-CIC R1=16 (1 x 16-Lane) | Moat    | f_SSR = 2.50 GSPS / 8 = 312.50 MHz        |
-  └───────────────────────────────────────────┘         └───────────────────────────────────────────┘
-                                                                             |
-                                 [8 Parallel 14-Bit Sub-Lanes @ 312.50 MHz <= 350.00 MHz (+12% Slack)]
-                                                                             ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | ON-DIE POLYPHASE DDC CASCADE (hardware/rtl/ddc_polyphase_cic_fir.sv | M_total = 16 x 2 = 32)   |
-  | * Stage 1: 48-Bit Taylor-Interpolated Quadrature DDS Mixer (f_0 = 7.50 MHz, SFDR > 102 dBc)    |
-  | * Stage 2: 5th-Order Hogenauer CIC Decimator (R_1 = 16, B_max = 34 Bits -> f_s1 = 156.25 MHz)  |
-  | * Stage 3: 64-Tap Folded Symmetric Half-Band FIR (R_2 = 2 -> f_base = 78.125 MSPS, Q1.15 I/Q)  |
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+  PORT 1: HOST CLINICAL CONSOLE DOMAIN (NODE H)         PORT 2: SOVEREIGN BIO-OS EDGE DOMAIN (NODE E)
+  ┌─────────────────────────────────────────────┐       ┌──────────────────────────────────────────┐
+  | * FDA/CE Certified Ultrasound / Endoscope   |       | * AMD Versal VP1802 / NVIDIA IGX Orin    |
+  | * Piezoelectric Transducer AFE (50 Ohm)     |       | * 28V DC Tactical / 230V AC Mains Bus    |
+  | * Local Aux Regulator (<450 mW on GND_HOST) |       | * Digital Enclosure Ground (GND_EDGE)    |
+  | * 850 nm GaAs/AlGaAs VCSEL Tx Array (V>1.46)| ====► | * Reverse-Biased PIN Photodiode Rx (-3.3)|
+  └─────────────────────────────────────────────┘       └──────────────────────────────────────────┘
+                         |                         4 kV                       |
+                         |                Samtec FireFly Optical              |
+            [ MECHANICAL OMISSION ]           Ribbon Flyover                  ▼
+            [ OF COPPER TX TRACES ]        (d_gap = 8.0 mm Air &   ┌───────────────────────────────┐
+                         |                  Borosilicate Moat)     | ZERO CROSS-MOAT TRANSFORMERS  |
+                         ▼                                         | * C_parasitic = 1.3289 fF     |
+  ┌─────────────────────────────────────────────┐                  | * I_disp (250V/10ns)= 33.22uA |
+  | FORMAL BOUNDARY INVARIANTS AT PORT 1:       |                  | * I_leak (4kV, 60Hz)= 2.004nA |
+  | * Reverse Scattering : S_12(s) === 0        |                  └───────────────────────────────┘
+  | * Reverse Impedance  : Z_Tx(w) --> Infinity |
+  | * Reverse DC Current : I_rev   === 0.0000 A |
+  | * Reverse Photon Pwr : P_rev   === 0.0000 W |
+  | * Reverse Capacity   : C_{E->H}=== 0.0000 b |
+  └─────────────────────────────────────────────┘
+====================================================================================================
 ```
 ```
 HOST TRANSDUCER ELEMENT (ch in 1..256) ===+===► [Zero-Length 50 Ohm Pass-Through] ===> HOST CONSOLE AFE
