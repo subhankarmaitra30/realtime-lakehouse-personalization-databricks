@@ -22,36 +22,47 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-        MODULE 3 ZERO-TRUST CRYPTOGRAPHIC & RIEMANNIAN GEODESIC PROOF ARCHITECTURE
+              NEXUS-VECTOR THREE-TIER STREAMING ARCHITECTURE & MEMORY HIERARCHY
 ====================================================================================================
-  INGRESS CLEARTEXT IDENTIFIER (x in {0,1}*)              DECENTRALIZED QUORUM ENCLAVES (i in 1..n)
-  (Volatility Ceiling: <= 16.67 ms in Enclave SRAM)       (Shamir Shares s_i = f(i) mod q, f(0) = s)
-  ┌───────────────────────────────────────────────┐       ┌────────────────────────────────────────┐
-  | 1. Elligator2 Hash-to-Group: P = H_1(x) in G  |       | 3. Partial Evaluation: S_i = s_i * Y   |
-  | 2. 512-Bit Wide Scalar r in Z_q* -> Y = r * P | ====► | 4. Chaum-Pedersen DLEQ: pi_DLEQ^(i)    |
-  | * Immediately Zeroizes x via memset(0x00)     |       |    Proves log_G(PK_i) == log_Y(S_i)    |
-  └───────────────────────────────────────────────┘       └────────────────────────────────────────┘
-                         ^                                                     |
-                         |    [ Unlinkable Query: I(X; Y) === 0.000000 bits ]  |
-                         +--------------------------+--------------------------+
-                                                    |
-                                                    ▼
-  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | CLIENT ENCLAVE UNBLINDING, LAGRANGE INTERPOLATION & ZERO-PLAINTEXT TOKEN DERIVATION (toprf.rs) |
-  | * Verifies k proofs pi_DLEQ^(i): z_i*G == R_{i,1} + c_i*PK_i  AND  z_i*Y == R_{i,2} + c_i*S_i  |
-  | * Exponent Lagrange Interpolation: S' = Sum_{i in Q} lambda_i * S_i = r * s * H_1(x)           |
-  | * Modular Inverse Unblinding: N = r^{-1} * S' = s * H_1(x)  (Recovers P = r^{-1} * Y)          |
-  | * Global Deterministic Token: T_ID = H_2("SovereignBioOS_H2_Token_Expansion", P, N) in {0,1}256|
-  └────────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                     |
-                         ▼ [512B CvRdtSyncEnvelope ("SOVB")]                   ▼ [RocksDB PGTQ 48B]
-  ┌───────────────────────────────────────────────┐       ┌────────────────────────────────────────┐
-  | RECURSIVE 256B ZK-SNARK & CVRDT SEMILATTICE   |       | S^1023 RIEMANNIAN GEODESIC CALCULUS    |
-  | * Goldilocks Field: p = 2^64 - 2^32 + 1       |       | * Geodesic Arc: d_g(u,v) = arccos(u.v) |
-  | * Attests TPM PCRs + Merkle Root + DP <= 1.0  |       | * Shock Alert : Delta_t > 0.50 rad/hr  |
-  | * Sorted-Key LUB Merge: Commutative, Assoc,   |       | * Levi-Civita : Gamma_{v1->v2}(w)      |
-  |   Idempotent (Strong Eventual Consistency)    |       |   Preserves ||w||_2 & <Gamma(w),v2>=0  |
-  └───────────────────────────────────────────────┘       └────────────────────────────────────────┘
+  INGRESS ARENA: MODULE 1 ZERO-COPY PINNED BUFFERS (Volatile Lifetime <= 16.67 ms)
+  * Buffer A (Ping-Pong Ring 0/1) : 0x8000_0000 / 0x80BE_0000 (1920x1080x3 12-bit in 16B = 12.44 MB)
+  * Buffer B (Coherent L2 SRAM)   : 0x8200_0000..0x823F_FFFF  (32-Ch 10 kHz Vitals + FHIR/DICOM)
+  * Buffer C (Versal UltraRAM)    : 64 x URAM288 (4.0 MiB)    (256-Ch 78.125 MSPS Q1.15 I/Q, 80 GB/s)
+                                                |
+                                                ▼ [T = 0.83 ms: Zero-Copy GPU Virtual Pointer Map]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 1: STEERABLE 3D HARMONIC & DUAL-PATH SPATIAL ENCODER (engine/cuda/se3_steerable_kernel) |
+  | * Constant Memory Cache : c_radial_centers[32] (128 B) + c_radial_weights[96] (384 B)        |
+  | * Register RBF Pre-Eval : 4 Euclidean Stencil Shells r^2 in {0,1,2,3} (6.75x expf Speedup)   |
+  | * 9 Real Harmonics      : l=0 (1 Scalar), l=1 (3 Dipole Vecs), l=2 (5 Quadrupole Tensors)    |
+  | * SO(3) Casimir Gate    : Contracts (f_0, ||v_1||_2, ||T_2||_F) -> Emits S(t) in R^{512}     |
+  | * Execution Latency     : t_Tier1 = 2.14 ms (1.57 GFLOPs/frame, 72x Faster than 3D CNN Aug)  |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                   |                                                         |
+                   ▼ [T = 3.00 ms: Immediate Hardware Trigger]               ▼ [S(t) in R^{512}]
+  ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
+  | VOLATILE ARENA FLASH-SCRUB GATE (hal_rx.rs) |   | TIER 2: CAUSAL SELECTIVE MAMBA ZOH SCAN    |
+  | * Overwrites 12,441,600 B with 0x00         |   | (engine/cuda/mamba_selective_scan.cu)      |
+  | * 194,400 x ARM64 "dc civac" (64B Stride)   |   | * Hurwitz Matrix: A_{d,s} = -exp(A_log) < 0|
+  | * "dsb sy" + Volatile Sentinel Readback     |   | * Cancellation-Guarded expm1f ZOH Step     |
+  | * Completed by T = 3.42 ms (<< 16.67 ms)    |   | * Static SM Register SRAM: 512x16x4B = 32KB|
+  └─────────────────────────────────────────────┘   | * Latency: t_Tier2 = 0.85 ms (0.70 us/step)|
+                                                    └────────────────────────────────────────────┘
+                                                                               |
+                                                                               ▼ [h_T in R^{512}]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | TIER 3: VARIATIONAL INFORMATION BOTTLENECK & S^1023 PROJECTION HEAD (engine/python/se3_mamba)|
+  | * Diagonal Gaussian Bottleneck: mu_theta(h_T), logvar_theta(h_T) clamped to [-10.0, +10.0]   |
+  | * KL Information Pruning (beta = 1e-3): Collapses non-clinical / PHI dimensions to N(0, I)   |
+  | * LayerNorm + L2 Projection: v_bio = LayerNorm(z) / ||LayerNorm(z)||_2 (t_Tier3 = 0.42 ms)   |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                |
+                                                ▼ [Emits v_m in S^{1023} across 6 Modalities]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | COMBINATORIAL 6-MODAL 15-PAIR INFONCE LATTICE & B=1 TRIAGE ENGINE (multimodal_infonce.py)    |
+  | * Evaluates C(6,2) = 15 Symmetric Pairs (tau = 0.07) with 50% Zero-GEMM Transpose Reuse      |
+  | * Auto-Masks Disconnected / SNR < 3.0 dB Channels; Anchors B=1 Triage via Q=256 FIFO Queue   |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
 ====================================================================================================
