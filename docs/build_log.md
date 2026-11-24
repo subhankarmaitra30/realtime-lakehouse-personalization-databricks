@@ -22,34 +22,23 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-                  NEXUS-INGEST MULTIMODAL BOARD-LEVEL & MEMORY ROUTING TOPOLOGY
+        OPTICAL MOAT SERIALIZATION & 8-LANE SUPER-SAMPLE RATE (SSR = 8) COMMUTATION TOPOLOGY
 ====================================================================================================
-  NODE H: FLOATING HOST TAP DOMAIN (GND_HOST)           NODE E: ACCELERATOR DOMAIN (GND_EDGE)
-  ┌───────────────────────────────────────────┐         ┌──────────────────────────────────────────┐
-  | PIPELINE A: VIDEO INTERPOSER              |         | VERSAL GTY/GTM SERDES & DPI LOGIC        |
-  | * HDMI 2.1 / DP 2.1 / 24G-SDI / eDP       |         | * Stage-A DSP Real-Time OCR UI Gate      |
-  | * Local EDID/HDCP 2.3 MCU (<450 mW Aux)   | ======► | * Zeroes Burned-In PHI Bounding Boxes    |
-  |                                           |   4 kV  | * QoS DMA Slice (15.0 GB/s, t = 0.83 ms) |
-  | PIPELINE B: NETWORK & VITALS SPLITTER     |  Samtec | * Stateless Rx-Only TCP/IP + FHIR/DICOM  |
-  | * 50/50 Optical Tap -> SFP28/QSFP28       | FireFly |                                          |
-  | * Mechanical Omission of Tx Laser Pins    | Optical | VERSAL DSP58 POLYPHASE DFE (350/250 MHz) |
-  |                                           |  Moat   | * 8-Lane SSR (312.5 MHz) -> M=32 DDC     |
-  | PIPELINE C: 256-CH ZIF RF INTERPOSER      | (8.0mm) | * 294.60 ns Group Delay (+15.05 dB SQNR) |
-  | * High-Z JFET Buffer (Z>1MOhm, C<1.5pF)   |         | * 256.0 ns RLS-MVDR + Kurtosis Sieve     |
-  | * 256 x 14-Bit 2.50 GSPS ADCs (8.96 Tbps) |         | * 4.0 MB UltraRAM Ring FIFO (80.0 GB/s)  |
-  └───────────────────────────────────────────┘        └──────────────────────────────────────────┘
+  NODE H: FLOATING TRANSDUCER TAP DOMAIN                NODE E: AMD VERSAL PREMIUM VP1802 DFE FABRIC
+  ┌───────────────────────────────────────────┐         ┌───────────────────────────────────────────┐
+  | 256-Ch High-Z JFET Buffer (Z_in > 1 MOhm) |         | JESD204C 64b/66b GTY/GTM Transceiver Quad |
+  | 256 x 14-Bit @ 2.50 GSPS ADCs (8.960 Tbps)| ====►   | Subclass 1 SYSREF Deterministic Phase Lock|
+  | * Lab Trunk : 10 x 16-Lane FireFly(160 Ln)| 4 kV    | 1:8 Polyphase Commutator (L_SSR = 8):     |
+  | * Field Pod : Pre-CIC R1=16 (1 x 16-Lane) | Moat    | f_SSR = 2.50 GSPS / 8 = 312.50 MHz        |
+  └───────────────────────────────────────────┘         └───────────────────────────────────────────┘
                                                                              |
-                                 [CXL 3.0 / PCIe Gen 6 x16 Scatter-Gather DMA Engine @ 0x4000_1000]
-                                 (64B Cache-Aligned DmaDescriptor | Castagnoli CRC32C: 0x82F6_3B78)
-                                                                             |
+                                 [8 Parallel 14-Bit Sub-Lanes @ 312.50 MHz <= 350.00 MHz (+12% Slack)]
                                                                              ▼
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | UNIFIED HOST & FPGA PHYSICAL MEMORY ARENA + STAGE-B BARE-METAL FLASH-SCRUB GATE (hal_rx.rs)    |
-  | * Buffer A (Ring 0): 0x8000_0000..0x80BD_D7FF (12.4416 MB) | Stride: 0x00BE_0000 (64KB-Aligned)|
-  | * Buffer A (Ring 1): 0x80BE_0000..0x817B_D7FF (12.4416 MB) | V-Sync Ping-Pong Swap @ 0x40003004|
-  | * Buffer B (Vitals): 0x8200_0000..0x823F_FFFF (4.0000 MB)  | Cache-Coherent L2 SRAM FIFO       |
-  | * Buffer C (RF I/Q): On-Die UltraRAM Arena   (4.0000 MiB) | 64 URAM288 Blocks (52.43 us Stall) |
-  | * Stage-B Zeroize  : memset(0x00) + 64B-Stride ARM64 dc civac + dsb sy + Sentinel <= 0.42 ms   |
+  | ON-DIE POLYPHASE DDC CASCADE (hardware/rtl/ddc_polyphase_cic_fir.sv | M_total = 16 x 2 = 32)   |
+  | * Stage 1: 48-Bit Taylor-Interpolated Quadrature DDS Mixer (f_0 = 7.50 MHz, SFDR > 102 dBc)    |
+  | * Stage 2: 5th-Order Hogenauer CIC Decimator (R_1 = 16, B_max = 34 Bits -> f_s1 = 156.25 MHz)  |
+  | * Stage 3: 64-Tap Folded Symmetric Half-Band FIR (R_2 = 2 -> f_base = 78.125 MSPS, Q1.15 I/Q)  |
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 ```
