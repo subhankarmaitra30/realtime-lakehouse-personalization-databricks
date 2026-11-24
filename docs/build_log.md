@@ -22,45 +22,84 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-        MODULE 4 COUNTERFACTUAL CAUSAL, FP16 NUMERICAL & PRIVACY PROOF TOPOLOGY
+              MODULE 3 AUTONOMOUS 3-STATE HARDWARE TEE & PCR SEALING TOPOLOGY
 ====================================================================================================
-  INGRESS: Reconciled PGTQ Trajectory (X in S^1023, Action A in {0,1}, Outcome Y in [-2.0, 2.0])
-                                                |
-                                                ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 1: DOUBLY ROBUST AIPW UNBIASEDNESS & NEYMAN-ORTHOGONAL 2-FOLD DML (Section 2)          |
-  | * Estimator: Y_hat_a^{AIPW} = mu_a(X) + [I(A=a) / e_tilde_a(X)] * (Y - mu_a(X))              |
-  | * Double Robustness: E[Y_hat_a^{AIPW}] = E[Y(a)] if EITHER mu_a = mu_a* OR e_a = e_a*        |
-  | * Cauchy-Schwarz Product Rate: |Bias| <= (1/eps) * ||e_a - e_a*||_L2 * ||mu_a - mu_a*||_L2   |
-  | * Gateaux Neyman Orthogonality: d/dr E[psi(W; theta_0, eta* + r(eta - eta*))]|_{r=0} === 0   |
+  | STATE 0: STATUS_ONLINE_QUORUM (Active Mesh Connectivity: Reachable Quorum Enclaves >= k)     |
+  | * Step 1: Elligator2 maps x -> P = H_1(x) in G*; immediately wipes x via memset(0) <= 16.67ms|
+  | * Step 2: Draws 512-bit wide-reduced r in Z_q*, blinds Y = r * P, queries k quorum nodes     |
+  | * Step 3: Verifies k Chaum-Pedersen NIZK-DLEQ proofs pi_DLEQ^(i); interpolates S' = r*s*P    |
+  | * Step 4: Unblinds N = r^{-1} * S' = s * P; derives T_ID = H_2(DST, P, N) in {0, 1}^{256}    |
+  | * Commits record to RocksDB PGTQ & 512B CvRDT ledger with status GlobalReconciled (0x02)     |
+  └──────────────────────────────────────────────────────────────────────────────────────────────┘
+                         |                                                       🡅
+    [ Heartbeat Timeout > 2000 ms / Quorum < k ]            [ All Sealed Blobs Reconciled & Merged ]
+                         ▼                                                       |
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+  | STATE 1: STATUS_OFFLINE_PENDING (Tactical Air-Gap / Electronic Warfare Blackout Mode)        |
+  | * Step 1: Reads discrete TPM 2.0 SPI registers: PCR_state = SHA256(PCR_0 || PCR_7 || PCR_14) |
+  | * Step 2: Extracts Seed_Eph = HKDF-Extract(Salt = PCR_state, IKM = DeviceUniqueHWSecret)     |
+  | * Step 3: Emits provisional local token: T_PROV = HMAC-SHA256(Seed_Eph, ScanSeq || NodeID)   |
+  | * Step 4: Computes P = H_1(x), blinds Y_offline = r_offline * P, seals (T_PROV, Y_offline,   |
+  |           r_offline) into SealedOfflineCommitment under PCR_state, and wipes plaintext x     |
+  |           via memset(0x00) + dc civac within <= 16.67 ms (Zero Plaintext PHI Retention!)     |
+  | * Logs v_bio under T_PROV with status OfflinePending (0x01); increments V_local[NodeID] += 1 |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
                                                 |
+                   [ Tactical Radio Link Restored (< 2.0 Kbps MIL-STD-188-220) ]
                                                 ▼
   ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 2: HARDWARE BINARY16 PROPENSITY CLAMP & <= 404.0 FP16 GRADIENT CEILING (Section 3)     |
-  | * Hardware Comparator Registers: REG_CLAMP_MIN = 0x211F (0.0100), REG_CLAMP_MAX = 0x3BEC     |
-  | * Mutual Exclusivity of Branches: A_i * (1 - A_i) === 0  ===>  |I(A=a)/e_tilde_a| <= 100.0x  |
-  | * Spectral-Normalized Policy Jacobian: sup_{X in S^1023} ||grad_theta f_theta(X)||_2 <= 1.0  |
-  | * Worst-Case Backprop Gradient Norm: ||grad_theta L_AIPW^{clamped}||_2 <= 404.0 << 65,504.0  |
+  | STATE 2: STATUS_CVRDT_RECONCILIATION (Asynchronous Delayed TOPRF & Semilattice LUB Merge)    |
+  | * Step 1: Verifies live TPM 2.0 PCR_state == sealing tag; unseals (Y_offline, r_offline)     |
+  | * Step 2: Dispatches pre-blinded Y_offline to k reachable quorum nodes; verifies pi_DLEQ^(i) |
+  | * Step 3: Recovers P = r_offline^{-1} * Y_offline and N = r_offline^{-1} * S' (Zero x needed)|
+  | * Step 4: Derives canonical T_ID = H_2(DST, P, N); executes atomic key swap T_PROV |-> T_ID  |
+  | * Step 5: Broadcasts 512B CvRdtSyncEnvelope ("SOVB") & executes LUB merge S_loc |_| S_rem    |
   └──────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+```
+====================================================================================================
+                  512-BYTE PACKED BINARY CVRDT TELEMETRY ENVELOPE ("SOVB" WIRE MAP)
+====================================================================================================
+  Offset 0x0000..0x0003 (4B)   : Magic Header = 0x534F5642 ("SOVB" Little-Endian)
+  Offset 0x0004..0x0007 (4B)   : Originating Hardware Silicon Node ID (u32)
+  Offset 0x0008..0x0027 (32B)  : Anonymous Patient Token Key (T_ID or T_PROV: [u8; 32])
+  Offset 0x0028..0x0067 (64B)  : Canonically Sorted Vector Clock Node Keys ([u32; 16] Ascending)
+  Offset 0x0068..0x00A7 (64B)  : Corresponding Monotonic Logical Clock Ticks ([u32; 16])
+  Offset 0x00A8..0x01A7 (256B) : Succinct Recursive Plonky2 ZK-SNARK Proof (pi_lineage: [u8; 256])
+  Offset 0x01A8..0x01AF (8B)   : Physical SRAM / NVMe Pointer to v_bio in S^{1023} (u64)
+  Offset 0x01B0..0x01B7 (8B)   : Monotonic Hardware Nanosecond Timestamp (u64)
+  Offset 0x01B8         (1B)   : RecordStatus (0x01 = OfflinePending, 0x02 = GlobalReconciled)
+  Offset 0x01B9..0x01BB (3B)   : Explicit 32-Bit Word Alignment Padding ([u8; 3] = 0x000000)
+  Offset 0x01BC..0x01BF (4B)   : Castagnoli CRC32 Checksum (0x82F63B78 over 0x0000..0x01BB)
+  Offset 0x01C0..0x01FF (64B)  : Module 4 Top-K SparseGradientSlice Piggyback Slot ([u8; 64])
+====================================================================================================
+```
+```
+====================================================================================================
+          EMBEDDED ROCKSDB PGTQ 3-COLUMN-FAMILY & 4-STATE TRANSACTIONAL LIFECYCLE
+====================================================================================================
+  [CF 1: cf_pending_alignment (Volatile RAM MemTable)]
+  * STATE 1: PendingCrossAlignment (0x01)
+  * Sliding-window hardware time-sync matrix aligns Buffer A (16.67ms), B (1.0ms), C (294.6ns)
                                                 |
+                         [ commit_to_suspense(): WriteBatch Flush to NVMe ]
                                                 ▼
-  ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-  | PROOF 3: IN-ENCLAVE RENYI DP & CUFF-YU PER-RECORD MUTUAL INFORMATION BOUND (Section 4)       |
-  | * Newton-Raphson L2 Clip: ||g_bar_t||_2 <= C_clip = 1.0 | Noise: sigma_DP = 0.1              |
-  | * 1,000-Step Subsampled RDP (q = 32/10,000 = 0.0032): alpha* = 11.603 => eps_DP = 6.87       |
-  | * Cuff & Yu (2016) Leakage Ceiling: I(X_i; g_tilde_t) = 0.000099 bits <= 1.00e-04 bits       |
-  └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                         |                                                       |
-                         ▼ [Optimization Dynamics]                               ▼ [Mesh Transit]
+  [CF 2: cf_ground_truth_suspense (AES-256-XTS Encrypted SSTables, ZSTD Level-2 Compacted)]
+  * STATE 2: PendingGroundTruth (0x02)
+  * Indexed by 48-Byte Lexicographic PgtqCompoundKey: T_ID (32B) || Modality (4B) || Mask (4B) || ns (8B)
+  * Stores 64-Byte Cache-Line-Aligned PgtqSuspenseValue (#[repr(C, align(64))])
+                   |                                                         |
+                   ▼ [reconcile_biopsy_confirmation() < 90d]                 ▼ [evaluate_ttl_expiration() >= 90d]
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
-  | PROOF 4: NON-CONVEX O(1/sqrt(T)) CONVERGENCE|   | PROOF 5: PAIRWISE ZERO-SUM ECDH SECAGG     |
-  | * Step Size: eta = 1 / (L * sqrt(T))        |   | * Curve25519 ECDH: K_{u,v} = K_{v,u}       |
-  | * Stationary Bound: 1/T Sum E[||grad||^2]   |   | * Anti-Symmetric Masks: S_{u,v} = -S_{v,u} |
-  |   <= [2L(L_1 - L*) + C^2(1 + d*s^2)]/sqrt(T)|   | * Exact Annihilation: Sum S_{u,v} === 0.0  |
+  | [CF 3: cf_reconciled_lineage (Compacted)]   |   | SELF-SUPERVISED INFONCE CONTRASTIVE POOL   |
+  | * STATE 3: GroundTruthAcquired (0x03)       |   | * STATE 4: TtlExpiredUnsupervised (0x04)   |
+  | * NLP listener strips LIS PHI; extracts     |   | * Triggered at exact 90-day nanosecond TTL:|
+  |   soft label y_soft & variance sigma^2      |   |   TTL_90_DAYS_NS = 7,776,000,000,000,000 ns|
+  | * Binds 32B zk_lineage_digest (or T_omics)  |   | * Routes unlabelled v_bio to Module 2      |
+  | * Feeds Module 4 In-Enclave AIPW Retraining |   |   15-pair InfoNCE manifold refinement      |
   └─────────────────────────────────────────────┘   └────────────────────────────────────────────┘
 ```
-
 ```
 FRAME N+1 INGRESS (DMA Stream 1)                    FRAME N COMPUTE & SCANOUT (Stream 2 & Display)
   ┌───────────────────────────────────────────┐       ┌───────────────────────────────────────────┐
