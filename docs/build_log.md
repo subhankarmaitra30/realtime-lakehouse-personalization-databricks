@@ -22,29 +22,32 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
 
 ```
 ====================================================================================================
-              EXACT SE(3) LIE GROUP COMMUTATIVITY & SO(3) CASIMIR NORM GATE TOPOLOGY
+                  SURJECTIVE DIMENSIONAL COLLAPSE & PRE-IMAGE EQUIVALENCE TOPOLOGY
 ====================================================================================================
-      Raw Biophysical Wavefield: f(x) in L^2(R^3, R^{C_in}) (From Module 1 Buffers A, B, C)
-                   |                                                       |
-                   | [6-DoF Probe Tilt / Vehicle Jitter g = (R, t)]        | [Steerable Conv3D F_Theta]
-                   ▼                                                       ▼
-      Transformed Input Field:                                Equivariant Irrep Feature Field:
-      [pi_in(g) f](x) = rho_in(R) f(R^{-1}(x - t))            [F_Theta(f)](x) = f_0 (+) v_1 (+) T_2
-                   |                                                       |
-                   | [Steerable Conv3D F_Theta]                            | [Wigner-D Steering rho_out(g)]
-                   ▼                                                       ▼
-      [F_Theta(pi_in(g) f)](x) ==========================================► [rho_out(g) F_Theta(f)](x)
-                   |                  EXACT HAAR MEASURE IDENTITY          |
-                   +---------------------------+---------------------------+
-                                               |
-                                               ▼
+  HIGH-DIMENSIONAL RAW INGRESS MANIFOLD (X)             INVARIANT LATENT HYPERSPHERE (V = S^1023)
+  Dim(X) = 7,200 x 1920 x 1080 x 3 = 44,789,760,000     Dim_ambient(V) = 1,024 (Intrinsic: 1,023)
+  ┌───────────────────────────────────────────────┐     ┌──────────────────────────────────────────┐
+  | * 120-s Uncompressed 1080p60 Video (89.58 GB) |     | * Canonical Token: v_bio in S^{1023}     |
+  | * Extrinsic Facial Contours & Biometrics      | ==► | * Unit Norm Constraint: ||v_bio||_2 = 1  |
+  | * Burned-In UI Chrome & PHI Subspace (S_PHI)  |     | * Pure Pathophysiological Kinetics Only  |
+  └───────────────────────────────────────────────┘     └──────────────────────────────────────────┘
+                          |                                                   ^
+                          |   [ Factorized Streaming Surjection T_birth ]     |
+                          |   T_birth(X) = (psi_temporal o g_spatial^{x T})(X)|
+                          +-------------------------+-------------------------+
+                                                    |
+                                                    ▼
   ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-  | SO(3)-INVARIANT QUADRATIC CASIMIR & FROBENIUS IRREP CONTRACTION GATE (se3_steerable_kernel.cu) |
-  | * Type-0 Monopole Scalar (l=0, Dim 1)   : f_0(R^{-1}(x-t))        [Strict Scalar Invariance]   |
-  | * Type-1 Dipole Vector   (l=1, Dim 3)   : ||D^1(R) v_1||_2 === ||v_1||_2  ( since R^T R = I_3 )|
-  | * Type-2 Quadrupole      (l=2, Dim 5)   : ||D^2(R) T_2||_F === ||T_2||_F  ( since D^2 in SO(5))|
-  | * Spatial Global Pooling over x in R^3  : S(t) in R^{512} ===► Zero Extrinsic Pose Sensitivity |
+  | ANNIHILATED ALGEBRAIC KERNEL (NULL SPACE): Ker(J_{T_birth})                                    |
+  | * Tier-1 Per-Frame Spatial Nullity : 7,200 x (6,220,800 - 512) = 44,786,073,600 Dimensions     |
+  | * Tier-2/3 Temporal-VIB Nullity    : (7,200 x 512) - 1,024     =      3,685,376 Dimensions     |
+  | * Total Destroyed Ambient Nullity  : >= 44,789,758,976 Dims (Intrinsic S^1023: 44,789,758,977) |
+  | * Arithmetic Compression Ratio     : 43,740,000.0 : 1 (99.9999977% Erased at Ingress)          |
+  | * Pre-Image Fiber Cardinality      : |F_{v_0}| = |T_birth^{-1}(v_0)| = 2^{\aleph_0} = c        |
+  | * Diffusion Prior Intersection     : Dim(M_natural n F_{v_0}) >= 10^6 - 1,024 = 998,976 Dims   |
+  | * Personal Identifier Mutual Info  : I(S_PHI; v_bio) = H(S_PHI) - H(S_PHI | v_bio) === 0.0000b |
   └────────────────────────────────────────────────────────────────────────────────────────────────┘
+====================================================================================================
 ```
 ```
 ====================================================================================================
