@@ -89,8 +89,8 @@ Next Phase → **Phase 1: Real-Time Event Simulation and Data Generation**
   * STATE 2: PendingGroundTruth (0x02)
   * Indexed by 48-Byte Lexicographic PgtqCompoundKey: T_ID (32B) || Modality (4B) || Mask (4B) || ns (8B)
   * Stores 64-Byte Cache-Line-Aligned PgtqSuspenseValue (#[repr(C, align(64))])
-                   |                                                         |
-                   ▼ [reconcile_biopsy_confirmation() < 90d]                 ▼ [evaluate_ttl_expiration() >= 90d]
+          |                                                         |
+          ▼ [reconcile_biopsy_confirmation() < 90d]                 ▼ [evaluate_ttl_expiration() >= 90d]
   ┌─────────────────────────────────────────────┐   ┌────────────────────────────────────────────┐
   | [CF 3: cf_reconciled_lineage (Compacted)]   |   | SELF-SUPERVISED INFONCE CONTRASTIVE POOL   |
   | * STATE 3: GroundTruthAcquired (0x03)       |   | * STATE 4: TtlExpiredUnsupervised (0x04)   |
